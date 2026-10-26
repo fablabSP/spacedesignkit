@@ -75,7 +75,11 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .side.left{position:relative}
 .side.left.trash:after{content:"Drop here to remove";position:absolute;inset:8px;border:2px dashed var(--bad);border-radius:14px;background:rgba(255,90,95,.16);display:grid;place-items:center;font-weight:800;font-size:16px;color:#ffd0d2;z-index:5;pointer-events:none}
 .dragghost{position:fixed;z-index:60;pointer-events:none;transform:translate(-50%,-130%);background:var(--gold);color:#1b1400;font-weight:700;font-size:12.5px;padding:6px 10px;border-radius:8px;box-shadow:0 8px 20px rgba(0,0,0,.4);white-space:nowrap}
-.it{touch-action:none}
+.it{touch-action:pan-y;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{touch-action:manipulation}
+html,body{overscroll-behavior:none}
+.scroll{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.side.left.peek{transform:translateX(-105%);transition:transform .15s}
 .tgp{display:flex;border:1px solid var(--line-2);border-radius:9px;overflow:hidden;margin:0 2px 8px}
 .tgp button{flex:1;padding:6px 8px;font-size:12px;font-weight:700;background:var(--panel-2)}
 .tgp button.on{background:var(--gold);color:#1b1400}
@@ -131,6 +135,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .guide.collapsed h2{font-size:16px;margin:2px 28px 0 0}
 .views{position:absolute;right:14px;bottom:14px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 340px)}
 .views .btn{background:rgba(26,43,79,.92)}
+.views .btn.primary{background:var(--gold);color:#1b1400}
 .views .btn.on{background:var(--txt);color:var(--bg)}
 .scale{position:absolute;left:14px;bottom:14px;font-size:11.5px;color:var(--mute);background:rgba(19,33,63,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
 .scale b{color:var(--txt)}
@@ -187,7 +192,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .under{display:grid;gap:8px;padding-top:8px;border-top:1px solid var(--line)}
 .rsl{display:grid;grid-template-columns:52px 1fr;align-items:center;gap:6px;font-size:13px;color:var(--mute)}
 .rsl input{padding:0;background:none;border:0;accent-color:var(--gold)}
-@media (max-width:820px){.imp{grid-template-columns:1fr}}
+@media (max-width:820px){.imp{grid-template-columns:1fr}.inspg{grid-template-columns:1fr!important}.inspg img{max-width:180px}}
 .notes .n{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:5px 0}
 .notes .n i{width:10px;height:10px;border-radius:3px;flex:none}
 .notes .n span{flex:1;min-width:0}
@@ -301,7 +306,15 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
   .mobtabs{display:flex;gap:6px;padding:8px max(16px,env(safe-area-inset-right,0px)) 8px max(16px,env(safe-area-inset-left,0px));background:var(--panel);border-top:1px solid var(--line)}
   .mobtabs .btn{flex:1}
   .guide{max-width:calc(100% - 28px)}
+  .side.left{position:absolute}
+  .views{left:10px;right:10px;bottom:10px;max-width:none;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+  .views::-webkit-scrollbar{display:none}
+  .views .btn{flex:none}
+  .budget{min-width:0;flex:1 1 90px}.budget .row span{display:none}
   .scale{display:none}
+}
+@media (max-width:520px){
+  .brand>div:not(.mark){display:none}
   .start{grid-template-columns:1fr}.start .l{padding:28px 16px}.start .r{display:none}
   .modes{grid-template-columns:1fr}.spaces{grid-template-columns:repeat(3,minmax(0,1fr))}
   .flipwrap,.grid2,.pp3{grid-template-columns:1fr}.flip{max-width:240px;margin:0 auto}
@@ -322,6 +335,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
       <button id="tNext" title="Next step" aria-label="Next step"><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="budget" id="budget"><div class="row"><span>Spent / budget</span><b id="bval">$0</b></div><div class="bar"><i id="bbar" style="width:0"></i></div></div>
+    <button class="iconbtn" id="fsBtn" title="Full screen" aria-label="Full screen" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path id="fsIc" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button class="iconbtn" id="menuBtn" title="Menu" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </header>
 
@@ -340,6 +354,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
         <div class="guide" id="guide"></div>
         <div class="scale"><b>1 grid square = 0.5 m</b> · 2.5 cm on your 1:20 floorplan</div>
         <div class="views">
+          <button class="btn sm primary" id="vInspire" title="Build a random starting layout from one of this space's inspiration cards">Inspire me!</button>
           <button class="btn sm" id="vUndo" title="Undo (Ctrl+Z), up to 3 steps" disabled>Undo</button>
           <button class="btn sm" id="vReset" title="Remove all furniture and keep the room">Reset</button>
           <button class="btn sm" id="vLock" title="Lock walls, doors, windows, power points and room size">Lock room</button>
@@ -1341,15 +1356,26 @@ function addInnerRect(){ if(S.lockRoom){toast('The room is locked.');return} con
   if(!V){toast('No free space for a new room. Make the main room bigger or remove a room.');return}
   const room={uid:S.uid++,name:`Room ${n}`,glass:false,shape:V}; S.inner.push(room); innerDefaultDoor(room); buildRoom(); runChecks(); renderRoomPanel(); selectWall(`i${room.uid}_0`); save(); toast(`${room.name} added (${w} × ${d} m). Drag a wall to move it, or Edit shape to reshape it.`) }
 let catDrag=null, ghost=null;
-$('#items').addEventListener('pointerdown',e=>{ const fb=e.target.closest('[data-form]'); if(fb&&e.button<=0){ catDrag={form:fb.dataset.form,type:null,x:e.clientX,y:e.clientY,moved:false}; fb.setPointerCapture(e.pointerId); return } const b=e.target.closest('[data-add]'); if(!b||e.button>0)return; catDrag={type:b.dataset.add,x:e.clientX,y:e.clientY,moved:false}; b.setPointerCapture(e.pointerId)});
-$('#items').addEventListener('pointermove',e=>{ if(!catDrag)return; if(!catDrag.moved&&Math.hypot(e.clientX-catDrag.x,e.clientY-catDrag.y)>8){catDrag.moved=true; ghost=document.createElement('div'); ghost.className='dragghost'; ghost.textContent=catDrag.form?FORMS[catDrag.form]:DEF[catDrag.type].name; document.body.appendChild(ghost)}
+const dragBegin=()=>{ if(!catDrag||catDrag.moved)return; catDrag.moved=true; clearTimeout(catDrag.hold); ghost=document.createElement('div'); ghost.className='dragghost'; ghost.textContent=catDrag.form?FORMS[catDrag.form]:DEF[catDrag.type].name; document.body.appendChild(ghost); ghost.style.left=catDrag.cx+'px'; ghost.style.top=catDrag.cy+'px';
+  if(catDrag.touch){ try{navigator.vibrate?.(12)}catch(e){} if(getComputedStyle($('#left')).position==='absolute')$('#left').classList.add('peek') } };
+const dragEnd=()=>{ if(catDrag)clearTimeout(catDrag.hold); catDrag=null; ghost?.remove(); ghost=null; const L=$('#left'); if(L.classList.contains('peek')){ L.classList.remove('peek','open') } };
+$('#items').addEventListener('pointerdown',e=>{ if(e.button>0)return; const fb=e.target.closest('[data-form]'), b=fb?null:e.target.closest('[data-add]'); if(!fb&&!b)return;
+  const touch=e.pointerType!=='mouse'; catDrag={form:fb?.dataset.form,type:b?.dataset.add??null,x:e.clientX,y:e.clientY,cx:e.clientX,cy:e.clientY,moved:false,touch}; if(!touch)(fb||b).setPointerCapture(e.pointerId); // touch pointers are captured implicitly; an explicit capture stops touch scrolling in desktop Chrome
+  if(touch) catDrag.hold=setTimeout(()=>{ if(catDrag&&Math.hypot(catDrag.cx-catDrag.x,catDrag.cy-catDrag.y)<10)dragBegin() },window.__holdMs??450) });
+$('#items').addEventListener('pointermove',e=>{ if(!catDrag)return; catDrag.cx=e.clientX; catDrag.cy=e.clientY; const dx=e.clientX-catDrag.x, dy=e.clientY-catDrag.y;
+  if(!catDrag.moved){ if(catDrag.touch){ if(Math.abs(dx)>10&&Math.abs(dx)>Math.abs(dy)*1.2)dragBegin(); else if(Math.abs(dy)>10||Math.abs(dx)>10){ dragEnd(); return } } else if(Math.hypot(dx,dy)>8)dragBegin() }
   if(ghost){ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px'} });
-$('#items').addEventListener('pointerup',e=>{ if(!catDrag)return; const d=catDrag; catDrag=null; ghost?.remove(); ghost=null;
+// once a drag has started, stop the list from scrolling under the finger
+$('#items').addEventListener('touchmove',e=>{ if(!catDrag)return; const t=e.touches[0]; if(t){ catDrag.cx=t.clientX; catDrag.cy=t.clientY }
+  if(catDrag.moved){ if(e.cancelable)e.preventDefault(); return }
+  if(t&&Math.abs(t.clientY-catDrag.y)>10&&Math.abs(t.clientY-catDrag.y)>=Math.abs(t.clientX-catDrag.x)) dragEnd() },{passive:false});
+$('#items').addEventListener('contextmenu',e=>{ if(e.target.closest('.it'))e.preventDefault() });
+$('#items').addEventListener('pointerup',e=>{ if(!catDrag)return; const d=catDrag; dragEnd(); if(d.touch&&!d.moved&&Math.hypot(e.clientX-d.x,e.clientY-d.y)>10)return;
   if(d.form){ if(!d.moved){placeFormation(d.form);return} const r=canvas.getBoundingClientRect(); if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){ setNdc(e); const p=floorHit(); placeFormation(d.form,p?{x:p.x,z:p.z}:null) } return }
   if(!d.moved){ addItem(d.type); return }
   if(DEF[d.type].mount){ const r0=canvas.getBoundingClientRect(); if(e.clientX>=r0.left&&e.clientX<=r0.right&&e.clientY>=r0.top&&e.clientY<=r0.bottom){ setNdc(e); const hit=rackUnderPointer(-1); if(hit){ addItem(d.type); const it=itemBy(selected); placeOnShelf(it,hit); markOverlaps(); runChecks(); save(); renderSelTool(); toast(`${DEF[d.type].name} placed on the ${it.lvl?'top':'bottom'} shelf`); return } } }
   const r=canvas.getBoundingClientRect(); if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){ setNdc(e); const p=floorHit(); if(p&&p.x>B.x0&&p.x<B.x1&&p.z>B.z0&&p.z<B.z1) addItem(d.type,{x:p.x,z:p.z}); else addItem(d.type) } });
-$('#items').addEventListener('pointercancel',()=>{catDrag=null;ghost?.remove();ghost=null});
+$('#items').addEventListener('pointercancel',()=>dragEnd());
 $('#items').addEventListener('click',e=>{
   const fx=e.target.closest('[data-fx]'); if(fx){addFix(fx.dataset.fx);renderRoomPanel();return}
   if(e.target.closest('[data-imp]')){importDialog();return}
@@ -1580,7 +1606,15 @@ let topView=false;
 $('#vTop').onclick=()=>{topView=!topView;$('#vTop').classList.toggle('on',topView);fitView(topView)};
 $('#vReset').onclick=()=>{topView=false;$('#vTop').classList.remove('on');fitView(false)};
 $('#vNote').onclick=()=>noteDialog();
-$('#vUndo').onclick=()=>undo(); $('#vReset').onclick=()=>resetDialog(); $('#vLock').onclick=()=>toggleLock();
+const fsEl=()=>document.fullscreenElement||document.webkitFullscreenElement;
+function toggleFS(){ const d=document, el=d.documentElement;
+  if(fsEl()){ const p=(d.exitFullscreen||d.webkitExitFullscreen)?.call(d); p?.then?.(renderFS,renderFS); setTimeout(renderFS,400); return }
+  const req=el.requestFullscreen||el.webkitRequestFullscreen;
+  if(!req||d.fullscreenEnabled===false||d.webkitFullscreenEnabled===false){ toast('Full screen is blocked in this view. Open the game in its own browser tab, then try again.'); return }
+  try{ const p=req.call(el,{navigationUI:'hide'}); setTimeout(renderFS,400); p?.then?.(renderFS); p?.catch?.(()=>toast('Full screen is blocked in this view. Open the game in its own browser tab, then try again.')) }catch(e){ toast('Full screen is not available on this device.') } }
+function renderFS(){ const on=!!fsEl(), b=$('#fsBtn'); b.title=on?'Exit full screen':'Full screen'; b.setAttribute('aria-label',b.title); b.setAttribute('aria-pressed',on); $('#fsIc').setAttribute('d',on?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5') }
+$('#fsBtn').onclick=toggleFS; document.addEventListener('fullscreenchange',renderFS); document.addEventListener('webkitfullscreenchange',renderFS); addEventListener('resize',renderFS);
+$('#vUndo').onclick=()=>undo(); $('#vInspire').onclick=()=>inspireDialog(); $('#vReset').onclick=()=>resetDialog(); $('#vLock').onclick=()=>toggleLock();
 function renderWalls(){ $('#vWalls').textContent=WALLMODE==='full'?'Walls: full':'Walls: low'; $('#vWalls').classList.toggle('on',WALLMODE==='full') }
 $('#vWalls').onclick=()=>{ WALLMODE=WALLMODE==='full'?'low':'full'; try{localStorage.setItem('sdkit3d-walls',WALLMODE)}catch(e){} buildRoom(); renderWalls(); toast(WALLMODE==='full'?`Full-height walls (${roomH().toFixed(1)} m). Walls facing you fade out.`:'Low walls: easier to see the whole room') };
 const SNAPS=[.5,.25,.1,0];
@@ -1588,6 +1622,154 @@ function renderSnap(){ $('#vSnap').textContent = SNAP?`Snap ${SNAP} m`:'Snap off
 $('#vSnap').onclick=()=>{ SNAP=SNAPS[(SNAPS.indexOf(SNAP)+1)%SNAPS.length]; try{localStorage.setItem('sdkit3d-snap',SNAP)}catch(e){} renderSnap(); toast(SNAP?`Furniture edges snap to a ${SNAP} m grid`:'Snap off: place freely') };
 $('#mLeft').onclick=()=>{$('#left').classList.toggle('open');$('#right').classList.remove('open')};
 $('#mRight').onclick=()=>{$('#right').classList.toggle('open');$('#left').classList.remove('open')};
+
+/* ===== Inspire me!: a random starting layout built from one of this space's blue inspiration cards.
+   Rule-based (no AI). Works in a "front frame": u runs along the teaching wall, v runs from the teaching wall into the room,
+   so every recipe below reads the same whichever wall is the front and whatever shape the room is. ===== */
+const rngOf=seed=>()=>{ seed=(seed+0x6D2B79F5)|0; let t=Math.imul(seed^(seed>>>15),1|seed); t=(t+Math.imul(t^(t>>>7),61|t))^t; return ((t^(t>>>14))>>>0)/4294967296 };
+function inspFrame(){
+  const bd=S.fix.find(f=>f.kind==='board'&&!wInner(f.wall)); let n=[0,1];
+  if(bd) n=wallN(bd.wall,bd.t); else if(isShape()){ const w=[...outerIds()].sort((a,b)=>wallLen(b)-wallLen(a))[0]; if(w) n=wallN(w,wallLen(w)/2) }
+  const R=Math.atan2(n[0],n[1]), ud=[Math.cos(R),-Math.sin(R)], vd=[Math.sin(R),Math.cos(R)], P=ROOMPOLY();
+  const us=P.map(p=>p[0]*ud[0]+p[1]*ud[1]), vs=P.map(p=>p[0]*vd[0]+p[1]*vd[1]), u0=Math.min(...us), v0=Math.min(...vs);
+  return { R, ud, vd, W:Math.max(...us)-u0, D:Math.max(...vs)-v0, hasBoard:!!bd,
+    toW:(u,v)=>{ const a=u+u0, b=v+v0; return [a*ud[0]+b*vd[0], a*ud[1]+b*vd[1]] },
+    toF:([x,z])=>[x*ud[0]+z*ud[1]-u0, x*vd[0]+z*vd[1]-v0] } }
+function inspPlanner(seed,chairT,corr=0){
+  const rng=rngOf(seed), F=inspFrame(), W2=innerWallSamples(); let seats=0; const MIR=rng()<.5, PAD=.62+rng()*.2;
+  // keep a 1.3 m lane free between the first two doors: an L-shaped route that turns at one of the two room corners it can use
+  const lane=[]; if(corr&&DOORS.length>1){ const d0=DOORS[0], d1=DOORS[1], a=[d0.x+d0.n[0]*.9,d0.z+d0.n[1]*.9], b=[d1.x+d1.n[0]*.9,d1.z+d1.n[1]*.9], m=corr===1?[a[0],b[1]]:[b[0],a[1]];
+    for(const [p,q] of [[a,m],[m,b]]){ const L=Math.hypot(q[0]-p[0],q[1]-p[1]), n=Math.max(1,Math.ceil(L/.25)); for(let i=0;i<=n;i++) lane.push([p[0]+(q[0]-p[0])*i/n,p[1]+(q[1]-p[1])*i/n]) } }
+  const pick=a=>a[Math.floor(rng()*a.length)];
+  const mreg=r=>MIR&&r?{...r,u0:F.W-r.u1,u1:F.W-r.u0}:r;
+  const norm=r=>+(((r%(2*Math.PI))+2*Math.PI)%(2*Math.PI)).toFixed(4);
+  const xf=(u,v,rf)=>{ if(MIR){ u=F.W-u; rf=-rf } const [x,z]=F.toW(u,v); return {x:+x.toFixed(3),z:+z.toFixed(3),rot:norm(rf+F.R)} };
+  const inReg=(t,r0)=>{ const r=mreg(r0); return !r||corners(t).every(c=>{ const [u,v]=F.toF(c); return u>=r.u0-1e-3&&u<=r.u1+1e-3&&v>=r.v0-1e-3&&v<=r.v1+1e-3 }) };
+  const blocks=()=>S.items.filter(o=>!DEF[o.type].noblock&&!DEF[o.type].ceil&&!o.on);
+  const ok=(t,pad,r)=>{ if(!inRoom(t)||!inReg(t,r))return false; const d=DEF[t.type];
+    if(W2.length){ const cs=corners(t), x0=Math.min(...cs.map(c=>c[0]))-.07, x1=Math.max(...cs.map(c=>c[0]))+.07, z0=Math.min(...cs.map(c=>c[1]))-.07, z1=Math.max(...cs.map(c=>c[1]))+.07;
+      for(const [x,z] of W2){ if(x<x0||x>x1||z<z0||z>z1)continue; if(pointIn(t,x,z,.05))return false } }
+    if(d.noblock)return true;
+    if(lane.length){ const cs=corners(t), x0=Math.min(...cs.map(c=>c[0]))-.7, x1=Math.max(...cs.map(c=>c[0]))+.7, z0=Math.min(...cs.map(c=>c[1]))-.7, z1=Math.max(...cs.map(c=>c[1]))+.7;
+      for(const [x,z] of lane){ if(x<x0||x>x1||z<z0||z>z1)continue; if(pointIn(t,x,z,.62))return false } }
+    if(DOORS.some(dr=>corners(t).concat([[t.x,t.z]]).some(([px,pz])=>Math.hypot(px-(dr.x+dr.n[0]*.6),pz-(dr.z+dr.n[1]*.6))<1.3)))return false;
+    return !blocks().some(o=>obbOverlap(t,o,pad)) };
+  // a set of loose pieces placed all-or-nothing, (du,dv) relative to the set centre, turned by rc
+  const cluster=(pcs,U,V,rc=0,pad=.6,r=null)=>{ const c=Math.cos(rc), s=Math.sin(rc);
+    const P=pcs.map(p=>({type:p.type,...xf(U+p.du*c+p.dv*s, V-p.du*s+p.dv*c, (p.rf||0)+rc)}));
+    if(!P.every(t=>ok(t,pad,r)))return null;
+    const out=P.map(t=>{ const it={uid:S.uid++,...t}; S.items.push(it); seats+=DEF[t.type].seats||0; return it }); return out };
+  const item=(type,u,v,rf=0,pad=.1,r=null)=>cluster([{type,du:0,dv:0,rf:0}],u,v,rf,pad,r)?.[0]||null;
+  const group=(kind,u,v,rf=0,pad=PAD,r=null)=>{ const id='g'+S.uid; const G={kind,chairs:true,...xf(u,v,rf),piece:FORM_PIECE(kind),chair:chairT};
+    const P=formLayout(kind,true,G.piece,chairT).map((l,gi)=>({type:l.type,gi,...grpXform(G,l)}));
+    if(!P.every(t=>ok(t,pad,r)))return null; S.uid++; S.groups[id]=G;
+    return P.map(t=>{ const it={uid:S.uid++,type:t.type,grp:id,gi:t.gi,x:t.x,z:t.z,rot:t.rot}; S.items.push(it); seats+=DEF[t.type].seats||0; return it }) };
+  const reg=(u0,u1,v0,v1)=>({u0:Math.max(0,u0),u1:Math.min(F.W,u1),v0:Math.max(0,v0),v1:Math.min(F.D,v1)});
+  // slide a finished batch sideways so it sits in the middle of its region
+  const centre=(batch,r0)=>{ const r=mreg(r0); if(!batch.length)return; const us=batch.flatMap(t=>corners(t).map(c=>F.toF(c)[0])); const du=Math.round((((r.u0+r.u1)/2-(Math.min(...us)+Math.max(...us))/2))/.05)*.05; if(Math.abs(du)<.05)return;
+    const set=new Set(batch), keep=S.items; S.items=keep.filter(t=>!set.has(t)); const dx=du*F.ud[0], dz=du*F.ud[1];
+    const moved=batch.map(t=>({...t,x:+(t.x+dx).toFixed(3),z:+(t.z+dz).toFixed(3)})); const good=moved.every(t=>ok(t,.05,r)); S.items=keep;
+    if(!good)return; batch.forEach((t,i)=>{ t.x=moved[i].x; t.z=moved[i].z }); for(const g of new Set(batch.map(t=>t.grp).filter(Boolean))){ S.groups[g].x=+(S.groups[g].x+dx).toFixed(3); S.groups[g].z=+(S.groups[g].z+dz).toFixed(3) } };
+  // walk a region front-to-back, left-to-right, dropping the same thing wherever it fits
+  // mid:true centres this batch in its own region now; otherwise it joins the main batch, centred once at the end
+  const scan=(r,fn,{step=.25,target=Infinity,max=99,mid=false}={})=>{ const batch=[]; let n=0;
+    for(let v=r.v0;v<=r.v1&&seats<target&&n<max;v+=step) for(let u=r.u0;u<=r.u1&&seats<target&&n<max;u+=step){ const got=fn(u,v); if(got){ const cl='c'+got[0].uid; for(const t of got) if(!t.grp) t.cl=cl; batch.push(...got); n++ } }
+    if(mid)centre(batch,r); else main.push(...batch); return batch };
+  const main=[];
+  const fill=(kind,r,o={})=>scan(r,(u,v)=>group(kind,u,v,o.rf||0,o.pad??PAD,r),o);
+  // furniture backed against a side of the frame (front / back / left / right)
+  const along=(side,types,{from=.4,to=null,gap=.15,stools=0,pad=.1}={})=>{ const L=side==='front'||side==='back'?F.W:F.D, end=to??L-.4, out=[]; let s=from, k=0;
+    while(s<end){ const type=types[k%types.length], w=type==='rack'?1.8:DEF[type].w, dd=DEF[type].d; if(s+w>end)break; const c=s+w/2, off=dd/2+.06; let u,v,rf;
+      if(side==='back'){u=c;v=F.D-off;rf=Math.PI} else if(side==='front'){u=c;v=off;rf=0} else if(side==='left'){u=off;v=c;rf=Math.PI/2} else {u=F.W-off;v=c;rf=-Math.PI/2}
+      const fu=Math.sin(rf), fv=Math.cos(rf), au=Math.cos(rf), av=-Math.sin(rf), pcs=[{type,du:0,dv:0,rf}];
+      for(let i=0;i<stools;i++){ const a=(i-(stools-1)/2)*(w/stools); pcs.push({type:'stool',du:a*au+(dd/2+.32)*fu,dv:a*av+(dd/2+.32)*fv,rf:rf+Math.PI}) }
+      const got=cluster(pcs,u,v,0,pad);
+      if(got){ out.push(got[0]); k++; s+=w+gap } else s+=.25 }
+    return out };
+  const wallTV=side=>{ const [x,z]=side==='left'?F.toW(.02,F.D/2):side==='right'?F.toW(F.W-.02,F.D/2):side==='back'?F.toW(F.W/2,F.D-.02):F.toW(F.W/2,.02);
+    const it={uid:0,type:'tvwall',x,z,rot:0}; if(!wallSnap(it,x,z,0,99))return null; if(S.items.some(o=>DEF[o.type].wall&&obbOverlap(it,o,.1)))return null; if(!inRoom(it))return null; it.uid=S.uid++; S.items.push(it); return it };
+  const PRN=[[1,'a1',-.6],[1,'x1c',0],[1,'a1',.6],[0,'h2c',-.45],[0,'a2l',.45]];
+  const racks=(side,n=1,o={})=>{ const rs=along(side,['rack'],o).slice(0,n); for(const r of rs) for(const [lvl,type,ox] of PRN){ const it={uid:S.uid++,type,x:r.x,z:r.z,rot:r.rot}; S.items.push(it); mountOn(it,r,lvl,ox) } return rs };
+  const front=disp=>{ const sd=rng()<.5?[.2,.8]:[.8,.2]; for(const f of [sd[0],sd[1],.5]) if(item('teacher',F.W*f,.75,Math.PI,.15))break;
+    if(disp) for(const f of [sd[1],sd[0],.5]) if(item(disp,F.W*f,.45,0,.15))break;
+    if(!F.hasBoard) wallTV('front') };
+  const CH=chairT;
+  const P={F,rng,pick,reg,item,group,cluster,scan,fill,along,wallTV,racks,front,CH,centreMain:()=>centre(main,reg(.3,F.W-.3,0,F.D)),get seats(){return seats},FV:+(1.4+rng()*.35).toFixed(2),
+    lounge:(r)=>scan(r,(u,v)=>cluster([{type:'rug',du:0,dv:0},{type:'sofa',du:0,dv:.62,rf:Math.PI},{type:'beanbag',du:-1.05,dv:-.45},{type:'beanbag',du:1.05,dv:-.45},{type:'plant',du:1.75,dv:.75}],u,v,0,.5,r),{max:1,mid:false}),
+    roundSet:(r,o={})=>scan(r,(u,v)=>cluster([{type:'round',du:0,dv:0},...[0,1,2,3].map(i=>{ const a=i*Math.PI/2; return {type:CH,du:Math.sin(a)*.97,dv:Math.cos(a)*.97,rf:a+Math.PI} })],u,v,0,.7,r),o),
+    benchIsle:(r,o={})=>scan(r,(u,v)=>cluster([{type:'bench',du:0,dv:-.46},{type:'bench',du:0,dv:.46},...[-.45,.45].flatMap(a=>[{type:'stool',du:a,dv:-1.25,rf:0},{type:'stool',du:a,dv:1.25,rf:Math.PI}])],u,v,0,.7,r),o),
+    seminarSet:(r,o={})=>scan(r,(u,v)=>cluster([{type:'seminar',du:0,dv:0},...[-1.1,-.37,.37,1.1].flatMap(a=>[{type:CH,du:a,dv:-.84,rf:0},{type:CH,du:a,dv:.84,rf:Math.PI}])],u,v,0,.7,r),o),
+    pairSet:(r,o={})=>scan(r,(u,v)=>cluster([{type:'rtable',du:-.6,dv:0},{type:'rtable',du:.6,dv:0},...[-.95,-.32,.32,.95].map(a=>({type:CH,du:a,dv:.64,rf:Math.PI}))],u,v,0,.7,r),o),
+    booth:(r,o={})=>scan(r,(u,v)=>cluster([{type:'stable',du:0,dv:0,rf:Math.PI},{type:CH,du:0,dv:.68,rf:Math.PI},{type:'screenp',du:-.75,dv:.2,rf:Math.PI/2},{type:'screenp',du:.75,dv:.2,rf:Math.PI/2}],u,v,0,.5,r),o),
+    ring:(cu,cv,r)=>{ const n=Math.floor(2*Math.PI*r/.86), out=[]; for(let i=0;i<n;i++){ const a=i/n*2*Math.PI; const got=cluster([{type:'stable',du:0,dv:0,rf:a+Math.PI},{type:CH,du:Math.sin(a)*.66,dv:Math.cos(a)*.66,rf:a+Math.PI}],cu+Math.sin(a)*r,cv+Math.cos(a)*r,0,.02); if(got){ for(const t of got)t.cl='r'+got[0].uid; out.push(...got) } } return out },
+    solo:(r,o={})=>scan(r,(u,v)=>cluster([{type:'stable',du:0,dv:0,rf:Math.PI},{type:CH,du:0,dv:.655,rf:Math.PI}],u,v,0,.45,r),o),
+    stepsRow:(r,o={})=>scan(r,(u,v)=>{ const t=item('steps',u,v,0,.25,r); return t?[t]:null },o),
+    screens:(v,u0,u1,gapAt)=>{ const out=[]; for(let u=u0+.6;u<=u1-.6;u+=1.25){ if(gapAt!=null&&Math.abs(u-gapAt)<1)continue; const t=item('screenp',u,v,0,.02); if(t)out.push(t) } return out },
+    vscreens:(u,v0,v1,gapAt)=>{ const out=[]; for(let v=v0+.6;v<=v1-.6;v+=1.25){ if(gapAt!=null&&Math.abs(v-gapAt)<1)continue; const t=item('screenp',u,v,Math.PI/2,.02); if(t)out.push(t) } return out } };
+  return P }
+/* one recipe per inspiration card number; each reads like the card */
+const INSPIRE={
+  1:(P,T)=>{ const {F,FV}=P; P.front('vc'); P.fill(P.pick(['smpod6','lblock','smpod4']),P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); P.wallTV('left'); P.wallTV('right'); return ['smpod4','smrows'] },
+  2:(P,T)=>{ const {F,FV}=P; P.front('vc'); const r=P.reg(.3,F.W-.3,FV,F.D-.3); P.fill('circle',r,{target:T}); if(P.seats<T)P.roundSet(r,{target:T}); return ['smpod4'] },
+  3:(P,T)=>{ const {F,FV}=P; P.front('vc'); const r=P.reg(.3,F.W-.3,FV,F.D-.3); P.fill('arc',r,{target:T}); if(P.seats<T)P.fill('horse',r,{target:T}); return ['horse','smpod4'] },
+  4:(P,T)=>{ const {F,FV}=P; P.front('screen'); const k=P.pick(['smpod6','lblock','circle']), a=.7; P.fill(k,P.reg(.3,F.W/2-a,FV,F.D-.3),{target:T/2,mid:true}); P.fill(k,P.reg(F.W/2+a,F.W-.3,FV,F.D-.3),{target:T,mid:true}); P.wallTV('back'); return ['smpod4'] },
+  5:(P,T)=>{ const {F,FV}=P; P.front('screen'); const left=P.rng()<.5, h=F.W/2; P.lounge(left?P.reg(.3,h,F.D/2,F.D-.3):P.reg(h,F.W-.3,F.D/2,F.D-.3)); P.roundSet(P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); P.item('wboard',left?F.W-1:1,F.D-.5,Math.PI,.2); return ['smpod4'] },
+  6:(P,T)=>{ const {F,FV}=P; P.front('screen'); const m=FV+(F.D-FV)/2; P.screens(m,.3,F.W-.3,F.W/2); P.pairSet(P.reg(.3,F.W-.3,FV,m-.2),{target:T/2,mid:true}); P.pairSet(P.reg(.3,F.W-.3,m+.2,F.D-.3),{target:T,mid:true}); return ['smpod4'] },
+  7:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.booth(P.reg(.2,1.9,FV,F.D-.2),{step:.25}); P.booth(P.reg(F.W-1.9,F.W-.2,FV,F.D-.2),{step:.25}); P.fill('smpod4',P.reg(2.3,F.W-2.3,FV,F.D-.3),{target:T}); return ['smpod4'] },
+  8:(P,T)=>{ const {F,FV}=P; P.front(null); const h=F.W/2; P.vscreens(h,FV,F.D-.2,FV+.6); const k=P.pick(['smrows','circle','smpod6']);
+    P.item('wboard',h/2,FV-.1,0,.2); P.item('wboard',h+h/2,FV-.1,0,.2); P.fill(k,P.reg(.3,h-.35,FV+.5,F.D-.3),{target:T/2,mid:true}); P.fill(k,P.reg(h+.35,F.W-.3,FV+.5,F.D-.3),{target:T,mid:true}); return ['smpod4'] },
+  9:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.lounge(P.reg(F.W/2-2.2,F.W/2+2.2,F.D/2-1.6,F.D/2+1.6)); P.fill(P.pick(['circle','lblock']),P.reg(.3,F.W-.3,FV,F.D-.3),{target:T,mid:false}); return ['smpod4','circle'] },
+  10:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.stepsRow(P.reg(.4,F.W-.4,F.D-3.2,F.D-.3),{step:.3}); P.fill('lrows',P.reg(.3,F.W-.3,FV,F.D-3.4),{target:T,max:1}); if(P.seats<T)P.fill('lu',P.reg(.3,F.W-.3,FV,F.D-3.4),{target:T}); return ['smrows'] },
+  11:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.fill('arc',P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); P.along(P.rng()<.5?'left':'right',['charge'],{from:F.D-1.6}); return ['horse','smpod4'] },
+  12:(P,T)=>{ const {F,FV}=P; P.front('vc'); P.seminarSet(P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); P.wallTV('back'); return ['lblock'] },
+  13:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.wallTV('left'); P.wallTV('right'); P.fill('smrows',P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); return ['smpod4'] },
+  14:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.racks('back',2,{from:.4}); P.along('back',['bench'],{from:4.4,stools:2}); P.fill('circle',P.reg(.3,F.W-.3,FV,F.D-2.2),{target:T}); return ['smpod4'] },
+  15:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.along('left',['peg','shelf','cabinet'],{from:FV}); P.along('right',['cabinet','peg','shelf'],{from:FV}); P.benchIsle(P.reg(1.2,F.W-1.2,FV,F.D-.3),{target:T}); if(P.seats<T)P.fill('lblock',P.reg(1.2,F.W-1.2,FV,F.D-.3),{target:T}); return ['smpod4'] },
+  16:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.along('left',['bench'],{from:FV,stools:2}); P.along('right',['bench'],{from:FV,stools:2}); P.along('back',['bench','peg'],{from:1.6,to:F.W-1.6,stools:2}); P.fill('lblock',P.reg(2.2,F.W-2.2,FV,F.D-2.2),{target:T}); return ['smpod4'] },
+  17:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.wallTV('left'); P.wallTV('right'); P.racks('back',2); P.along('back',['charge'],{from:F.W-1.4}); P.fill('circle',P.reg(.3,F.W-.3,FV,F.D-1.4),{target:T}); return ['smpod4'] },
+  18:(P,T)=>{ const {F,FV}=P; P.front('screen'); const m=FV+(F.D-FV)*.5; P.fill(P.pick(['smpod6','circle']),P.reg(.3,F.W-.3,FV,m),{target:T*.6}); P.benchIsle(P.reg(.3,F.W-.3,m+.2,F.D-.3),{target:T}); return ['smpod4'] },
+  19:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.stepsRow(P.reg(.8,F.W-.8,FV+.8,F.D-1.8),{step:.3,target:T}); P.along('left',['cabinet'],{from:FV}); P.along('right',['cabinet'],{from:FV}); P.along('back',['bench'],{from:1.2,to:F.W-1.2,stools:2}); return ['lrows'] },
+  20:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.along(P.rng()<.5?'left':'right',['lockers'],{from:FV}); P.along('back',['cart','cart','peg'],{from:1}); P.benchIsle(P.reg(.6,F.W-.6,FV,F.D-1.2),{target:T}); return ['smpod4'] },
+  22:(P,T)=>{ const {F,FV}=P; P.front('screen'); const left=P.rng()<.5, h=F.W/2; P.stepsRow(left?P.reg(.3,h,F.D-2,F.D-.3):P.reg(h,F.W-.3,F.D-2,F.D-.3),{max:2,step:.3}); P.along('back',['bench'],{from:left?h+.3:.4,to:left?F.W-.4:h-.3,stools:2}); P.roundSet(P.reg(.3,F.W-.3,FV,F.D-2.2),{target:T}); return ['smpod4'] },
+  23:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.wallTV('left'); P.wallTV('right'); P.fill(P.pick(['smrows','lrows']),P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); return ['smpod4'] },
+  24:(P,T)=>{ const {F,FV}=P; P.front('screen'); P.wallTV('left'); P.wallTV('right'); P.wallTV('back'); P.fill(P.pick(['smpod6','lblock']),P.reg(.3,F.W-.3,FV,F.D-.3),{target:T}); return ['smpod4'] },
+  25:(P,T)=>{ const {F,FV}=P; P.front('screen'); const side=P.rng()<.5, c=F.W*.66; P.lounge(side?P.reg(c,F.W-.3,FV,F.D-.3):P.reg(.3,F.W-c,FV,F.D-.3)); P.fill('smrows',side?P.reg(.3,c-.4,FV,F.D-.3):P.reg(F.W-c+.4,F.W-.3,FV,F.D-.3),{target:T,mid:true}); return ['smpod4'] },
+  26:(P,T)=>{ const {F}=P; const cu=F.W/2, cv=F.D/2+.3; P.item('teacher',cu,cv,Math.PI,.1); P.ring(cu,cv,1.9); if(P.seats<T)P.ring(cu,cv,3.45); if(!P.F.hasBoard)P.wallTV('front'); return [] }
+};
+function inspireBuild(n,seed,chairT,tries=8){
+  const T=Math.max(SPACES[S.space].cls,...S.hand.r.map(k=>RULES[k]).filter(Boolean).map(r=>r.cls||0));
+  const base=S.items.filter(i=>DEF[i.type]?.ceil), uid0=S.uid, recipe=INSPIRE[n]||INSPIRE[SPACES[S.space].insp[0]]; let best=null;
+  const seatsNow=()=>S.items.reduce((a,i)=>a+(DEF[i.type].seats||0),0), fails=()=>{ runChecks(); return new Set(lastCheck.list.filter(c=>!c.ok).map(c=>c.id)) };
+  const segD=(x,z,[ax,az],[bx,bz])=>{ const dx=bx-ax, dz=bz-az, L=dx*dx+dz*dz||1, t=Math.max(0,Math.min(1,((x-ax)*dx+(z-az)*dz)/L)); return Math.hypot(x-ax-t*dx,z-az-t*dz) };
+  // build a few takes on the card and keep the one that seats the class with the exit route and walkways clear
+  for(let k=0;k<tries;k++){ S.items=base.map(i=>({...i})); S.groups={}; S.uid=uid0; const P=inspPlanner(seed+k*7919,chairT,[1,2,1,2,0,1,2,0][k%8]);
+    const more=recipe(P,T)||[], R0=P.reg(.3,P.F.W-.3,P.FV,P.F.D-.3);
+    for(const kd of [...more,'smpod4']){ if(P.seats>=T)break; P.fill(kd,R0,{target:T,pad:k%2?.6:.55}) }
+    if(P.seats<T&&k%3!==2) P.solo(R0,{target:T});
+    P.centreMain(); let bad=fails();
+    // exit blocked? lift out the table sets nearest the line between the two doors, up to 4 of them
+    for(let rm=0; rm<2 && bad.has('exit') && DOORS.length>1; rm++){ const a=[DOORS[0].ix??DOORS[0].x,DOORS[0].iz??DOORS[0].z], b=[DOORS[1].ix??DOORS[1].x,DOORS[1].iz??DOORS[1].z]; let bu=null, bd=1e9;
+      for(const it of S.items){ const u=it.grp||it.cl; if(!u)continue; const d=segD(it.x,it.z,a,b); if(d<bd){bd=d;bu=u} } if(!bu)break;
+      S.items=S.items.filter(i=>(i.grp||i.cl)!==bu); delete S.groups[bu]; bad=fails() }
+    const st=seatsNow(), score=Math.min(st,T)*10-(bad.has('exit')?400:0)-(bad.has('wheel')?60:0)-(bad.has('fit')?300:0)-(bad.has('budget')?40:0)+(S.items.some(i=>i.type==='teacher')?25:0)+(S.items.some(i=>DEF[i.type].display)?10:0)+k*.01;
+    if(!best||score>best.score) best={score,items:JSON.stringify(S.items),groups:JSON.stringify(S.groups),uid:S.uid,seats:st} }
+  S.items=JSON.parse(best.items); for(const i of S.items) delete i.cl; S.groups=JSON.parse(best.groups); S.uid=best.uid;
+  selected=null; selFix=null; selWall=null; selZone=null; drag=null; syncAll(); syncMounted(); renderNotes(); runChecks(); renderCatalog(); renderCatalogCount(); renderSelTool(); lastPush=0; save();
+  return {seats:best.seats,target:T} }
+let INSP_LAST=null;
+function inspireDialog(n){ if(DRAW){toast('Finish or cancel the drawing first');return}
+  const list=SPACES[S.space].insp; if(n==null){ const pool=list.filter(k=>k!==INSP_LAST); n=pool[Math.floor(Math.random()*pool.length)] } INSP_LAST=n;
+  const has=S.items.some(i=>!DEF[i.type]?.ceil), [title,desc]=INSP[n];
+  const m=modal(`<div class="hd"><div class="kick">Inspire me · ${esc(SPACES[S.space].name)}</div><h2>${esc(title)}</h2><p class="lead" style="margin:6px 0 0">${esc(desc)}</p></div>
+   <div class="bd"><div style="display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:18px;align-items:start" class="inspg"><img src="${img('i',n)}" alt="${esc(title)}" style="width:100%;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.35)">
+   <div><p style="margin:0 0 10px">A starting layout based on this card will be built in your room, sized for your class. Then move, swap or delete anything you like.</p>
+   <label class="lbl" for="inspCh" style="display:block;margin-bottom:6px">Chairs at the tables</label><select id="inspCh" aria-label="Chairs">${Object.entries(CHAIR_OPTS).map(([k,o])=>`<option value="${k}">${esc(o.name)}</option>`).join('')}</select>
+   ${has?'<p class="note-s" style="margin-top:12px">This replaces the furniture now in the room. Ceiling items, walls, doors and zones stay. Undo brings your furniture back.</p>':''}</div></div></div>
+   <div class="ft"><button class="btn ghost" data-close>Cancel</button><button class="btn" id="inspNext">Another card</button><button class="btn primary" id="inspGo">Build it</button></div>`);
+  m.querySelector('#inspNext').onclick=()=>{ closeModal(); inspireDialog() };
+  m.querySelector('#inspGo').onclick=()=>{ const ch=m.querySelector('#inspCh').value; closeModal(); toast(`Building ${title}…`);
+    setTimeout(()=>{ const r=inspireBuild(n,(Math.random()*1e9)|0,ch); fitView(topView);
+      toast(r.seats>=r.target?`${title}: ${r.seats} seats for a class of ${r.target}. Move, swap or delete anything to make it yours.`:`${title}: ${r.seats} of ${r.target} seats fit with clear walkways. Rearrange or try another card to fit more.`) },40) } }
 
 /* ================= MODALS ================= */
 function modal(html,{wide=false,onclose}={}){
@@ -1700,13 +1882,13 @@ function renderGuide(){
   if(id==='feas') h=K('Step 5 · Feasibility · 15 min','Pass the filter')+`<p>Score the 10 checks. Under 8? Fix the weakest area and score again.</p><div class="acts"><button class="btn primary" data-go="feas">Open scoring sheet</button><button class="btn" data-go="next">Next: Showcase</button></div>`;
   if(id==='show') h='';
   if(id==='act') h=K('Step 7 · Action · 10 min','Plan your pilot')+`<div class="acts"><button class="btn primary" data-go="plan">Open action plan</button><button class="btn" data-go="finish">Finish &amp; see summary</button></div>`;
-  if(id==='free') h=K('Free build',`${esc(sp.name)}`)+`<p>Add furniture, draw any cards and watch the checks update live.</p><div class="acts"><button class="btn red" data-go="drawR">Scenario</button><button class="btn blue" data-go="drawB">Inspiration</button><button class="btn green" data-go="drawG">Prompt</button><button class="btn primary" data-go="feas">Score it</button></div>`;
+  if(id==='free') h=K('Free build',`${esc(sp.name)}`)+`<p>Add furniture, draw any cards and watch the checks update live.</p><div class="acts"><button class="btn red" data-go="drawR">Scenario</button><button class="btn blue" data-go="drawB">Inspiration</button><button class="btn green" data-go="drawG">Prompt</button><button class="btn primary" data-go="feas">Score it</button><button class="btn" data-go="inspireMe">Inspire me!</button></div>`;
   g.hidden=!h; g.classList.remove('collapsed');
   g.innerHTML=h+`<button class="iconbtn min" data-go="min" aria-label="Collapse guide" style="width:28px;height:28px"><svg class="ic" viewBox="0 0 24 24" style="width:14px;height:14px"><path d="M6 15l6-6 6 6"/></svg></button>`;
 }
 $('#guide').addEventListener('input',e=>{if(e.target.id==='pA')S.pitch.a=e.target.value;if(e.target.id==='pB')S.pitch.b=e.target.value;save()});
 $('#guide').addEventListener('click',e=>{const a=e.target.closest('[data-go]')?.dataset.go;if(!a)return;
-  if(a==='next')$('#tNext').click(); if(a==='peek')gallery(); if(a==='drawR')draw('r'); if(a==='drawB')draw('b'); if(a==='drawG')draw('g');
+  if(a==='next')$('#tNext').click(); if(a==='peek')gallery(); if(a==='drawR')draw('r'); if(a==='drawB')draw('b'); if(a==='drawG')draw('g'); if(a==='inspireMe')inspireDialog();
   if(a==='score')quickScoreDialog(); if(a==='feas')feasDialog(); if(a==='plan')planDialog(); if(a==='roles')rolesDialog(); if(a==='finish')finish();
   if(a==='min')$('#guide').classList.toggle('collapsed');
 });
@@ -1887,7 +2069,7 @@ function start(data){
   else { S=fresh('quick','maker'); S.items=sampleLayout(); S.uid=100; S.attract=true; boot(); openStart(); }
   requestAnimationFrame(loop);
 }
-window.__sd={bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},get S(){return S},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
+window.__sd={inspire(n,seed,ch){const t=performance.now();const r=inspireBuild(n,seed,ch||'kchair');r.ms=Math.round(performance.now()-t);return r},bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},get S(){return S},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
 try{ window.claude?.hot?.snapshot?.(()=>({state:S})) }catch(e){}
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 </script>
