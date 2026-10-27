@@ -185,6 +185,13 @@ html,body{overscroll-behavior:none}
 .scale{position:absolute;left:14px;bottom:84px;font-size:11.5px;color:var(--mute);background:rgba(19,33,63,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
 .scale b{color:var(--txt)}
 .seltool{position:absolute;display:flex;gap:4px;padding:5px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,.4);transform:translate(-50%,-100%);white-space:nowrap}
+.seltool .pick{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line-2);font-size:12.5px;font-weight:700}
+.seltool .pick i{font-style:normal;font-size:10px;color:var(--mute)}
+.pickmenu{font-family:inherit;position:fixed;z-index:80;display:grid;min-width:180px;max-height:min(320px,60vh);overflow:auto;padding:4px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 16px 40px rgba(0,0,0,.5)}
+.pickmenu button{display:flex;align-items:center;gap:8px;text-align:left;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;color:var(--txt)}
+.pickmenu button:hover{background:var(--panel-2)}
+.pickmenu button.on{background:var(--gold);color:#1b1400}
+.pickmenu .sw{width:12px;height:12px;border-radius:3px;flex:none}
 .seltool .nm{font-size:12px;font-weight:700;padding:0 8px;display:flex;align-items:center;color:var(--mute)}
 .seltool button{height:32px;min-width:32px;padding:0 8px;border-radius:8px;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:600}
 .seltool button:hover{background:var(--panel-3)}
@@ -1105,6 +1112,7 @@ const orbit = new OrbitControls(camera,canvas);
 orbit.enableDamping=true; orbit.dampingFactor=.08; orbit.maxPolarAngle=Math.PI*.47; orbit.minDistance=3; orbit.maxDistance=50; orbit.screenSpacePanning=false;
 
 window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&pickEl){ closePick(); e.preventDefault(); return }
   if(e.key==='Escape'&&$('#mdl')){ const c=$('#mdl [data-close]'); if(c)c.click(); else closeModal(); e.preventDefault(); return }
   if(e.target.closest('input,textarea,select'))return;
   if(DRAW){ const k=e.key.toLowerCase(); if(k==='escape'){endDraw(DRAW.edit);return} if(DRAW.edit){ if(k==='enter')endDraw(true); return }
@@ -1634,11 +1642,11 @@ $('#zAdd').onclick=()=>noteDialog();
 
 let selTool=null;
 function renderSelTool(){
-  if(selTool){selTool.remove();selTool=null}
+  closePick(); if(selTool){selTool.remove();selTool=null}
   let html='';
   const gsel=selected!=null&&itemBy(selected)?.grp&&S.groups?.[itemBy(selected).grp]?itemBy(selected).grp:null;
   if(gsel){ const G=S.groups[gsel]; const allF=S.items.filter(i=>i.grp===gsel&&DEF[i.type].fold).every(i=>i.folded);
-    html=`<span class="nm">Group</span><select id="grpForm" aria-label="Formation">${Object.entries(FORMS).filter(([k])=>FORM_PIECE(k)===FORM_PIECE(G.kind)).map(([k,n])=>`<option value="${k}" ${k===G.kind?'selected':''}>${esc(n)}</option>`).join('')}</select><select id="grpChair" aria-label="Chairs">${Object.entries(CHAIR_OPTS).map(([k,o])=>`<option value="${k}" ${k===(CHAIR_OPTS[G.chair]?G.chair:'kchair')?'selected':''}>${esc(o.name)}</option>`).join('')}</select>`+
+    html=`<span class="nm">Group</span><button class="pick" data-pick="grpForm" aria-haspopup="listbox">${esc(FORMS[G.kind])}<i>▾</i></button><button class="pick" data-pick="grpChair" aria-haspopup="listbox">${esc(CHAIR_OPTS[CHAIR_OPTS[G.chair]?G.chair:'kchair'].name)}<i>▾</i></button>`+
       `<button data-a="gl" title="Rotate group 15°">⟲</button><button data-a="gr" title="Rotate group 15°">⟳</button><button data-a="g90" title="Rotate group 90°">90°</button>`+
       `<button data-a="gch">${G.chairs?'Remove chairs':'Add chairs'}</button><button data-a="gfold">${allF?'Unfold all':'Fold all'}</button><button data-a="gdup">Duplicate</button><button data-a="gun" title="Move pieces one by one">Ungroup</button><button data-a="gdel" class="del">Delete</button>`; }
   else if(selected!=null){ const it=itemBy(selected); if(!it)return; const def=DEF[it.type]; const deg=Math.round((it.rot||0)*180/Math.PI)%360;
@@ -1655,11 +1663,16 @@ function renderSelTool(){
       (f.kind!=='socket'?`<button data-a="fw-" title="Narrower">−</button><span class="nm num">${f.w.toFixed(1)} m</span><button data-a="fw+" title="Wider">+</button>`:'')+
       `<button data-a="fdel" class="del">Delete</button>`; }
   else if(selZone!=null){ const z=S.zones.find(x=>x.uid===selZone); if(!z)return; const [,col]=NOTE_KINDS[z.kind];
-    html=`<span class="sw" style="background:${col}"></span><select id="zKind" aria-label="Zone type">${Object.entries(NOTE_KINDS).map(([k,[n]])=>`<option value="${k}" ${k===z.kind?'selected':''}>${esc(n)}</option>`).join('')}</select><input type="text" id="zTxt" maxlength="32" value="${esc(z.text)}" placeholder="Label (optional)"><span class="nm num">${(z.x1-z.x0).toFixed(1)} × ${(z.z1-z.z0).toFixed(1)} m</span><button data-a="zdel" class="del">Delete</button>`; }
+    html=`<span class="sw" style="background:${col}"></span><button class="pick" data-pick="zKind" aria-haspopup="listbox">${esc(NOTE_KINDS[z.kind][0])}<i>▾</i></button><input type="text" id="zTxt" maxlength="32" value="${esc(z.text)}" placeholder="Label (optional)"><span class="nm num">${(z.x1-z.x0).toFixed(1)} × ${(z.z1-z.z0).toFixed(1)} m</span><button data-a="zdel" class="del">Delete</button>`; }
   else if(selWall!=null&&wInner(selWall)){ const r=innerOf(selWall); if(!r)return; html=`<input type="text" id="iName" maxlength="28" value="${esc(r.name)}" aria-label="Room name"><span class="nm num">${polyArea(innerCache(r).P).toFixed(1)} m²</span><button data-a="iedit">Edit shape</button><button data-a="idoor">+ Door</button><button data-a="iglass">${r.glass?'Solid walls':'Glass walls'}</button><button data-a="idel" class="del">Delete room</button><span class="nm" style="color:var(--txt)">Drag a wall to move it</span>`; }
   else if(selWall!=null){ const L=wallLen(selWall); html=`<span class="nm">${wallName(selWall)}${isShape()?'':' wall'} · ${L.toFixed(1)} m</span><span class="nm" style="color:var(--txt)">${isShape()?'Use Edit shape in the Room tab to move corners':'Drag to move it'}</span>`; }
   else return;
   selTool=document.createElement('div'); selTool.className='seltool'; selTool.innerHTML=html;
+  selTool.addEventListener('click',e=>{ const pb=e.target.closest('[data-pick]'); if(!pb)return; e.stopPropagation(); const id=pb.dataset.pick;
+    if(id==='grpForm'||id==='grpChair'){ const gid=itemBy(selected)?.grp; if(!gid)return; const G=S.groups[gid];
+      const opts=id==='grpForm'?Object.keys(FORMS).filter(k=>FORM_PIECE(k)===FORM_PIECE(G.kind)).map(k=>[k,FORMS[k]]):Object.entries(CHAIR_OPTS).map(([k,o])=>[k,o.name]);
+      openPick(pb,opts,id==='grpForm'?G.kind:(CHAIR_OPTS[G.chair]?G.chair:'kchair'),v=>{ if(id==='grpForm')G.kind=v; else G.chair=v; buildGroup(gid); select(S.items.find(i=>i.grp===gid).uid); runChecks(); renderCatalogCount(); save(); toast(id==='grpForm'?FORMS[v]:CHAIR_OPTS[v].name) }) }
+    if(id==='zKind'){ const z=S.zones.find(x=>x.uid===selZone); if(!z)return; openPick(pb,Object.entries(NOTE_KINDS).map(([k,[n,c]])=>[k,n,c]),z.kind,v=>{ z.kind=v; buildZones(); renderNotes(); runChecks(); save(); renderSelTool() }) } });
   selTool.addEventListener('click',e=>{const a=e.target.closest('[data-a]')?.dataset.a; if(!a)return;
     if(a==='iedit'||a==='idoor'||a==='iglass'||a==='idel'){}
     if(a==='l')rotateSel(-Math.PI/12); if(a==='r')rotateSel(Math.PI/12); if(a==='90')rotateSel(Math.PI/2); if(a==='dup')dupSel(); if(a==='del')removeItem(selected);
@@ -1690,6 +1703,18 @@ function renderSelTool(){
     if(e.target.id==='zTxt'||e.target.id==='zKind'){ const z=S.zones.find(x=>x.uid===selZone); if(!z)return; if(e.target.id==='zTxt')z.text=e.target.value; else { z.kind=e.target.value; selTool.querySelector('.sw').style.background=NOTE_KINDS[z.kind][1] } buildZones(); renderNotes(); runChecks(); save() } });
   $('#hud').appendChild(selTool);
 }
+/* in-page drop-down menu: native <select> pop-ups can blank a WebGL page in full screen on some browsers */
+let pickEl=null;
+function closePick(){ pickEl?.remove(); pickEl=null; document.removeEventListener('pointerdown',pickAway,true) }
+function pickAway(e){ if(pickEl&&!pickEl.contains(e.target)&&!e.target.closest('[data-pick]'))closePick() }
+function openPick(btn,opts,cur,onPick){ const was=pickEl&&pickEl.dataset.for===btn.dataset.pick; closePick(); if(was)return;
+  const m=document.createElement('div'); m.className='pickmenu'; m.dataset.for=btn.dataset.pick; m.setAttribute('role','listbox');
+  m.innerHTML=opts.map(([v,l,c])=>`<button role="option" data-v="${v}" class="${v===cur?'on':''}" aria-selected="${v===cur}">${c?`<span class="sw" style="background:${c}"></span>`:''}${esc(l)}</button>`).join('');
+  const fe=document.fullscreenElement; (fe&&fe!==document.documentElement?fe:document.body).appendChild(m); pickEl=m;
+  const r=btn.getBoundingClientRect(), h=m.offsetHeight, w=m.offsetWidth, below=r.bottom+6+h<innerHeight;
+  m.style.left=Math.max(8,Math.min(innerWidth-w-8,r.left))+'px'; m.style.top=(below?r.bottom+6:Math.max(8,r.top-6-h))+'px';
+  m.addEventListener('click',e=>{ const b=e.target.closest('[data-v]'); if(!b)return; closePick(); if(b.dataset.v!==cur)onPick(b.dataset.v) });
+  setTimeout(()=>document.addEventListener('pointerdown',pickAway,true),0) }
 const tmpV=new THREE.Vector3();
 function projectTo(el,x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();const vis=tmpV.z<1;el.style.display=vis?'':'none';el.style.left=((tmpV.x+1)/2*r.width)+'px';el.style.top=((1-tmpV.y)/2*r.height)+'px'}
 function fadeWalls(){ const p=camera.position, on=WALLMODE==='full';
@@ -1872,11 +1897,12 @@ function inspireDialog(n){ if(DRAW){toast('Finish or cancel the drawing first');
   const m=modal(`<div class="hd"><div class="kick">Inspire me · ${esc(SPACES[S.space].name)}</div><h2>${esc(title)}</h2><p class="lead" style="margin:6px 0 0">${esc(desc)}</p></div>
    <div class="bd"><div style="display:grid;grid-template-columns:minmax(0,200px) 1fr;gap:18px;align-items:start" class="inspg"><img src="${img('i',n)}" alt="${esc(title)}" style="width:100%;border-radius:12px;box-shadow:0 10px 26px rgba(0,0,0,.35)">
    <div><p style="margin:0 0 10px">A starting layout based on this card will be built in your room, sized for your class. Then move, swap or delete anything you like.</p>
-   <label class="lbl" for="inspCh" style="display:block;margin-bottom:6px">Chairs at the tables</label><select id="inspCh" aria-label="Chairs">${Object.entries(CHAIR_OPTS).map(([k,o])=>`<option value="${k}">${esc(o.name)}</option>`).join('')}</select>
+   <div class="lbl" style="margin-bottom:6px">Chairs at the tables</div><div class="tgp" id="inspCh" role="group" aria-label="Chairs">${Object.entries(CHAIR_OPTS).map(([k,o],i)=>`<button data-ch="${k}" class="${i?'':'on'}">${esc(o.name)}</button>`).join('')}</div>
    ${has?'<p class="note-s" style="margin-top:12px">This replaces the furniture now in the room. Ceiling items, walls, doors and zones stay. Undo brings your furniture back.</p>':''}</div></div></div>
    <div class="ft"><button class="btn ghost" data-close>Cancel</button><button class="btn" id="inspNext">Another card</button><button class="btn primary" id="inspGo">Build it</button></div>`);
+  m.querySelector('#inspCh').addEventListener('click',e=>{ const b=e.target.closest('[data-ch]'); if(!b)return; m.querySelectorAll('#inspCh button').forEach(x=>x.classList.toggle('on',x===b)) });
   m.querySelector('#inspNext').onclick=()=>{ closeModal(); inspireDialog() };
-  m.querySelector('#inspGo').onclick=()=>{ const ch=m.querySelector('#inspCh').value; closeModal(); toast(`Building ${title}…`);
+  m.querySelector('#inspGo').onclick=()=>{ const ch=m.querySelector('#inspCh .on')?.dataset.ch||'kchair'; closeModal(); toast(`Building ${title}…`);
     setTimeout(()=>{ const r=inspireBuild(n,(Math.random()*1e9)|0,ch); fitView(topView);
       toast(r.seats>=r.target?`${title}: ${r.seats} seats for a class of ${r.target}. Move, swap or delete anything to make it yours.`:`${title}: ${r.seats} of ${r.target} seats fit with clear walkways. Rearrange or try another card to fit more.`) },40) } }
 
