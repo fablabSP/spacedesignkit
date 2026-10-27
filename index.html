@@ -37,6 +37,11 @@ textarea{resize:vertical;min-height:56px}
 .stp.done i{background:var(--ok);color:#06210f}
 .stp.cur{color:var(--txt);border-color:var(--line-2);background:var(--panel-2)}
 .stp.cur i{background:var(--gold);color:#1b1400}
+.timer #tExt{display:inline-flex;align-items:center;padding:4px 8px;border-radius:7px;background:var(--gold);color:#1b1400;font-weight:800;font-size:12px}
+.timer #tExt[hidden]{display:none}
+.timer.paused .t{opacity:.6}
+.timer.held:after{content:'Scoring';font-size:10.5px;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
+#steps.locked .stp:not(.cur){opacity:.4;cursor:not-allowed}
 .timer{flex:none;display:flex;align-items:center;gap:8px;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:4px 6px 4px 12px}
 .timer .t{font-family:var(--f-mono);font-weight:700;font-size:18px;min-width:62px;text-align:right}
 .timer.over .t{color:var(--bad)}
@@ -66,8 +71,23 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .sec{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
 .sec h3{margin:0 0 10px;font-size:11.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);display:flex;justify-content:space-between;align-items:center}
 .scroll{overflow-y:auto;min-height:0;flex:1}
-.cats{display:flex;flex-wrap:wrap;gap:5px;padding:12px 16px;border-bottom:1px solid var(--line)}
-.cat{padding:5px 10px;border-radius:999px;font-size:12px;font-weight:600;color:var(--mute);background:var(--panel-2)}
+.lhead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px}
+.lhead h3{margin:0;font-family:var(--f-display);font-size:17px;font-weight:800;letter-spacing:-.01em;text-transform:none;color:var(--txt)}
+.lhead .cnt{font-size:11.5px;color:var(--mute);background:var(--panel-2);border:1px solid var(--line);padding:3px 8px;border-radius:999px}
+.lsearch{display:flex;align-items:center;gap:8px;margin:0 16px 10px;padding:0 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line-2)}
+.lsearch:focus-within{border-color:var(--gold)}
+.lsearch .ic{width:16px;height:16px;flex:none;color:var(--mute)}
+.lsearch input{border:0;background:transparent;padding:9px 0;outline:none}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;padding:0 12px 12px;border-bottom:1px solid var(--line)}
+.lfoot{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:center;padding:8px 12px;border-top:1px solid var(--line);font-size:11px;color:var(--mute)}
+.lfoot b{color:var(--txt);font-weight:700}
+.lbl.sub{margin:10px 4px 6px;font-size:10.5px}
+.it .tx{min-width:0}
+.it .chips{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}
+.it .chips em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.02em;color:#c7d2e6;background:var(--panel-3);padding:1px 6px;border-radius:4px}
+.cat{display:grid;justify-items:center;gap:3px;padding:7px 2px 6px;border-radius:10px;font-size:11px;font-weight:700;color:var(--mute);background:var(--panel-2);border:1px solid transparent}
+.cat .ic{width:18px;height:18px}
+.cat:hover{color:var(--txt);border-color:var(--line-2)}
 .cat.on{background:var(--txt);color:var(--bg)}
 .items{padding:8px;display:grid;gap:4px}
 .it{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;text-align:left;padding:8px;border-radius:10px;border:1px solid transparent}
@@ -95,7 +115,22 @@ html,body{overscroll-behavior:none}
 .roomp.locked [data-sh]{opacity:.35;pointer-events:none}
 .drawbar{position:absolute;left:50%;top:14px;transform:translateX(-50%);display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:calc(100% - 28px);background:rgba(19,33,63,.96);border:1px solid var(--gold);border-radius:14px;padding:10px 12px;box-shadow:0 14px 34px rgba(0,0,0,.4);z-index:6}
 .drawbar b{font-family:var(--f-display);font-size:16px;margin-right:4px}
-.drawbar .hint{font-size:12.5px;color:#d3dbea;flex-basis:100%}
+.drawbar .hint{font-size:12px;color:var(--mute);flex-basis:100%}
+.drawbar{flex-direction:column;align-items:stretch;width:min(720px,calc(100% - 28px))}
+.drawbar .dtop{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.drawbar .dtop .btn.primary{margin-left:auto}
+.howto{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px}
+.howto>div{display:grid;grid-template-columns:24px 1fr;gap:8px;align-items:start;font-size:12.5px;color:#d3dbea;padding:8px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+.howto b{display:block;color:var(--txt);font-size:13px;margin-bottom:2px}
+.howto .hk{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--panel-3);font-weight:800;font-size:13px}
+.howto.steps3>div{opacity:.55}.howto.steps3>div.on{opacity:1;border-color:var(--gold)}.howto.steps3>div.done{opacity:.8}.howto.steps3>div.done .hk{background:var(--green);color:#06210f}
+.howto.edit{grid-template-columns:repeat(2,minmax(0,1fr))}
+.howto>div>span{min-width:0}
+.howto .cyc{display:flex;align-items:center;gap:2px;margin:4px 0}.howto .cyc i{font-style:normal;color:var(--mute);font-size:11px}
+.hud.drawing .mission{display:none}
+.toast{z-index:40}
+.hud.drawing .toast{top:auto;bottom:96px}
+.rhelp{font-size:12px;color:var(--mute);margin:0}.rhelp b{color:var(--txt)}
 .drawbar .tg{display:flex;border:1px solid var(--line-2);border-radius:9px;overflow:hidden}
 .drawbar .tg button{padding:6px 10px;font-size:12.5px;font-weight:700;background:var(--panel-2)}
 .drawbar .tg button.on{background:var(--gold);color:#1b1400}
@@ -133,11 +168,21 @@ html,body{overscroll-behavior:none}
 .guide.collapsed{padding:10px 14px}
 .guide.collapsed > :not(.k):not(h2):not(.min){display:none}
 .guide.collapsed h2{font-size:16px;margin:2px 28px 0 0}
-.views{position:absolute;right:14px;bottom:14px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100% - 340px)}
-.views .btn{background:rgba(26,43,79,.92)}
-.views .btn.primary{background:var(--gold);color:#1b1400}
-.views .btn.on{background:var(--txt);color:var(--bg)}
-.scale{position:absolute;left:14px;bottom:14px;font-size:11.5px;color:var(--mute);background:rgba(19,33,63,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
+.views{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;display:flex;align-items:flex-end;gap:6px;max-width:calc(100% - 24px);padding:6px;border-radius:16px;background:rgba(15,27,54,.94);backdrop-filter:blur(6px);border:1px solid var(--line-2);box-shadow:0 14px 34px rgba(0,0,0,.4);pointer-events:auto}
+.views{overflow-x:auto;scrollbar-width:none}.views::-webkit-scrollbar{display:none}
+.dock>*{flex:none}
+.dock .dgrp{display:grid;gap:2px;padding:0 4px;border-left:1px solid var(--line)}
+.dock .dgrp small{font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);padding-left:4px}
+.dock .dgrp>div{display:flex;gap:2px}
+.dk{display:grid;justify-items:center;align-content:center;gap:3px;min-width:58px;height:50px;padding:4px 6px;border-radius:10px;font-size:11px;font-weight:700;color:#d3dbea;white-space:nowrap}
+.dk .ic{width:19px;height:19px}
+.dk:hover:not(:disabled){background:var(--panel-3);color:var(--txt)}
+.dk.on{background:var(--txt);color:var(--bg)}
+.dk:disabled{opacity:.4}
+.dk.hero{height:58px;min-width:72px;background:var(--gold);color:#1b1400;font-size:12px}
+.dk.hero:hover{background:#ffc928;color:#1b1400}
+
+.scale{position:absolute;left:14px;bottom:84px;font-size:11.5px;color:var(--mute);background:rgba(19,33,63,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
 .scale b{color:var(--txt)}
 .seltool{position:absolute;display:flex;gap:4px;padding:5px;background:var(--panel);border:1px solid var(--line-2);border-radius:12px;box-shadow:0 10px 24px rgba(0,0,0,.4);transform:translate(-50%,-100%);white-space:nowrap}
 .seltool .nm{font-size:12px;font-weight:700;padding:0 8px;display:flex;align-items:center;color:var(--mute)}
@@ -153,6 +198,49 @@ html,body{overscroll-behavior:none}
 .deck .dn{display:flex;align-items:center;gap:9px;font-weight:700;font-size:13.5px}
 .deck .dn i{width:12px;height:16px;border-radius:3px}
 .deck .dn small{font-weight:500;color:var(--mute);font-size:12px}
+.handrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;align-items:start}
+.ctile{display:grid;gap:10px;align-content:start}
+.ctile .flip{max-width:230px;margin:0 auto}
+.ctile .ct{display:grid;gap:6px}
+.ctile .ct b{font-family:var(--f-display);font-size:16px;line-height:1.2}
+.ctile .ct small{color:#d3dbea;font-size:13px;line-height:1.4}
+.ctile .baa{margin-top:2px}
+.ctile .rdr{justify-self:start}
+.cgoal{font-size:12.5px;padding:8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line-2)}
+.cgoal span{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+.cpill{justify-self:start;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:var(--panel-3);color:var(--mute)}
+.cpill.now{background:var(--green);color:#06210f}
+.cpill.done{background:transparent;border:1px solid var(--line-2)}
+.hand .tag.now{background:var(--green);color:#06210f}
+.nxwrap{margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.nx{border-radius:14px;padding:14px 16px;background:var(--panel-2);border:1px solid var(--line-2)}
+.nx .nh{font-family:var(--f-display);font-weight:800;font-size:17px;display:flex;align-items:center;gap:10px}
+.nx .nh span{font-family:var(--f-body,inherit);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--txt);color:var(--bg)}
+.nx.borrow .nh span{background:var(--green);color:#06210f}.nx.adapt .nh span{background:var(--gold);color:#1b1400}.nx.avoid .nh span{background:var(--bad);color:#fff}
+.nx ol{margin:10px 0 0;padding-left:20px;display:grid;gap:10px;font-size:13.5px;color:#d3dbea}
+.nx ol b{color:var(--txt)}
+.nx ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px}
+.nx .qa,.nx .kp{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.nx .kp{flex-direction:column;gap:4px}
+.nx .qa .btn.on{background:var(--txt);color:var(--bg)}
+.nx .tip{color:var(--mute);font-size:12.5px;margin:10px 0 0}
+.plan{display:grid;gap:6px;margin:-4px 0 14px}
+.plan .pl{display:grid;grid-template-columns:auto 1fr;column-gap:8px;text-align:left;padding:8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+.plan .pl:hover{border-color:var(--line-2)}
+.plan .pl span{grid-row:span 2;align-self:start;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:3px 6px;border-radius:5px;margin-top:2px}
+.plan .pl.borrow span{background:var(--green);color:#06210f}.plan .pl.adapt span{background:var(--gold);color:#1b1400}.plan .pl.avoid span{background:var(--bad);color:#fff}
+.plan .pl b{font-size:12.5px}.plan .pl small{font-size:11.5px;color:var(--mute)}
+.mission{position:absolute;right:14px;top:14px;width:min(320px,calc(100% - 28px));background:rgba(19,33,63,.95);backdrop-filter:blur(6px);border:1px solid var(--line-2);border-radius:14px;padding:10px 12px 12px;box-shadow:0 14px 34px rgba(0,0,0,.35);pointer-events:auto;display:grid;gap:8px}
+.mission[hidden]{display:none}
+.mission .mh{display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.mission.min .mb{display:none}
+.mission .mb{display:grid;gap:8px}
+.mission .mrow{display:grid;grid-template-columns:6px 1fr;gap:10px;text-align:left;padding:8px 10px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line)}
+.mission .mrow i{border-radius:3px}.mission .mrow.r i{background:var(--red)}.mission .mrow.g i{background:var(--green)}
+.mission .mrow small{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+.mission .mrow b{font-size:13px;font-weight:600;line-height:1.35}
+.mission .mact{display:flex;gap:6px;justify-content:flex-end}
+@media (max-width:820px){.mission{top:auto;bottom:96px;right:10px;width:min(300px,calc(100% - 20px))}.mission:not(.min) .mrow b{font-size:12px}}
 .hand{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px}
 .hand button{width:56px;border-radius:6px;overflow:hidden;border:2px solid transparent;position:relative;line-height:0}
 .hand button:hover{border-color:var(--txt)}
@@ -307,9 +395,10 @@ html,body{overscroll-behavior:none}
   .mobtabs .btn{flex:1}
   .guide{max-width:calc(100% - 28px)}
   .side.left{position:absolute}
-  .views{left:10px;right:10px;bottom:10px;max-width:none;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+  .views{left:8px;right:8px;bottom:8px;transform:none;max-width:none;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain}
+  .dk{min-width:52px}
   .views::-webkit-scrollbar{display:none}
-  .views .btn{flex:none}
+  .dock>*{flex:none}
   .budget{min-width:0;flex:1 1 90px}.budget .row span{display:none}
   .scale{display:none}
 }
@@ -332,6 +421,7 @@ html,body{overscroll-behavior:none}
     <nav class="steps" id="steps" aria-label="Game steps"></nav>
     <div class="timer" id="timer"><span class="t num" id="tval">10:00</span>
       <button id="tPause" title="Pause / resume timer" aria-label="Pause or resume timer"><svg class="ic" viewBox="0 0 24 24"><path id="tPauseIc" d="M9 5v14M15 5v14"/></svg></button>
+      <button id="tExt" class="text" title="Add 5 minutes" hidden>+5 min</button>
       <button id="tNext" title="Next step" aria-label="Next step"><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="budget" id="budget"><div class="row"><span>Spent / budget</span><b id="bval">$0</b></div><div class="bar"><i id="bbar" style="width:0"></i></div></div>
@@ -341,29 +431,24 @@ html,body{overscroll-behavior:none}
 
   <div class="main" id="main">
     <aside class="side left" id="left">
-      <div class="sec" style="padding-bottom:0;border:0"><h3>Furniture &amp; equipment <span class="num" id="itemCount" style="letter-spacing:0">0 placed</span></h3></div>
+      <div class="lhead"><h3>Furniture</h3><span class="cnt num" id="itemCount">0 placed</span></div>
+      <label class="lsearch"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg><input id="fSearch" type="search" placeholder="Search furniture" aria-label="Search furniture" autocomplete="off"></label>
       <div class="cats" id="cats"></div>
-      <div class="scroll"><div class="items" id="items"></div>
-        <div class="note-s">Tap an item to add it, or drag it straight into the room. Drag it back here to remove it. Prices are <b>sample estimates</b> in SGD. Swap in your kit's price list later.</div>
-      </div>
+      <div class="scroll"><div class="items" id="items"></div></div>
+      <div class="lfoot"><span><b>Tap</b> to add</span><span><b>Drag</b> into the room</span><span><b>Drag back</b> to remove</span></div>
     </aside>
 
     <section class="stage" id="stage">
       <canvas id="c" aria-label="3D model of the learning space"></canvas>
       <div class="hud" id="hud">
         <div class="guide" id="guide"></div>
+        <div class="mission" id="mission" hidden></div>
         <div class="scale"><b>1 grid square = 0.5 m</b> · 2.5 cm on your 1:20 floorplan</div>
-        <div class="views">
-          <button class="btn sm primary" id="vInspire" title="Build a random starting layout from one of this space's inspiration cards">Inspire me!</button>
-          <button class="btn sm" id="vUndo" title="Undo (Ctrl+Z), up to 3 steps" disabled>Undo</button>
-          <button class="btn sm" id="vReset" title="Remove all furniture and keep the room">Reset</button>
-          <button class="btn sm" id="vLock" title="Lock walls, doors, windows, power points and room size">Lock room</button>
-          <button class="btn sm" id="vWalls" title="Full-height or low walls">Walls: full</button>
-          <button class="btn sm" id="vWalk" title="Show walkways">Walkways</button>
-          <button class="btn sm" id="vSnap">Snap 0.25 m</button>
-          <button class="btn sm" id="vNote">+ Zone</button>
-          <button class="btn sm" id="vTop">Top view</button>
-          <button class="btn sm" id="vReset">Reset view</button>
+        <div class="views dock" id="dock">
+          <button class="dk hero" id="vInspire" title="Build a random starting layout from one of this space's inspiration cards"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg><span class="l">Inspire me!</span></button>
+          <div class="dgrp"><small>Edit</small><div><button class="dk" id="vUndo" title="Undo (Ctrl+Z), up to 3 steps" disabled><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 010 10h-3"/></svg><span class="l">Undo</span></button><button class="dk" id="vClear" title="Remove all furniture and keep the room"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg><span class="l">Clear</span></button><button class="dk" id="vNote" title="Colour in a zone on the floor"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2" stroke-dasharray="3 2.5"/><path d="M12 9v6M9 12h6"/></svg><span class="l">Zone</span></button><button class="dk" id="vSnap" title="Snap furniture to a grid"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h16M4 15h16M9 4v16M15 4v16"/></svg><span class="l">Snap 0.25</span></button></div></div>
+          <div class="dgrp"><small>View</small><div><button class="dk" id="vTop" title="Look straight down"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16M12 4v16"/></svg><span class="l">Top view</span></button><button class="dk" id="vReset" title="Back to the starting camera"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 108-8"/><path d="M4 4v5h5"/></svg><span class="l">Reset view</span></button><button class="dk" id="vWalls" title="Full-height or low walls"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M4 20h16"/></svg><span class="l">Walls: full</span></button><button class="dk" id="vWalk" title="Show clear walkways and the exit route"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19c3-1 4-4 7-7s5-5 7-7" stroke-dasharray="3 3"/><circle cx="5" cy="19" r="1.6"/><circle cx="19" cy="5" r="1.6"/></svg><span class="l">Walkways</span></button></div></div>
+          <div class="dgrp"><small>Room</small><div><button class="dk" id="vLock" title="Lock walls, doors, windows, power points and room size"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><span class="l">Lock room</span></button></div></div>
         </div>
       </div>
     </section>
@@ -375,7 +460,7 @@ html,body{overscroll-behavior:none}
           <div class="deck"><div class="dn"><i style="background:var(--red)"></i>Scenario <small id="cntR"></small></div><button class="btn sm red" id="drawR">Draw</button></div>
           <div class="hand" id="handR"></div>
           <div class="deck"><div class="dn"><i style="background:var(--blue)"></i>Inspiration <small id="cntB"></small></div><div style="display:flex;gap:6px"><button class="btn sm ghost" id="peekB">See all</button><button class="btn sm blue" id="drawB">Draw</button></div></div>
-          <div class="hand" id="handB"></div>
+          <div class="hand" id="handB"></div><div class="plan" id="plan"></div>
           <div class="deck"><div class="dn"><i style="background:var(--green)"></i>Prompt <small id="cntG"></small></div><button class="btn sm green" id="drawG">Draw</button></div>
           <div class="hand" id="handG" style="margin-bottom:0"></div>
         </div>
@@ -493,6 +578,7 @@ const NOTE_KINDS = {noise:['Noise zone','#ef4444'],quiet:['Quiet zone','#6366f1'
 /* Furniture catalog. w = x size, d = z size, metres (real size). Prices = sample SGD estimates. */
 const C = {wood:0xc9a074, woodD:0x9c7650, white:0xf2f2ee, grey:0x8b95a8, char:0x2b3342, steel:0xb8c0cc, yellow:0xf5b700, teal:0x27a99c, coral:0xef6b5b, blue:0x3a6df0, green:0x4caf6a, felt:0x7c8aa5, feltG:0x6f9c7a, black:0x15181e, screen:0x1d2c4d, glass:0x9fd3ff, mat:0x3a6df0, plant:0x3f9a54, pot:0xd9d2c5, orange:0xf39a1e, purple:0x8a5cd6};
 const CATS = [['seat','Seating'],['table','Tables'],['store','Storage'],['tech','Display & tech'],['make','Making'],['soft','Acoustics & comfort'],['ceil','Ceiling'],['room','Room']];
+const CATSHORT={seat:'Seating',table:'Tables',store:'Storage',tech:'Tech',make:'Making',soft:'Comfort',ceil:'Ceiling',room:'Room'}, CATICON={"seat": "<path d=\"M7 4v8h10V4M5 12h14v3H5zM7 15v5M17 15v5\"/>", "table": "<path d=\"M3 9h18M6 9v10M18 9v10M3 9l2-4h14l2 4\"/>", "store": "<rect x=\"5\" y=\"3\" width=\"14\" height=\"18\" rx=\"1.5\"/><path d=\"M5 9h14M5 15h14\"/>", "tech": "<rect x=\"3\" y=\"4\" width=\"18\" height=\"12\" rx=\"1.5\"/><path d=\"M9 20h6M12 16v4\"/>", "make": "<path d=\"M14 6l4 4-9 9H5v-4z M12 8l4 4\"/>", "soft": "<path d=\"M4 18c0-5 3-11 8-11s8 6 8 11\"/><path d=\"M8 18c0-3 2-6 4-6s4 3 4 6\"/>", "ceil": "<path d=\"M4 4h16M12 4v5\"/><path d=\"M5 12c2-2 5-3 7-3s5 1 7 3\"/><circle cx=\"12\" cy=\"12\" r=\"1.6\"/>", "room": "<path d=\"M4 20V8l8-5 8 5v12z\"/><path d=\"M10 20v-6h4v6\"/>"};
 const ITEMS = [
  {id:'chair',cat:'seat',name:'Student chair',w:.48,d:.5,price:85,seats:1,mobile:1},
  {id:'kchair',cat:'seat',name:'Castor chair with arms',w:.62,d:.66,price:160,seats:1,mobile:1},
@@ -577,7 +663,7 @@ const MODES = {
  workshop:{name:'Full workshop',time:'2 hours',desc:'The 7-step SDKit process for a table of 4, from constraints to action plan.',limits:{r:3,b:3,g:3},
   steps:[
    {id:'orient',name:'Orientation',dur:600},{id:'aware',name:'Awareness',dur:1200},{id:'inspire',name:'Inspiration',dur:900},{id:'explore',name:'Exploration',dur:1800,nudge:[480,960,1440]},{id:'feas',name:'Feasibility',dur:900},{id:'show',name:'Showcase',dur:1200},{id:'act',name:'Action',dur:600}]},
- free:{name:'Free build',time:'No timer',desc:'Everything unlocked. Explore the furniture, cards and checks at your own pace.',limits:{r:99,b:99,g:99},
+ free:{name:'Free build',time:'No timer',desc:'Everything unlocked. Explore the furniture, cards and checks at your own pace.',limits:{r:3,b:3,g:3},
   steps:[{id:'free',name:'Free build',dur:0}]}
 };
 
@@ -590,7 +676,8 @@ const fresh = (mode='quick', space='maker') => ({
   hand:{r:[],b:[],g:[]}, redraw:{r:1,b:1,g:1}, tags:{}, nudged:[],
   feas:Array(10).fill(null), why:Array(10).fill(''), thumbs:[null,null,null],
   pitch:{a:'',b:''}, plan:{idea:'',res:'',part:'',sup:''},
-  step:0, stepElapsed:0, paused:false, twistDone:false, finished:false
+  step:0, stepElapsed:0, paused:false, twistDone:false, finished:false,
+  pid:newPid(), extra:0, upShown:false, promptAt:0, keep:{}, avoidWhy:{}
 });
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 const $ = s=>document.querySelector(s);
@@ -602,11 +689,12 @@ const backImg = k=> k==='r'?'cards/s-21.jpg':k==='g'?'cards/p-21.jpg':`cards/${S
 let UNDO=[], lastLay=null, lastPush=0;
 const layOf=()=>JSON.stringify({items:S.items,fix:S.fix,room:S.room,zones:S.zones,groups:S.groups||{},inner:S.inner||[]});
 function trackUndo(){ const L=layOf(); if(lastLay===null||L===lastLay){lastLay=L;return} const now=performance.now(); if(now-lastPush>700){ UNDO.push(lastLay); if(UNDO.length>3)UNDO.shift() } lastPush=now; lastLay=L; renderUndo() }
-function renderUndo(){ const b=document.getElementById('vUndo'); if(!b)return; b.disabled=!UNDO.length; b.textContent=UNDO.length?`Undo (${UNDO.length})`:'Undo' }
+function dkLabel(id,t){ const b=document.getElementById(id); if(!b)return; const l=b.querySelector('.l'); if(l)l.textContent=t; else b.textContent=t }
+function renderUndo(){ const b=document.getElementById('vUndo'); if(!b)return; b.disabled=!UNDO.length; dkLabel('vUndo',UNDO.length?`Undo (${UNDO.length})`:'Undo') }
 function undo(){ if(DRAW){toast('Finish or cancel the drawing first');return} if(!UNDO.length){toast('Nothing to undo');return} const L=JSON.parse(UNDO.pop()); S.items=L.items; S.fix=L.fix; S.room=L.room; S.zones=L.zones; S.groups=L.groups; S.inner=L.inner||[]; B=S.room; _EC={key:null}; lastLay=layOf();
   selected=null; selFix=null; selWall=null; selZone=null; drag=null; buildRoom(); syncAll(); renderNotes(); runChecks(); renderCatalog(); renderSelTool(); renderUndo(); save(); toast(UNDO.length?`Undone. ${UNDO.length} more step${UNDO.length>1?'s':''} available.`:'Undone') }
 function toggleLock(){ S.lockRoom=!S.lockRoom; if(S.lockRoom&&(selFix!=null||selWall!=null))select(null); renderRoomPanel(); renderLock(); save(); toast(S.lockRoom?'Room locked. Walls, doors, windows, power points and size can no longer be moved.':'Room unlocked') }
-function renderLock(){ const b=document.getElementById('vLock'); if(!b)return; b.textContent=S?.lockRoom?'Room locked':'Lock room'; b.classList.toggle('on',!!S?.lockRoom) }
+function renderLock(){ const b=document.getElementById('vLock'); if(!b)return; dkLabel('vLock',S?.lockRoom?'Locked':'Lock room'); b.classList.toggle('on',!!S?.lockRoom) }
 function save(){if(S?.attract)return; trackUndo(); try{localStorage.setItem('sdkit3d',JSON.stringify(S))}catch(e){}}
 function loadSaved(){try{const t=localStorage.getItem('sdkit3d');return t?JSON.parse(t):null}catch(e){return null}}
 
@@ -1017,6 +1105,7 @@ const orbit = new OrbitControls(camera,canvas);
 orbit.enableDamping=true; orbit.dampingFactor=.08; orbit.maxPolarAngle=Math.PI*.47; orbit.minDistance=3; orbit.maxDistance=50; orbit.screenSpacePanning=false;
 
 window.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&$('#mdl')){ const c=$('#mdl [data-close]'); if(c)c.click(); else closeModal(); e.preventDefault(); return }
   if(e.target.closest('input,textarea,select'))return;
   if(DRAW){ const k=e.key.toLowerCase(); if(k==='escape'){endDraw(DRAW.edit);return} if(DRAW.edit){ if(k==='enter')endDraw(true); return }
     if(k==='backspace'||k==='delete'){e.preventDefault();drawUndo()} if(k==='enter')closeDraw(); if(k==='a'){DRAW.arc=!DRAW.arc} if(k==='f'){DRAW.flip=!DRAW.flip} if(DRAW){drawPreview();renderDrawBar()} return }
@@ -1254,11 +1343,16 @@ let curCat='seat';
 function fpSvg(def){ if(def.id==='kfan')return `<svg width="40" height="32" viewBox="0 0 40 32"><path d="M8 9 A22 22 0 0 1 32 9 L26 25 A12 12 0 0 0 14 25 Z" fill="#c9a074"/></svg>`;
   const s=Math.max(def.w,def.d);const k=34/Math.max(s,1.2);const w=Math.max(3,def.w*k),h=Math.max(3,def.d*k);const col={seat:'#f5b700',table:'#c9a074',store:'#3a6df0',tech:'#2b3342',make:'#9c7650',soft:'#6f9c7a',room:'#8fa3c7',ceil:'#b8c4d9'}[def.cat];
   return `<svg width="40" height="32" viewBox="0 0 40 32"><rect x="${20-w/2}" y="${16-h/2}" width="${w}" height="${h}" rx="${def.id==='round'||def.id==='beanbag'||def.id==='stool'||def.id==='plant'?Math.min(w,h)/2:1.5}" fill="${col}"/></svg>`}
-const itemRow=i=>`<button class="it" data-add="${i.id}"><span class="fp">${fpSvg(i)}</span><span><b>${esc(i.name)}</b><small>${i.id==='pwall'?'Adjustable length':i.id==='rack'?'0.9 to 2.4 m wide · 2 shelves':`${i.w} × ${i.d} m`}${i.kg?` · ${i.kg} kg · fits on a rack`:''}${i.seats?` · seats ${i.seats}`:''}${i.mobile?' · mobile':''}${i.fold?' · folds':''}${i.wall?' · snaps to wall':''}</small></span><span class="p">${i.ppm?money(i.ppm)+'/m':money(i.price)}</span></button>`;
+const itemRow=i=>`<button class="it" data-add="${i.id}"><span class="fp">${fpSvg(i)}</span><span class="tx"><b>${esc(i.name)}</b><small>${i.id==='pwall'?'Adjustable length':i.id==='rack'?'0.9 to 2.4 m wide · 2 shelves':`${i.w} × ${i.d} m`}${i.kg?` · ${i.kg} kg`:''}</small><span class="chips">${i.seats?`<em>Seats ${i.seats}</em>`:''}${i.mobile?'<em>Mobile</em>':''}${i.fold?'<em>Folds</em>':''}${i.wall?'<em>On wall</em>':''}${i.mount?'<em>Fits on rack</em>':''}</span></span><span class="p">${i.ppm?money(i.ppm)+'/m':money(i.price)}</span></button>`;
+let curSearch='';
+const KW={x1c:'3d printer bambu',a1:'3d printer bambu',a2l:'3d printer bambu',h2c:'3d printer bambu',printer:'3d printer',laser:'cutter',vinyl:'cutter',screen:'tv monitor display',tvwall:'tv monitor display screen',vc:'video camera hybrid zoom teams screen',wboard:'whiteboard board',teacher:'desk podium',screenp:'partition divider',pwall:'partition divider wall',rug:'carpet',cfan:'fan',wfan:'fan',cassette:'aircon air-con ac',fcu:'aircon air-con ac',rack:'shelf shelving',shelf:'shelving',cart:'trolley',kchair:'seat',chair:'seat',stool:'seat',tchair:'seat'};
+const formRow=k=>`<button class="it" data-form="${k}"><span class="fp">${formIcon(k)}</span><span class="tx"><b>${esc(FORMS[k])}</b><small>${FORM_NOTE[k]||'Tables + chairs as one group'}</small><span class="chips"><em>Group</em></span></span><span class="p"></span></button>`;
 function renderCatalog(){
-  $('#cats').innerHTML=CATS.map(([k,n])=>`<button class="cat ${k===curCat?'on':''}" data-cat="${k}">${n}</button>`).join('');
+  $('#cats').innerHTML=CATS.map(([k,n])=>`<button class="cat ${k===curCat&&!curSearch?'on':''}" data-cat="${k}" title="${esc(n)}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${CATICON[k]}</svg><span>${CATSHORT[k]}</span></button>`).join('');
+  if(curSearch){ const q=curSearch.toLowerCase(), its=ITEMS.filter(i=>i.cat!=='room'&&(i.name.toLowerCase().includes(q)||(KW[i.id]||'').includes(q)||CATSHORT[i.cat].toLowerCase().includes(q)||(CATS.find(c=>c[0]===i.cat)[1]).toLowerCase().includes(q))), fm=Object.keys(FORMS).filter(k=>(FORMS[k]+' '+(FORM_NOTE[k]||'')+' '+FORM_PIECE(k).replace('kfan','fan tables').replace('ltable','long tables').replace('stable','small tables')).toLowerCase().includes(q));
+    $('#items').innerHTML=(its.length||fm.length)?`<div class="lbl sub">${its.length+fm.length} match${its.length+fm.length>1?'es':''} for “${esc(curSearch)}”</div>`+fm.map(formRow).join('')+its.map(itemRow).join(''):`<div class="note-s">Nothing matches “${esc(curSearch)}”. Try chair, table, printer or storage.</div>`; renderCatalogCount(); return }
   if(curCat==='room'){ $('#items').innerHTML=`<div id="roomPanel"></div>`+ITEMS.filter(i=>i.cat==='room').map(itemRow).join(''); renderRoomPanel() }
-  else if(curCat==='table'){ $('#items').innerHTML=`<div class="forms">${[['kfan','Formations · fan tables'],['ltable','Layouts · long tables'],['stable','Layouts · small tables']].map(([pc,title])=>`<div class="lbl" style="margin:8px 2px 6px">${title}</div>${Object.entries(FORMS).filter(([k])=>FORM_PIECE(k)===pc).map(([k,n])=>`<button class="it" data-form="${k}"><span class="fp">${formIcon(k)}</span><span><b>${esc(n)}</b><small>${FORM_NOTE[k]||'Tables + chairs as one group'}</small></span><span class="p"></span></button>`).join('')}`).join('')}</div>`+ITEMS.filter(i=>i.cat===curCat).map(itemRow).join('') }
+  else if(curCat==='table'){ $('#items').innerHTML=`<div class="forms">${[['kfan','Formations · fan tables'],['ltable','Layouts · long tables'],['stable','Layouts · small tables']].map(([pc,title])=>`<div class="lbl sub">${title}</div>${Object.keys(FORMS).filter(k=>FORM_PIECE(k)===pc).map(formRow).join('')}`).join('')}</div><div class="lbl sub">Single tables</div>`+ITEMS.filter(i=>i.cat===curCat).map(itemRow).join('') }
   else $('#items').innerHTML=ITEMS.filter(i=>i.cat===curCat).map(itemRow).join('')+(curCat==='ceil'?`<div class="note-s" style="padding-top:6px">Ceiling items hang from the ${roomH().toFixed(1)} m ceiling. Wall units snap to the nearest wall. Ceiling items can only be selected while this tab is open, so they never get in the way of the furniture below.</div>`:'');
   renderCatalogCount();
 }
@@ -1268,8 +1362,9 @@ function renderRoomPanel(){ const el=$('#roomPanel'); if(!el)return; const W=RW_
     <div class="lockbar"><span>${lk?'Room is locked. Furniture and zones still move.':'Room shell can be edited.'}</span><button class="btn sm ${lk?'primary':''}" data-lock="1">${lk?'Unlock room':'Lock room'}</button></div>
     <div class="rsz"><span>Height</span><button data-rz="h-" ${lk?'disabled':''}>−</button><b class="num">${roomH().toFixed(1)} m</b><button data-rz="h+" ${lk?'disabled':''}>+</button></div>
     ${isShape()?`<div class="shapeinfo"><b>Custom floor shape</b><span class="num">${S.room.shape.length} walls · ${polyArea(ROOMPOLY()).toFixed(1)} m²</span></div>
-    <div class="rfix"><button class="btn sm" data-sh="edit">Edit shape</button><button class="btn sm" data-sh="draw">Draw new shape</button><button class="btn sm ghost" data-sh="rect">Back to rectangle</button></div>`:`
-    <div class="rfix"><button class="btn sm" data-sh="draw">Draw floor shape</button><button class="btn sm" data-sh="edit">Edit corners</button></div>`}
+    <div class="rfix"><button class="btn sm" data-sh="edit">Edit shape</button><button class="btn sm" data-sh="draw">Draw a new floor</button><button class="btn sm ghost" data-sh="rect">Back to rectangle</button></div>`:`
+    <div class="rfix"><button class="btn sm" data-sh="draw">Draw a new floor</button><button class="btn sm" data-sh="edit">Edit shape</button></div>`}
+    <p class="rhelp"><b>Draw a new floor</b>: click corners, using straight lines or semicircles, until it closes. <b>Edit shape</b>: drag corners, add or remove them, and click the middle of any wall to round it.</p>
     <div class="rsz" ${isShape()?'hidden':''}><span>Width</span><button data-rz="w-">−</button><b class="num">${W.toFixed(2).replace(/\.?0+$/,'')} m</b><button data-rz="w+">+</button></div>
     <div class="rsz" ${isShape()?'hidden':''}><span>Depth</span><button data-rz="d-">−</button><b class="num">${D.toFixed(2).replace(/\.?0+$/,'')} m</b><button data-rz="d+">+</button></div>
     <p>${isShape()?'Doors, windows and power points follow the drawn walls, including curved ones.':'Or drag any wall in the room to move it.'}</p>
@@ -1316,15 +1411,27 @@ function drawTip(e){ let t=$('#drawTip'); if(!DRAW||DRAW.edit||!DRAW.cur){t?.rem
   if(!P.length){t.textContent=`Click to start · ${DRAW.cur.x.toFixed(2)}, ${DRAW.cur.z.toFixed(2)}`;return}
   const l=P[P.length-1], c=DRAW.cur; if(P.length>=2&&c.x===P[0].x&&c.z===P[0].z){t.textContent='Click to close the floor';return}
   const len=edgeOf(l,c,DRAW.arc?1:0).len, deg=((Math.round(Math.atan2(c.z-l.z,c.x-l.x)*180/Math.PI)+360)%360); t.textContent=`${DRAW.arc?'Semicircle':'Line'} ${len.toFixed(2)} m${DRAW.arc?` · Ø ${Math.hypot(c.x-l.x,c.z-l.z).toFixed(2)} m`:` · ${deg}°`}` }
-function renderDrawBar(){ $('#drawbar')?.remove(); $('#guide').classList.toggle('hide-draw',!!DRAW); if(!DRAW){ $('#drawTip')?.remove(); return }
+function renderDrawBar(){ if(S)renderSteps(); $('#hud').classList.toggle('drawing',!!DRAW); $('#drawbar')?.remove(); $('#guide').classList.toggle('hide-draw',!!DRAW); if(!DRAW){ $('#drawTip')?.remove(); return }
   const d=document.createElement('div'); d.id='drawbar'; d.className='drawbar';
-  if(DRAW.edit) d.innerHTML=`<b>${DRAW.tgt?'Edit '+esc(inBy(DRAW.tgt)?.name||'room'):'Edit floor shape'}</b><button class="btn sm primary" data-dm="done">Done</button><span class="hint">Drag a white corner to move it. Click a gold dot to switch that wall between straight and curved. Drag a gold dot to add a corner. Double-click a corner to remove it.</span>`;
+  if(DRAW.edit) d.innerHTML=`<div class="dtop"><b>${DRAW.tgt?'Edit '+esc(inBy(DRAW.tgt)?.name||'room'):'Edit floor shape'}</b><button class="btn sm primary" data-dm="done">Done</button></div>
+    <div class="howto edit">
+      <div><span class="hk"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="6" fill="#ffffff" stroke="#14181f" stroke-width="2"/></svg></span><span><b>Move a corner</b>Drag a white dot.</span></div>
+      <div><span class="hk"><svg width="18" height="18" viewBox="0 0 18 18"><circle cx="9" cy="9" r="5" fill="#f5b700" stroke="#14181f" stroke-width="2"/></svg></span><span><b>Round a wall</b>Click the gold dot in the middle of the wall. Keep clicking to cycle: <span class="cyc" aria-hidden="true"><svg width="34" height="18" viewBox="0 0 34 18"><path d="M3 13 H31" stroke="#f5b700" stroke-width="2.5" fill="none"/></svg><i>→</i><svg width="34" height="18" viewBox="0 0 34 18"><path d="M3 15 Q17 -5 31 15" stroke="#f5b700" stroke-width="2.5" fill="none"/></svg><i>→</i><svg width="34" height="18" viewBox="0 0 34 18"><path d="M3 3 Q17 23 31 3" stroke="#f5b700" stroke-width="2.5" fill="none"/></svg><i>→</i><svg width="34" height="18" viewBox="0 0 34 18"><path d="M3 13 H31" stroke="#f5b700" stroke-width="2.5" fill="none"/></svg></span> straight, curved out, curved in, straight.</span></div>
+      <div><span class="hk">+</span><span><b>Add a corner</b>Drag a gold dot away from its wall.</span></div>
+      <div><span class="hk">×</span><span><b>Remove a corner</b>Double-click (or double-tap) a white dot.</span></div>
+    </div>`;
   else { const P=DRAW.pts; let per=0; const RB=resolveB(P); for(let i=0;i+1<RB.length;i++)per+=edgeOf(RB[i],RB[i+1],RB[i].b||0).len;
-    d.innerHTML=`<b>${DRAW.inner?'Draw a room inside':'Draw the floor'}</b><div class="tg"><button data-dm="line" class="${DRAW.arc?'':'on'}">Line</button><button data-dm="arc" class="${DRAW.arc?'on':''}">Semicircle</button></div><button class="btn sm" data-dm="flip" ${DRAW.arc?'':'disabled'}>Flip curve</button><button class="btn sm" data-dm="undo" ${P.length?'':'disabled'}>Undo point</button><button class="btn sm primary" data-dm="close" ${P.length>=2?'':'disabled'}>Close floor</button><button class="btn sm ghost" data-dm="cancel">Cancel</button>
-      <span class="hint">${P.length?`${P.length} corner${P.length>1?'s':''} · ${per.toFixed(2)} m of wall. Click the green first point to close the floor. `:'Click on the grid to place the first corner. '}Lines snap to 45°; hold Shift to draw freely. Keys: A line/semicircle, F flip, Backspace undo, Enter close, Esc cancel.</span>`; }
+    const stp=!P.length?1:P.length<3?2:3;
+    d.innerHTML=`<div class="dtop"><b>${DRAW.inner?'Draw a room inside':'Draw the floor'}</b><div class="tg" role="group" aria-label="Next wall"><button data-dm="line" class="${DRAW.arc?'':'on'}">Straight line</button><button data-dm="arc" class="${DRAW.arc?'on':''}">Semicircle</button></div><button class="btn sm" data-dm="flip" ${DRAW.arc?'':'disabled'}>Flip curve</button><button class="btn sm" data-dm="undo" ${P.length?'':'disabled'}>Undo point</button><button class="btn sm primary" data-dm="close" ${P.length>=2?'':'disabled'}>Close floor</button><button class="btn sm ghost" data-dm="cancel">Cancel</button></div>
+      <div class="howto steps3">
+        <div class="${stp===1?'on':stp>1?'done':''}"><span class="hk">1</span><span><b>Place the first corner</b>Click on the grid. It shows as a green dot.</span></div>
+        <div class="${stp===2?'on':stp>2?'done':''}"><span class="hk">2</span><span><b>Add the walls</b>Pick <i>Straight line</i> or <i>Semicircle</i> above, then click where the wall ends. <i>Flip curve</i> bends a semicircle the other way.</span></div>
+        <div class="${stp===3?'on':''}"><span class="hk">3</span><span><b>Close the floor</b>Click the green first dot, or press Close floor. The floor must close.</span></div>
+      </div>
+      <span class="hint">${P.length?`${P.length} corner${P.length>1?'s':''} · ${per.toFixed(2)} m of wall · `:''}Lines snap to 45° (hold Shift to draw freely). Keys: A line or semicircle · F flip · Backspace undo · Enter close · Esc cancel.</span>`; }
   d.addEventListener('click',e=>{ const a=e.target.closest('[data-dm]')?.dataset.dm; if(!a)return; if(a==='line')DRAW.arc=false; if(a==='arc')DRAW.arc=true; if(a==='flip')DRAW.flip=!DRAW.flip; if(a==='undo')drawUndo(); if(a==='close')closeDraw(); if(a==='cancel'||a==='done')endDraw(a==='done'); if(DRAW){drawPreview();renderDrawBar()} });
   $('#hud').appendChild(d) }
-function startDraw(inner){ select(null); DRAW={pts:[],arc:false,flip:false,cur:null,inner:!!inner}; orbit.enableRotate=false; topView=true; $('#vTop').classList.add('on'); fitView(true); camera.position.y*=1.25; orbit.update(); drawPreview(); renderDrawBar(); toast('Click to place corners. The floor must close back on the first point.') }
+function startDraw(inner){ select(null); DRAW={pts:[],arc:false,flip:false,cur:null,inner:!!inner}; orbit.enableRotate=false; topView=true; $('#vTop').classList.add('on'); fitView(true); camera.position.y*=1.25; orbit.update(); drawPreview(); renderDrawBar(); toast('Step 1: click on the grid to place the first corner.') }
 function drawClick(){ const c=DRAW.cur, P=DRAW.pts; if(!c)return; if(P.length>=2&&c.x===P[0].x&&c.z===P[0].z){closeDraw();return} const l=P[P.length-1]; if(l&&Math.hypot(c.x-l.x,c.z-l.z)<.05)return;
   if(l)l.ab=DRAW.arc?(DRAW.flip?-1:1):0; P.push({x:c.x,z:c.z,ab:0}); drawPreview(); renderDrawBar() }
 function drawUndo(){ const P=DRAW.pts; P.pop(); if(P.length)P[P.length-1].ab=0; drawPreview(); renderDrawBar() }
@@ -1393,7 +1500,8 @@ $('#items').addEventListener('click',e=>{
   buildRoom(); runChecks(); renderRoomPanel(); save(); fitView(topView);
 });
 function renderCatalogCount(){ $('#itemCount').textContent=`${S?S.items.length:0} placed` }
-$('#cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(b){curCat=b.dataset.cat;renderCatalog()}});
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(b){curCat=b.dataset.cat;curSearch='';$('#fSearch').value='';renderCatalog();$('#left .scroll').scrollTop=0}});
+$('#fSearch').addEventListener('input',e=>{curSearch=e.target.value.trim();renderCatalog()});
 $('#items').addEventListener('input',e=>{ if(!S.under)return; if(e.target.id==='uOp'){S.under.op=+e.target.value;buildRoom();save()} if(e.target.id==='uOn'){S.under.on=e.target.checked;buildRoom();save()} });
 
 /* ===== floor plan photo -> 3D room (Claude reads the image) ===== */
@@ -1505,14 +1613,15 @@ function renderHands(){
   const L=MODES[S.mode].limits;
   for(const [k,el,cnt,btn] of [['r','#handR','#cntR','#drawR'],['b','#handB','#cntB','#drawB'],['g','#handG','#cntG','#drawG']]){
     const h=S.hand[k]; const lim=L[k];
-    $(el).innerHTML=h.map(n=>`<button data-card="${k}:${n}" title="${esc(k==='r'?SCEN[n-1][0]:k==='g'?PROMPTS[n-1]:INSP[n][0])}"><img src="${cardImg(k,n)}" alt="">${k==='b'&&S.tags[n]?`<span class="tag">${S.tags[n]}</span>`:''}</button>`).join('') + (h.length<Math.min(lim,3)?Array(Math.min(lim,3)-h.length).fill('<span class="empty"></span>').join(''):'');
-    $(cnt).textContent= lim>=99?`${h.length} drawn`:`${h.length}/${lim}`;
-    $(btn).disabled = h.length>=lim || S.deck[k].length===0;
+    $(el).innerHTML=h.map((n,i)=>`<button data-card="${k}:${n}" title="${esc(k==='r'?SCEN[n-1][0]:k==='g'?PROMPTS[n-1]:INSP[n][0])}"><img src="${cardImg(k,n)}" alt="">${k==='b'&&S.tags[n]?`<span class="tag">${S.tags[n]}</span>`:''}${k==='g'&&i===S.promptAt?'<span class="tag now">Now</span>':''}</button>`).join('') + (h.length<Math.min(lim,3)?Array(Math.min(lim,3)-h.length).fill('<span class="empty"></span>').join(''):'');
+    $(cnt).textContent=`${h.length}/${lim}`;
+    const full=h.length>=lim||S.deck[k].length===0; $(btn).textContent=full?(h.length?'View':'Draw'):(h.length?`Draw ${lim-h.length} more`:`Draw ${lim}`); $(btn).disabled=full&&!h.length; $(btn).classList.toggle('ghost',full);
   }
 }
-for(const k of ['R','B','G']) $('#hand'+k).addEventListener('click',e=>{const b=e.target.closest('[data-card]');if(!b)return;const [d,n]=b.dataset.card.split(':');showCard(d,+n,false)});
+for(const k of ['R','B','G']) $('#hand'+k).addEventListener('click',e=>{const b=e.target.closest('[data-card]');if(!b)return;const [d,n]=b.dataset.card.split(':');handDialog(d,false,[],+n)});
 $('#drawR').onclick=()=>draw('r'); $('#drawB').onclick=()=>draw('b'); $('#drawG').onclick=()=>draw('g');
 $('#peekB').onclick=()=>gallery();
+$('#plan').addEventListener('click',e=>{const b=e.target.closest('[data-pl]');if(b)showCard('b',+b.dataset.pl)});
 
 function renderNotes(){
   const Z=S.zones||[]; buildZones();
@@ -1614,11 +1723,11 @@ function toggleFS(){ const d=document, el=d.documentElement;
   try{ const p=req.call(el,{navigationUI:'hide'}); setTimeout(renderFS,400); p?.then?.(renderFS); p?.catch?.(()=>toast('Full screen is blocked in this view. Open the game in its own browser tab, then try again.')) }catch(e){ toast('Full screen is not available on this device.') } }
 function renderFS(){ const on=!!fsEl(), b=$('#fsBtn'); b.title=on?'Exit full screen':'Full screen'; b.setAttribute('aria-label',b.title); b.setAttribute('aria-pressed',on); $('#fsIc').setAttribute('d',on?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5') }
 $('#fsBtn').onclick=toggleFS; document.addEventListener('fullscreenchange',renderFS); document.addEventListener('webkitfullscreenchange',renderFS); addEventListener('resize',renderFS);
-$('#vUndo').onclick=()=>undo(); $('#vInspire').onclick=()=>inspireDialog(); $('#vReset').onclick=()=>resetDialog(); $('#vLock').onclick=()=>toggleLock();
-function renderWalls(){ $('#vWalls').textContent=WALLMODE==='full'?'Walls: full':'Walls: low'; $('#vWalls').classList.toggle('on',WALLMODE==='full') }
+$('#vUndo').onclick=()=>undo(); $('#vInspire').onclick=()=>inspireDialog(); $('#vClear').onclick=()=>resetDialog(); $('#vLock').onclick=()=>toggleLock();
+function renderWalls(){ dkLabel('vWalls',WALLMODE==='full'?'Walls: full':'Walls: low'); $('#vWalls').classList.toggle('on',WALLMODE==='full') }
 $('#vWalls').onclick=()=>{ WALLMODE=WALLMODE==='full'?'low':'full'; try{localStorage.setItem('sdkit3d-walls',WALLMODE)}catch(e){} buildRoom(); renderWalls(); toast(WALLMODE==='full'?`Full-height walls (${roomH().toFixed(1)} m). Walls facing you fade out.`:'Low walls: easier to see the whole room') };
 const SNAPS=[.5,.25,.1,0];
-function renderSnap(){ $('#vSnap').textContent = SNAP?`Snap ${SNAP} m`:'Snap off'; $('#vSnap').classList.toggle('on',!!SNAP) }
+function renderSnap(){ dkLabel('vSnap',SNAP?`Snap ${SNAP}`:'Snap off'); $('#vSnap').classList.toggle('on',!!SNAP) }
 $('#vSnap').onclick=()=>{ SNAP=SNAPS[(SNAPS.indexOf(SNAP)+1)%SNAPS.length]; try{localStorage.setItem('sdkit3d-snap',SNAP)}catch(e){} renderSnap(); toast(SNAP?`Furniture edges snap to a ${SNAP} m grid`:'Snap off: place freely') };
 $('#mLeft').onclick=()=>{$('#left').classList.toggle('open');$('#right').classList.remove('open')};
 $('#mRight').onclick=()=>{$('#right').classList.toggle('open');$('#left').classList.remove('open')};
@@ -1777,7 +1886,7 @@ function modal(html,{wide=false,onclose}={}){
   const m=$('#mdl'); m.addEventListener('click',e=>{if(e.target===m){closeModal();onclose?.()}}); m.querySelector('[data-close]')?.addEventListener('click',()=>{closeModal();onclose?.()});
   return m;
 }
-function closeModal(){ $('#modalRoot').innerHTML='' }
+function closeModal(){ $('#modalRoot').innerHTML=''; const h=MODAL_CLOSE_HOOK; MODAL_CLOSE_HOOK=null; h?.() }
 // Reset: clears what can be moved or removed, keeps the room itself (walls, rooms within the room, doors, windows, power points, teaching wall)
 function resetDialog(){ if(DRAW){toast('Finish or cancel the drawing first');return}
   const nF=S.items.filter(i=>!DEF[i.type]?.ceil).length, nC=S.items.filter(i=>DEF[i.type]?.ceil).length, nZ=(S.zones||[]).length;
@@ -1796,34 +1905,126 @@ function resetPlan({furniture=true,ceiling=true,zones=false}={}){ const before=S
   selected=null; selFix=null; selWall=null; selZone=null; drag=null; syncAll(); renderNotes(); runChecks(); renderCatalog(); renderSelTool(); lastPush=0; save();
   toast(`Cleared ${n} item${n===1?'':'s'}. Press Undo to bring them back.`) }
 
-function draw(k){
-  const L=MODES[S.mode].limits; if(S.hand[k].length>=L[k]||!S.deck[k].length)return;
-  const n=S.deck[k].shift(); S.hand[k].push(n); renderHands(); runChecks(); save(); showCard(k,n,true);
-}
 function cardInfo(k,n){
   if(k==='r') return {deck:'Scenario · Red',col:'var(--red)',title:SCEN[n-1][0],q:SCEN[n-1][1],goal:RULES[n]?.label};
   if(k==='g') return {deck:'Prompt · Green',col:'var(--green)',title:`Prompt ${n}`,q:PROMPTS[n-1]};
   return {deck:'Inspiration · Blue',col:'#7ea2ff',title:INSP[n][0],q:INSP[n][1]};
 }
-function showCard(k,n,fresh){
-  const ci=cardInfo(k,n); const canRedraw = fresh && S.redraw[k]>0 && S.deck[k].length>0;
-  const m=modal(`<div class="bd" style="padding-top:24px"><div class="flipwrap">
-    <div class="flip ${fresh?'':'go'}" id="flip"><div class="in"><img src="${backImg(k)}" alt="Card back"><img class="front" src="${cardImg(k,n)}" alt="${esc(ci.title)}"></div></div>
+/* ===== cards: draw the whole hand at once, one redraw per deck ===== */
+const DECKN={r:'Scenario',b:'Inspiration',g:'Prompt'}, DECKC={r:'var(--red)',b:'#7ea2ff',g:'var(--green)'};
+function draw(k){ const lim=MODES[S.mode].limits[k], need=Math.min(lim-S.hand[k].length,S.deck[k].length);
+  if(need<=0){ if(S.hand[k].length) handDialog(k,false); return }
+  const got=[]; for(let i=0;i<need;i++){ const n=S.deck[k].shift(); S.hand[k].push(n); got.push(n) }
+  renderHands(); renderMission(); runChecks(); save(); handDialog(k,true,got) }
+function redrawCard(k,n){ if(!(S.redraw[k]>0)||!S.deck[k].length)return null; const i=S.hand[k].indexOf(n); if(i<0)return null;
+  const nn=S.deck[k].shift(); S.deck[k].push(n); S.hand[k][i]=nn; S.redraw[k]--; if(k==='b'){ delete S.tags[n]; delete S.keep[n]; delete S.avoidWhy[n] }
+  renderHands(); renderMission(); renderPlan(); runChecks(); save(); return nn }
+function cardTile(k,n,fresh,canR,i){ const ci=cardInfo(k,n);
+  const pill=k==='g'?`<span class="cpill ${i===S.promptAt?'now':i<S.promptAt?'done':''}">${i===S.promptAt?'Follow now':i<S.promptAt?'Done':'Up next'}</span>`:'';
+  return `<div class="ctile" data-n="${n}"><div class="flip ${fresh?'':'go'}"><div class="in"><img src="${backImg(k)}" alt="Card back"><img class="front" src="${cardImg(k,n)}" alt="${esc(ci.title)}"></div></div>
+    <div class="ct">${pill}<b>${esc(ci.title)}</b><small>${esc(ci.q)}</small>${ci.goal?`<div class="cgoal"><span>The game will check</span>${esc(ci.goal)}</div>`:''}
+    ${k==='b'?baaButtons(n):''}${canR?`<button class="btn sm ghost rdr" data-redraw="${n}">Redraw this card</button>`:''}</div></div>` }
+function handDialog(k,isNew,fresh=[],focus=null){
+  const H=S.hand[k], canR=S.redraw[k]>0&&S.deck[k].length>0;
+  const note=k==='g'?'Work through them in order. The one to follow now is pinned on the room view.':k==='b'?'Tag each idea Borrow, Adapt or Avoid to see what to do next.':'These are the problems your design must solve. The game checks them on the right.';
+  const m=modal(`<div class="hd"><div class="kick" style="color:${DECKC[k]}">${DECKN[k]} cards · ${H.length} in your hand</div><h2>${isNew?'Your new hand':'Your cards'}</h2>
+    <p class="lead" style="margin:6px 0 0">${note} ${canR?'<b>Not happy with one? You can redraw one card.</b>':S.redraw[k]<1?'Redraw used.':''}</p></div>
+    <div class="bd"><div class="handrow">${H.map((n,i)=>cardTile(k,n,fresh.includes(n),canR,i)).join('')}</div><div id="baaNext"></div></div>
+    <div class="ft"><button class="btn primary" data-close>${isNew?'Got it':'Close'}</button></div>`,{wide:true});
+  m.querySelectorAll('.flip:not(.go)').forEach((f,j)=>setTimeout(()=>f.classList.add('go'),350+j*220));
+  m.addEventListener('click',e=>{ const r=e.target.closest('[data-redraw]'); if(r){ const nn=redrawCard(k,+r.dataset.redraw); if(nn!=null){ handDialog(k,true,[nn]); toast(`${DECKN[k]} card redrawn. That was your one redraw.`) } return } });
+  if(k==='b') wireBAA(m,()=>m.querySelector('#baaNext'));
+  const f=focus??(k==='b'?H.find(n=>S.tags[n]):null); if(k==='b'&&f!=null&&S.tags[f]) showNext(m.querySelector('#baaNext'),f) }
+/* single card view: used for peeking at ideas that are not in your hand */
+function showCard(k,n){ if(S.hand[k].includes(n)){ handDialog(k,false,[],n); return }
+  const ci=cardInfo(k,n);
+  const m=modal(`<div class="bd" style="padding-top:24px"><div class="flipwrap"><div class="flip go"><div class="in"><img src="${backImg(k)}" alt="Card back"><img class="front" src="${cardImg(k,n)}" alt="${esc(ci.title)}"></div></div>
     <div class="ctext"><div class="deckname" style="color:${ci.col}">${ci.deck}${k==='r'?` · Card ${n}`:''}</div><h2>${esc(ci.title)}</h2><div class="q">${esc(ci.q)}</div>
-      ${ci.goal?`<div class="goal"><b>The game will check</b>${esc(ci.goal)}</div>`:''}
-      ${k==='g'?`<div class="goal"><b>Try this</b>Change one thing in your layout that answers this question.</div>`:''}
-      ${k==='b'?`<div class="baa" id="baa">${['Borrow','Adapt','Avoid'].map(t=>`<button data-t="${t}" class="${S.tags[n]===t?'on':''}">${t}</button>`).join('')}</div><div style="color:var(--mute);font-size:12.5px;margin-top:6px">What would your team borrow, adapt or avoid from this layout?</div>`:''}
-    </div></div></div>
-    <div class="ft">${canRedraw?`<button class="btn" id="redraw">Redraw (1 left)</button>`:''}<button class="btn primary" data-close>${fresh?'Got it':'Close'}</button></div>`);
-  if(fresh) requestAnimationFrame(()=>setTimeout(()=>$('#flip')?.classList.add('go'),350));
-  m.querySelector('#baa')?.addEventListener('click',e=>{const b=e.target.closest('[data-t]');if(!b)return;S.tags[n]=S.tags[n]===b.dataset.t?undefined:b.dataset.t;m.querySelectorAll('#baa button').forEach(x=>x.classList.toggle('on',x.dataset.t===S.tags[n]));renderHands();save()});
-  m.querySelector('#redraw')?.addEventListener('click',()=>{S.redraw[k]--; S.hand[k]=S.hand[k].filter(x=>x!==n); S.deck[k].push(n); closeModal(); draw(k)});
-}
+    ${ci.goal?`<div class="goal"><b>The game will check</b>${esc(ci.goal)}</div>`:''}${k==='b'?`<div style="margin-top:14px">${baaButtons(n)}</div><div id="baaNext1"></div>`:''}</div></div></div>
+    <div class="ft"><button class="btn primary" data-close>Close</button></div>`,{wide:k==='b'});
+  if(k==='b'){ wireBAA(m,()=>m.querySelector('#baaNext1')); if(S.tags[n]) showNext(m.querySelector('#baaNext1'),n) } }
+
+/* ===== Borrow / Adapt / Avoid: what each choice means for the design, with next steps ===== */
+const INSP_KEY={
+ 1:{el:['Modular desk clusters','A shared display per cluster'],add:[['form','smpod6'],['item','screen']]},
+ 2:{el:['Round tables with a centre hub','Large displays for groups'],add:[['form','circle'],['item','screen']]},
+ 3:{el:['Curved rows facing the front','Powered desks','A multi-screen front wall'],add:[['form','arc'],['item','pole'],['item','tvwall']]},
+ 4:{el:['Table clusters on both sides','A clear central aisle','Large front displays'],add:[['form','lblock'],['item','screen']]},
+ 5:{el:['Lounge seating','Mixed seating arrangements','Mobile screens'],add:[['item','sofa'],['item','beanbag'],['item','rug'],['item','screen']]},
+ 6:{el:['Quick ways to split the room','Movable tables and chairs'],add:[['item','screenp'],['item','rtable']]},
+ 7:{el:['Mobile partitions','Focus booths for 1 or 2 people'],add:[['item','screenp'],['item','stable']]},
+ 8:{el:['Partitions that make 2 or 3 mini-classes','Mobile tables in each zone','A whiteboard per zone'],add:[['item','screenp'],['item','wboard'],['form','smpod6']]},
+ 9:{el:['A shared lounge in the middle','Movable tables around it'],add:[['item','rug'],['item','sofa'],['form','circle']]},
+ 10:{el:['Curved or tiered benches for dialogue','Tables for class activities'],add:[['item','steps'],['form','lrows']]},
+ 11:{el:['Curved desks','A large shared screen','Personal headsets'],add:[['form','arc'],['item','screen']]},
+ 12:{el:['One continuous seminar table','A front display wall with audio'],add:[['item','seminar'],['item','vc']]},
+ 13:{el:['Desks with built-in tablets','Front and side displays'],add:[['form','smrows'],['item','tvwall']]},
+ 14:{el:['Group seating','A front display for demos','Computers with 3D printers'],add:[['form','circle'],['item','screen'],['item','rack'],['item','x1c']]},
+ 15:{el:['Open tables','Tiltable screens','Walls lined with tools and supplies'],add:[['item','bench'],['item','peg'],['item','shelf']]},
+ 16:{el:['Workstations around the walls','Table islands in the middle'],add:[['item','bench'],['item','stool'],['form','lblock']]},
+ 17:{el:['Wall-mounted displays','PCs and 3D printers on counters'],add:[['item','tvwall'],['item','rack'],['item','a1']]},
+ 18:{el:['A front zone for discussion','Rear benches for building','A central teaching wall'],add:[['form','circle'],['item','bench'],['item','wboard']]},
+ 19:{el:['Amphitheatre bench seating','Storage built into the steps','A projection display'],add:[['item','steps'],['item','cabinet'],['item','screen']]},
+ 20:{el:['Custom work tables with tools','Personal storage','A clustered layout'],add:[['item','bench'],['item','lockers'],['item','cart']]},
+ 22:{el:['Tiered steps','Round tables','A workshop corner'],add:[['item','steps'],['item','round'],['item','bench']]},
+ 23:{el:['Individual tables with screens','Front and side displays'],add:[['form','smrows'],['item','tvwall']]},
+ 24:{el:['Tables with touch displays','Wall screens for groups'],add:[['form','smpod6'],['item','tvwall']]},
+ 25:{el:['Personal screen tables in rows','A side breakout area'],add:[['form','smrows'],['item','sofa'],['item','beanbag']]},
+ 26:{el:['Circular seating','A central podium'],add:[['item','stable'],['item','teacher']]}};
+const AVOID_WHY={cost:['Too costly','Keep an eye on the budget bar at the top. Mobile tables and chairs cost far less than fixed builds.'],
+  noise:['Too noisy','Plan a quiet zone with + Zone, and use acoustic screens or wall panels from the Comfort tab.'],
+  space:['Takes too much space','Turn on Walkways to keep the 1.2 m exit route and the 0.9 m wheelchair path clear.'],
+  flex:['Not flexible enough','Choose pieces marked mobile or folds in the furniture list, so the room can change layout.'],
+  goal:["Doesn't solve our challenge",'Re-read your red card and keep its check green in Design checks.'],
+  watch:['Hard to supervise','Keep clear sight lines from the teacher station, and keep tall storage at the walls, not the middle.']};
+const addLabel=([t,id])=>t==='form'?`${FORMS[id]} (${FORM_PIECE(id)==='kfan'?'fan tables':FORM_PIECE(id)==='ltable'?'long tables':'small tables'})`:DEF[id].name;
+function baaButtons(n){ return `<div class="baa" data-baa="${n}">${['Borrow','Adapt','Avoid'].map(t=>`<button data-t="${t}" class="${S.tags[n]===t?'on':''}">${t}</button>`).join('')}</div>` }
+function nextHTML(n){ const t=S.tags[n], K=INSP_KEY[n]||{el:[INSP[n][1]],add:[]}, title=INSP[n][0];
+  const chips=K.add.map(a=>`<button class="btn sm" data-qa="${a[0]}:${a[1]}">+ ${esc(addLabel(a))}</button>`).join('');
+  if(t==='Borrow') return `<div class="nx borrow"><div class="nh"><span>Borrow</span> Use ${esc(title)} as it is</div>
+    <ol><li><b>Add the key pieces</b> to your room:<div class="qa">${chips}</div></li><li><b>Arrange them like the card</b>: ${K.el.map(esc).join(', ')}. Or let the game lay it out for you: <button class="btn sm primary" data-build="${n}">Build this idea for me</button></li><li><b>Check your red card still passes</b> in Design checks on the right.</li></ol>
+    <p class="tip">Tip: borrowing works best when the idea already suits your room size and class size.</p></div>`;
+  if(t==='Adapt'){ const kp=S.keep[n]||[]; return `<div class="nx adapt"><div class="nh"><span>Adapt</span> Keep the idea, change how it's done</div>
+    <ol><li><b>Pick what you'll keep</b>:<div class="kp">${K.el.map((e,i)=>`<label class="ck"><input type="checkbox" data-keep="${n}:${i}" ${kp.includes(i)?'checked':''}> ${esc(e)}</label>`).join('')}</div></li>
+    <li><b>Change the rest to fit</b>: <ul><li>Room too small? Use fewer pieces, or smaller ones of the same kind (small tables instead of long ones).</li><li>Need to switch layouts? Swap fixed pieces for ones on castors.</li><li>Mix it with another card you're borrowing.</li></ul></li>
+    <li><b>Add the pieces you're keeping</b>:<div class="qa">${chips}</div></li></ol>
+    <p class="tip">Tip: note what you changed and why. It makes a strong point in your pitch.</p></div>` }
+  if(t==='Avoid'){ const w=S.avoidWhy[n]||[]; return `<div class="nx avoid"><div class="nh"><span>Avoid</span> Learn from what won't work here</div>
+    <ol><li><b>Why doesn't it fit?</b> Pick one or more:<div class="qa">${Object.entries(AVOID_WHY).map(([k,[l]])=>`<button class="btn sm ${w.includes(k)?'on':''}" data-why="${n}:${k}">${esc(l)}</button>`).join('')}</div></li>
+    <li><b>Make sure your design does the opposite</b>:${w.length?`<ul>${w.map(k=>`<li>${esc(AVOID_WHY[k][1])}</li>`).join('')}</ul>`:' <span class="tip">pick a reason above to see what to watch for.</span>'}</li></ol></div>` }
+  return '' }
+function showNext(box,n,scroll){ if(!box)return; box.innerHTML=S.tags[n]?`<div class="nxwrap"><div class="lbl">What happens next · ${esc(INSP[n][0])}</div>${nextHTML(n)}</div>`:''; if(scroll&&S.tags[n])requestAnimationFrame(()=>box.scrollIntoView({behavior:'smooth',block:'nearest'})) }
+function wireBAA(m,boxFn){ m.addEventListener('click',e=>{
+  const b=e.target.closest('[data-baa] [data-t]'); if(b){ const n=+b.closest('[data-baa]').dataset.baa; S.tags[n]=S.tags[n]===b.dataset.t?undefined:b.dataset.t;
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.t===S.tags[n])); showNext(boxFn(),n,true); renderHands(); renderPlan(); save(); return }
+  const q=e.target.closest('[data-qa]'); if(q){ const [t,id]=q.dataset.qa.split(':'); if(t==='form') placeFormation(id); else addItem(id); toast(`${addLabel([t,id])} added to the room`); return }
+  const bl=e.target.closest('[data-build]'); if(bl){ closeModal(); inspireDialog(+bl.dataset.build); return }
+  const w=e.target.closest('[data-why]'); if(w){ const [n,k]=w.dataset.why.split(':'); const a=S.avoidWhy[n]=S.avoidWhy[n]||[]; const i=a.indexOf(k); if(i<0)a.push(k); else a.splice(i,1); showNext(boxFn(),+n); renderPlan(); save(); return } });
+  m.addEventListener('change',e=>{ const c=e.target.closest('[data-keep]'); if(!c)return; const [n,i]=c.dataset.keep.split(':').map(Number); const a=S.keep[n]=S.keep[n]||[]; const j=a.indexOf(i); if(c.checked&&j<0)a.push(i); if(!c.checked&&j>=0)a.splice(j,1); renderPlan(); save() }) }
+/* the team's idea plan, always visible under the inspiration cards */
+function renderPlan(){ const el=$('#plan'); if(!el)return; const T=Object.entries(S.tags||{}).filter(([,t])=>t);
+  el.innerHTML=T.length?`<div class="lbl" style="margin:2px 0 6px">Our idea plan</div>`+T.map(([n,t])=>{ n=+n; const K=INSP_KEY[n]||{el:[]};
+    const line=t==='Borrow'?`Add and arrange: ${K.el.join(', ')}`:t==='Adapt'?((S.keep[n]||[]).length?`Keep: ${(S.keep[n]||[]).map(i=>K.el[i]).join(', ')}`:'Pick what to keep'):((S.avoidWhy[n]||[]).length?`Because: ${(S.avoidWhy[n]||[]).map(k=>AVOID_WHY[k][0].toLowerCase()).join(', ')}`:'Pick why it won\'t fit');
+    return `<button class="pl ${t.toLowerCase()}" data-pl="${n}"><span>${t}</span><b>${esc(INSP[n][0])}</b><small>${esc(line)}</small></button>` }).join(''):'' }
+
+/* ===== "Follow this": the team's challenge and the prompt to work on now, pinned on the room view ===== */
+function renderMission(){ const el=$('#mission'); if(!el||!S)return; const R=S.hand.r, G=S.hand.g; if(S.promptAt>=G.length)S.promptAt=Math.max(0,G.length-1);
+  if(!R.length&&!G.length){ el.hidden=true; return } el.hidden=false;
+  const p=G[S.promptAt];
+  el.innerHTML=`<div class="mh"><span>Follow this</span><button class="iconbtn" data-ms="min" aria-label="Collapse" style="width:24px;height:24px"><svg class="ic" viewBox="0 0 24 24" style="width:13px;height:13px"><path d="${el.classList.contains('min')?'M6 9l6 6 6-6':'M6 15l6-6 6 6'}"/></svg></button></div>
+    <div class="mb">${R.length?`<button class="mrow r" data-ms="r"><i></i><span><small>${R.length>1?`Challenges (${R.length})`:'Challenge'}</small><b>${R.map(n=>esc(SCEN[n-1][0])).join(' · ')}</b></span></button>`:''}
+    ${p?`<button class="mrow g" data-ms="g"><i></i><span><small>Prompt ${S.promptAt+1} of ${G.length} · follow now</small><b>${esc(PROMPTS[p-1])}</b></span></button>
+    ${G.length>1?`<div class="mact"><button class="btn sm" data-ms="prev" ${S.promptAt?'':'disabled'}>Back</button><button class="btn sm green" data-ms="next" ${S.promptAt<G.length-1?'':'disabled'}>Done, next prompt</button></div>`:''}`:''}</div>` }
+$('#mission').addEventListener('click',e=>{ const a=e.target.closest('[data-ms]')?.dataset.ms; if(!a)return;
+  if(a==='min'){ $('#mission').classList.toggle('min'); renderMission(); return } if(a==='r')handDialog('r',false); if(a==='g')handDialog('g',false);
+  if(a==='next'&&S.promptAt<S.hand.g.length-1){ S.promptAt++; renderMission(); renderHands(); save(); toast('Next prompt: '+PROMPTS[S.hand.g[S.promptAt]-1]) }
+  if(a==='prev'&&S.promptAt>0){ S.promptAt--; renderMission(); renderHands(); save() } });
+
 function gallery(){
   const sp=SPACES[S.space];
   const m=modal(`<div class="hd"><div class="kick">Inspiration · ${esc(sp.name)}</div><h2>5 ideas for this space</h2><p class="lead" style="margin:6px 0 0">AI-generated layouts to spark ideas. Inspiration, not prescription.</p></div>
    <div class="bd"><div class="gallery">${sp.insp.map(n=>`<button data-n="${n}"><img src="${img('i',n)}" alt="${esc(INSP[n][0])}"></button>`).join('')}</div></div><div class="ft"><button class="btn primary" data-close>Close</button></div>`,{wide:true});
-  m.querySelector('.gallery').addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)showCard('b',+b.dataset.n,false)});
+  m.querySelector('.gallery').addEventListener('click',e=>{const b=e.target.closest('[data-n]');if(b)showCard('b',+b.dataset.n)});
 }
 function noteDialog(){
   let kind='noise';
@@ -1835,16 +2036,57 @@ function noteDialog(){
   m.querySelector('#placeBtn').onclick=()=>{placingNote={kind,text:$('#noteTxt').value.trim()};closeModal();renderPlacing();select(null)};
 }
 
+/* ===== project id: made once when a game starts; goes into saves and exports (and later a Google Sheet) ===== */
+function newPid(){ const d=new Date(), p=n=>String(n).padStart(2,'0'), A='23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; let r=''; const b=new Uint8Array(4); (crypto?.getRandomValues?crypto.getRandomValues(b):b.forEach((_,i)=>b[i]=Math.random()*256)); for(const x of b)r+=A[x%A.length]; return `SDK-${String(d.getFullYear()).slice(2)}${p(d.getMonth()+1)}${p(d.getDate())}-${r}` }
+
+/* ===== timer helpers: pause, time's up, +5 min extensions, hold while scoring ===== */
+let timesUpPending=false, MODAL_CLOSE_HOOK=null;
+function setPaused(v){ S.paused=!!v; $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); $('#timer').classList.toggle('paused',S.paused) }
+const stepLeft=()=>step().dur+(S.extra||0)-S.stepElapsed;
+function extendStep(){ S.extra=(S.extra||0)+300; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); renderTimer(); save(); toast(`+5 minutes added to ${step().name}.`) }
+function renderTimer(){ if(!S||S.mode==='free')return; const left=stepLeft(); $('#tval').textContent=fmt(Math.max(0,left)); $('#timer').classList.toggle('over',left<=0); $('#tExt').hidden=!S.upShown }
+function timesUpDialog(){ const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300);
+  const m=modal(`<div class="hd"><div class="kick">Step ${S.step+1} · ${esc(st.name)}</div><h2>Time's up!</h2><p class="lead" style="margin:6px 0 0">${esc(st.name)} has used its ${Math.round(st.dur/60)} minutes${ext?` and ${ext*5} extra minute${ext*5>1?'s':''}`:''}. The timer is paused.</p></div>
+   <div class="bd"><p style="margin:0">Need a little longer? Add 5 minutes. You can add more time as many times as you need.</p></div>
+   <div class="ft"><button class="btn" id="tuExt">+5 minutes</button><button class="btn primary" id="tuNext">${nx?`Move on to ${esc(nx.name)}`:'Finish the game'}</button></div>`);
+  m.querySelector('#tuExt').onclick=()=>{ closeModal(); extendStep() };
+  m.querySelector('#tuNext').onclick=()=>{ closeModal(); if(nx) goStep(S.step+1); else finish() } }
+// scoring dialogs hold the clock until the team closes them
+function holdTimer(){ if(!S||S.mode==='free'||MODAL_CLOSE_HOOK)return; const was=S.paused; setPaused(true); $('#timer').classList.add('held');
+  MODAL_CLOSE_HOOK=()=>{ $('#timer').classList.remove('held'); if(!was&&!S.upShown)setPaused(false) }; toast('Timer paused while you score.') }
+
+/* ===== moving between steps always asks first, and never while the room shape is being drawn ===== */
+function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return;
+  if(DRAW){ toast('Finish editing the room first: press Done or Cancel on the drawing bar.'); return }
+  if(i>=steps().length){ const m=modal(`<div class="hd"><div class="kick">Last step</div><h2>Finish the game?</h2><p class="lead" style="margin:6px 0 0">You'll see the summary of your design. Check your team is done first.</p></div><div class="ft"><button class="btn ghost" data-close>Not yet</button><button class="btn primary" id="asGo">Finish</button></div>`); m.querySelector('#asGo').onclick=()=>{closeModal();finish()}; return }
+  const cur=step(), to=steps()[i], left=stepLeft(), back=i<S.step;
+  const m=modal(`<div class="hd"><div class="kick">Step ${S.step+1} · ${esc(cur.name)}</div><h2>${back?'Go back to':'Move on to'} ${esc(to.name)}?</h2>
+    <p class="lead" style="margin:6px 0 0">${back?`You can go back to fix something. The timer for ${esc(to.name)} starts again.`:`You still have ${left>0?fmt(left):'no time'} left in ${esc(cur.name)}. Make sure everyone in your team is ready before moving on.`}</p></div>
+    <div class="ft"><button class="btn ghost" data-close>Stay in ${esc(cur.name)}</button><button class="btn primary" id="asGo">${back?'Go back':'Yes, move on'}</button></div>`);
+  m.querySelector('#asGo').onclick=()=>{ closeModal(); goStep(i) } }
+
+/* ===== optional Google Sheets project log (off until SHEETS_URL is set). Needs the game hosted outside the Claude viewer. ===== */
+const SHEETS_URL='';   // paste the Apps Script web app URL (ends in /exec)
+const SHEETS_KEY='';   // the same KIT_KEY word as in the Apps Script
+let sheetT=null;
+function sheetPayload(){ const c=lastCheck.ctx||{}, L=lastCheck.list||[], sc=scoreNow();
+  return {key:SHEETS_KEY,projectId:S.pid,mode:MODES[S.mode].name,space:SPACES[S.space].name,team:S.team,step:step().name,finished:!!S.finished,
+    seats:c.seats,classSize:c.cls,cost:Math.round(c.cost||0),budget:c.budgetCap,checks:`${L.filter(x=>x.ok).length}/${L.length}`,feas:`${sc.val}/${sc.max}`,
+    scenarios:S.hand.r.map(n=>SCEN[n-1][0]).join('; '),inspiration:Object.entries(S.tags||{}).filter(([,t])=>t).map(([n,t])=>`${t}: ${INSP[n][0]}`).join('; '),
+    prompts:S.hand.g.map(n=>PROMPTS[n-1]).join(' | '),
+    layout:{room:S.room,inner:S.inner||[],fixtures:S.fix,zones:S.zones,groups:S.groups||{},items:S.items.map(i=>({type:i.type,x:i.x,z:i.z,rot:i.rot,...(i.grp?{grp:i.grp,gi:i.gi}:{}),...(i.folded?{folded:1}:{}),...(i.on?{on:i.on,lvl:i.lvl,ox:i.ox}:{})}))} } }
+function syncSheet(now){ if(!SHEETS_URL||!S)return; clearTimeout(sheetT); sheetT=setTimeout(()=>{ try{ fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(sheetPayload())}).catch(()=>{}) }catch(e){} },now?0:1500) }
+
 /* ================= GAME FLOW ================= */
 const steps=()=>MODES[S.mode].steps; const step=()=>steps()[S.step];
 function renderSteps(){
-  $('#steps').innerHTML=steps().map((s,i)=>`<button class="stp ${i<S.step?'done':''} ${i===S.step?'cur':''}" data-step="${i}"><i>${i<S.step?'✓':i+1}</i><span>${esc(s.name)}</span></button>`).join('');
+  $('#steps').innerHTML=steps().map((s,i)=>`<button class="stp ${i<S.step?'done':''} ${i===S.step?'cur':''}" data-step="${i}" ${DRAW&&i!==S.step?'aria-disabled="true" title="Finish editing the room first"':''}><i>${i<S.step?'✓':i+1}</i><span>${esc(s.name)}</span></button>`).join(''); $('#steps').classList.toggle('locked',!!DRAW);
   $('#timer').hidden = S.mode==='free';
 }
-$('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b)goStep(+b.dataset.step)});
-function goStep(i){ if(i<0||i>=steps().length)return; S.step=i; S.stepElapsed=0; S.paused=false; onEnterStep(); renderSteps(); renderGuide(); save() }
-$('#tNext').onclick=()=>{ if(S.step<steps().length-1) goStep(S.step+1); else finish() };
-$('#tPause').onclick=()=>{ S.paused=!S.paused; $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); save() };
+$('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b)askStep(+b.dataset.step)});
+function goStep(i){ if(i<0||i>=steps().length)return; S.step=i; S.stepElapsed=0; S.extra=0; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); onEnterStep(); renderSteps(); renderGuide(); renderTimer(); save(); syncSheet() }
+$('#tNext').onclick=()=>askStep(S.step+1); $('#tExt').onclick=()=>extendStep();
+$('#tPause').onclick=()=>{ if(S.upShown){ timesUpDialog(); return } setPaused(!S.paused); save() };
 function onEnterStep(){
   const id=step().id;
   if(id==='deal'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
@@ -1859,26 +2101,28 @@ let lastT=performance.now(), lastSave=0;
 function tick(now){
   const dt=(now-lastT)/1000; lastT=now;
   if(S&&S.mode!=='free'&&!S.paused&&!S.finished&&!startOpen){
-    S.stepElapsed+=dt; const st=step(); const left=st.dur-S.stepElapsed;
-    $('#tval').textContent = left>=0?fmt(left):'+'+fmt(-left); $('#timer').classList.toggle('over',left<0);
-    if(st.twist&&!S.twistDone&&S.stepElapsed>=st.twist){ S.twistDone=true; toast('Twist! A prompt card has been drawn.'); draw('g') }
-    if(st.nudge){ for(const t of st.nudge){ if(S.stepElapsed>=t&&!S.nudged.includes(t)){ S.nudged.push(t); if(S.hand.g.length<3) toast('Time for the next green Prompt card.') } } }
+    S.stepElapsed+=dt; const st=step(); const left=stepLeft();
+    if(left<=0&&!S.upShown){ S.stepElapsed=st.dur+(S.extra||0); S.upShown=true; setPaused(true); $('#timer').classList.add('up'); timesUpPending=true; save() }
+    renderTimer();
+    if(st.twist&&!S.twistDone&&S.stepElapsed>=st.twist){ S.twistDone=true; toast('Twist! A prompt card has been drawn. Follow it on the room view.'); draw('g') }
+    if(st.nudge){ for(const t of st.nudge){ if(S.stepElapsed>=t&&!S.nudged.includes(t)){ S.nudged.push(t); if(S.hand.g.length&&S.promptAt<S.hand.g.length-1){ S.promptAt++; renderMission(); renderHands(); toast('Time for the next prompt: '+PROMPTS[S.hand.g[S.promptAt]-1]) } else if(!S.hand.g.length) toast('Time to draw your green Prompt cards.') } } }
     if(now-lastSave>5000){lastSave=now;save()}
   }
+  if(timesUpPending&&S&&!$('#mdl')&&!startOpen){ timesUpPending=false; timesUpDialog() }
 }
 
 function renderGuide(){
   const g=$('#guide'); const id=step().id; const sp=SPACES[S.space]; let h='';
   const K=(k,t)=>`<div class="k">${k}</div><h2>${t}</h2>`;
   if(id==='intro') h=K('Step 1 · Hook',`Design a ${esc(sp.name)}`)+`<p>${esc(sp.blurb)}</p><p>You'll get a <b style="color:#ff8a8f">red problem card</b>, then build a layout with real-size furniture. Halfway, a <b style="color:#7fd89a">green twist card</b> pushes your idea further.</p><div class="acts"><button class="btn primary" data-go="next">Deal my challenge</button></div>`;
-  if(id==='deal') h=K('Step 2 · Deal','Read your challenge')+`<p>Your red card is the problem to solve. The right panel shows what the game will check.</p><p>Peek at the 5 blue idea cards for this space before you build.</p><div class="acts"><button class="btn blue" data-go="peek">Peek at ideas</button><button class="btn primary" data-go="next">Start building</button></div>`;
+  if(id==='deal') h=K('Step 2 · Deal','Read your challenge')+`<p>Your red card is the problem to solve. The right panel shows what the game will check.</p><p>Peek at the 5 blue idea cards for this space. Tag the ones you like <b>Borrow</b>, <b>Adapt</b> or <b>Avoid</b> to see what to do next.</p><div class="acts"><button class="btn blue" data-go="peek">Peek at ideas</button><button class="btn primary" data-go="next">Start building</button></div>`;
   if(id==='build') h=K('Step 3 · Build','Solve it with furniture')+`<ul><li>Tap furniture on the left to add it, then drag it into place.</li><li>Select an item to rotate, copy or delete it.</li><li>Turn on <b>Walkways</b> to see clear paths.</li></ul><p>A twist card arrives at the halfway mark.</p><div class="acts"><button class="btn primary" data-go="next">Done, let's pitch</button></div>`;
   if(id==='pitch') h=K('Step 4 · Pitch','20 seconds to pitch')+`<label class="lbl" for="pA" style="display:block;margin-top:6px">Our challenge was…</label><input id="pA" value="${esc(S.pitch.a)}" placeholder="${esc(S.hand.r[0]?SCEN[S.hand.r[0]-1][0]:'')}"><label class="lbl" for="pB" style="display:block;margin-top:10px">Our key move was…</label><input id="pB" value="${esc(S.pitch.b)}" placeholder="e.g. Mobile tables around a rug zone"><div class="acts"><button class="btn primary" data-go="next">Score our design</button></div>`;
   if(id==='score') h=K('Step 5 · Reality check','Is it feasible?')+`<p>Answer 3 quick questions, then see your result.</p><div class="acts"><button class="btn primary" data-go="score">Open score</button></div>`;
   if(id==='orient') h=K('Step 1 · Orientation · 10 min',`Your space: ${esc(sp.name)}`)+`<p>${esc(sp.blurb)} Every decision follows the 3-Point Approach.</p><div class="pp3"><div style="background:var(--red-s)"><b style="color:#ff8a8f">Prepare</b>Light, sound, air, walls</div><div style="background:var(--blue-s)"><b style="color:#9ab6ff">Position</b>How seats &amp; zones are arranged</div><div style="background:var(--green-s)"><b style="color:#7fd89a">Provide</b>Furniture &amp; tech, in budget</div></div><div class="acts"><button class="btn" data-go="roles">Set team roles</button><button class="btn primary" data-go="next">Start Awareness</button></div>`;
-  if(id==='aware') h=K('Step 2 · Awareness · Prepare · 20 min','Face 3 real constraints')+`<ul><li>Draw <b>3 red Scenario</b> cards.</li><li>Discuss how each one affects this room.</li><li>Use <b>+ Zone</b> to colour in noise zones, quiet corners, paths and hazards on the floor.</li></ul><div class="acts"><button class="btn red" data-go="drawR">Draw a Scenario</button><button class="btn primary" data-go="next">Next: Inspiration</button></div>`;
-  if(id==='inspire') h=K('Step 3 · Inspiration · Position · 15 min','Borrow, adapt or avoid')+`<ul><li>Draw <b>3 blue Inspiration</b> cards.</li><li>Tag each one Borrow, Adapt or Avoid.</li><li>Shortlist the layout ideas you'll use.</li></ul><div class="acts"><button class="btn blue" data-go="drawB">Draw Inspiration</button><button class="btn primary" data-go="next">Next: Build</button></div>`;
-  if(id==='explore') h=K('Step 4 · Exploration · Provide · 30 min','Prototype the layout')+`<ul><li>Build with the furniture. Budget Checker watches the bar up top.</li><li>Draw a <b>green Prompt</b> about every 8 minutes and test the layout against it.</li><li>Last 5 min: invite another table for a walkthrough.</li></ul><div class="acts"><button class="btn green" data-go="drawG">Draw a Prompt</button><button class="btn primary" data-go="next">Next: Feasibility</button></div>`;
+  if(id==='aware') h=K('Step 2 · Awareness · Prepare · 20 min','Face 3 real constraints')+`<ul><li>Draw your <b>3 red Scenario</b> cards. They come all at once, and you can redraw one.</li><li>Discuss how each one affects this room.</li><li>Use <b>+ Zone</b> to colour in noise zones, quiet corners, paths and hazards on the floor.</li></ul><div class="acts"><button class="btn red" data-go="drawR">${S.hand.r.length?'See Scenarios':'Draw Scenarios'}</button><button class="btn primary" data-go="next">Next: Inspiration</button></div>`;
+  if(id==='inspire') h=K('Step 3 · Inspiration · Position · 15 min','Borrow, adapt or avoid')+`<ul><li>Draw your <b>3 blue Inspiration</b> cards (one redraw allowed).</li><li>Tag each one <b>Borrow</b>, <b>Adapt</b> or <b>Avoid</b>. Each tag shows you what to do next.</li><li>Your choices build <b>Our idea plan</b> on the right.</li></ul><div class="acts"><button class="btn blue" data-go="drawB">${S.hand.b.length?'See Inspiration':'Draw Inspiration'}</button><button class="btn primary" data-go="next">Next: Build</button></div>`;
+  if(id==='explore') h=K('Step 4 · Exploration · Provide · 30 min','Prototype the layout')+`<ul><li>Build with the furniture. Budget Checker watches the bar up top.</li><li>Draw your <b>3 green Prompts</b>. Follow the one pinned on the room view; the next one comes up every 8 minutes.</li><li>Last 5 min: invite another table for a walkthrough.</li></ul><div class="acts"><button class="btn green" data-go="drawG">${S.hand.g.length?'See Prompts':'Draw Prompts'}</button><button class="btn primary" data-go="next">Next: Feasibility</button></div>`;
   if(id==='feas') h=K('Step 5 · Feasibility · 15 min','Pass the filter')+`<p>Score the 10 checks. Under 8? Fix the weakest area and score again.</p><div class="acts"><button class="btn primary" data-go="feas">Open scoring sheet</button><button class="btn" data-go="next">Next: Showcase</button></div>`;
   if(id==='show') h='';
   if(id==='act') h=K('Step 7 · Action · 10 min','Plan your pilot')+`<div class="acts"><button class="btn primary" data-go="plan">Open action plan</button><button class="btn" data-go="finish">Finish &amp; see summary</button></div>`;
@@ -1914,8 +2158,8 @@ function feasDialog(){
   runChecks();
   const render=()=>{ let last=''; return FEAS.map((f,i)=>{const grp=f[0]!==last?`<div class="fgroup">${f[0]==='User'?'User · 3 points':f[0]==='Value'?'Value proposition · 3 points':'Resources & support · 4 points'}</div>`:''; last=f[0];
     return grp+`<div class="fq"><span class="no">${i+1}</span><div class="q"><b>${f[1]}</b><small>${esc(f[2])}</small>${f[3]?checkHint(f[3]):''}<input id="why${i}" value="${esc(S.why[i])}" placeholder="Why / why not?"></div><div class="yn"><button class="y ${S.feas[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.feas[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`}).join('') };
-  const m=modal(`<div class="hd"><div class="kick">Feasibility Strengthening Framework</div><h2>Score your design <span class="num" id="fs" style="color:var(--gold)"></span></h2><p class="lead" style="margin:6px 0 0">1 point per Yes. 8 or more is a strong, feasible design.</p></div>
-   <div class="bd"><div class="feas" id="fl">${render()}</div></div><div class="ft"><button class="btn" data-close>Back to building</button><button class="btn primary" id="fDone">See result</button></div>`);
+  const m=modal(`<div class="hd"><div class="kick">Feasibility Strengthening Framework</div><h2>Score your design <span class="num" id="fs" style="color:var(--gold)"></span></h2><p class="lead" style="margin:6px 0 0">1 point per Yes. 8 or more is a strong, feasible design. The timer is paused until you close this.</p></div>
+   <div class="bd"><div class="feas" id="fl">${render()}</div></div><div class="ft"><button class="btn" data-close>Back to building</button><button class="btn primary" id="fDone">See result</button></div>`); holdTimer();
   const upd=()=>{$('#fs').textContent=`${S.feas.filter(x=>x===1).length}/10`};upd();
   m.querySelector('#fl').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const i=+b.dataset.i,v=+b.dataset.v;S.feas[i]=S.feas[i]===v?null:v;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.feas[i]));upd();save()});
   m.querySelector('#fl').addEventListener('input',e=>{const k=e.target.id.match(/^why(\d+)$/);if(k){S.why[+k[1]]=e.target.value;save()}});
@@ -1925,7 +2169,7 @@ function quickScoreDialog(){
   runChecks();
   const Q=['Works for students and teachers?','Affordable to build?','Would school leaders back it?'];
   const m=modal(`<div class="hd"><div class="kick">Reality check</div><h2>Thumbs up or down?</h2></div><div class="bd"><div class="thumbs" id="th">${Q.map((q,i)=>`<div class="row"><span>${q}</span><div class="yn"><button class="y ${S.thumbs[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.thumbs[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`).join('')}</div></div>
-   <div class="ft"><button class="btn" data-close>Back</button><button class="btn primary" id="qDone">See result</button></div>`);
+   <div class="ft"><button class="btn" data-close>Back</button><button class="btn primary" id="qDone">See result</button></div>`); holdTimer();
   m.querySelector('#th').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const i=+b.dataset.i,v=+b.dataset.v;S.thumbs[i]=S.thumbs[i]===v?null:v;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.thumbs[i]));save()});
   m.querySelector('#qDone').onclick=()=>results();
 }
@@ -1956,7 +2200,7 @@ function results(){
    <div class="ft"><button class="btn" id="rBack" data-close>Keep improving</button><button class="btn" id="rJson">Save layout (.json)</button><button class="btn" id="rPng">Save summary picture</button><button class="btn primary" id="rNew">New game</button></div>`,{wide:true});
   $('#rPng').onclick=exportPng; $('#rJson').onclick=exportJson; $('#rNew').onclick=()=>{closeModal();openStart()};
 }
-function finish(){ S.finished=true; save(); results() }
+function finish(){ S.finished=true; save(); syncSheet(true); results() }
 
 /* showcase */
 let showOn=false;
@@ -1981,7 +2225,7 @@ async function saveFile(filename,data){
   if(!downloads){ toast('Saving files is not available in this view.'); return }
   try{ await downloads.save({filename,data}); toast('Saved') }catch(e){ if(e?.code!=='declined') toast('Could not save: '+(e?.message||'unavailable')) }
 }
-function exportJson(){ saveFile(`sdkit-${S.space}-layout.json`, JSON.stringify({kit:'SP FabLab Space Design Kit',version:1,space:S.space,team:S.team,room:S.room,inner:S.inner||[],fixtures:S.fix,zones:S.zones,groups:S.groups||{},items:S.items.map(it=>({id:it.uid,type:it.type,name:DEF[it.type].name,...(it.on?{on:it.on,shelf:it.lvl||0,ox:it.ox}:{}),...(it.grp?{grp:it.grp,gi:it.gi}:{}),x:it.x,z:it.z,rot:+((it.rot||0)*180/Math.PI).toFixed(1),price:priceOf(it),...(it.len?{len:it.len}:{}),...(it.folded?{folded:true}:{})})),cards:S.hand,tags:S.tags,notes:S.notes,feasibility:S.feas,why:S.why,plan:S.plan},null,2)) }
+function exportJson(){ saveFile(`sdkit-${S.pid||S.space}-layout.json`, JSON.stringify({kit:'SP FabLab Space Design Kit',version:1,projectId:S.pid,mode:S.mode,space:S.space,team:S.team,room:S.room,inner:S.inner||[],fixtures:S.fix,zones:S.zones,groups:S.groups||{},items:S.items.map(it=>({id:it.uid,type:it.type,name:DEF[it.type].name,...(it.on?{on:it.on,shelf:it.lvl||0,ox:it.ox}:{}),...(it.grp?{grp:it.grp,gi:it.gi}:{}),x:it.x,z:it.z,rot:+((it.rot||0)*180/Math.PI).toFixed(1),price:priceOf(it),...(it.len?{len:it.len}:{}),...(it.folded?{folded:true}:{})})),cards:S.hand,tags:S.tags,notes:S.notes,feasibility:S.feas,why:S.why,plan:S.plan},null,2)) }
 async function exportPng(){
   renderer.render(scene,camera);
   const W=1920,H=1080, cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
@@ -2001,7 +2245,7 @@ async function exportPng(){
 
 /* menu */
 $('#menuBtn').onclick=()=>{
-  const m=modal(`<div class="hd"><div class="kick">Menu</div><h2>${esc(MODES[S.mode].name)} · ${esc(SPACES[S.space].name)}</h2></div><div class="bd" style="display:grid;gap:10px">
+  const m=modal(`<div class="hd"><div class="kick">Menu · Project <span class="num" style="letter-spacing:.04em">${esc(S.pid||'')}</span></div><h2>${esc(MODES[S.mode].name)} · ${esc(SPACES[S.space].name)}</h2></div><div class="bd" style="display:grid;gap:10px">
    <button class="btn" id="mScore">Score &amp; results</button><button class="btn" id="mRoles">Team name &amp; roles</button><button class="btn" id="mPng">Save summary picture (.png)</button><button class="btn" id="mJson">Save layout (.json)</button>
    <label class="btn" for="mLoad" style="cursor:pointer">Load a saved layout (.json)<input type="file" id="mLoad" accept=".json,application/json" hidden></label>
    <button class="btn" id="mClear">Clear all furniture</button><button class="btn primary" id="mNew">New game</button>
@@ -2010,7 +2254,7 @@ $('#menuBtn').onclick=()=>{
   $('#mScore').onclick=()=>{S.mode==='quick'?quickScoreDialog():feasDialog()}; $('#mRoles').onclick=rolesDialog; $('#mPng').onclick=()=>{closeModal();exportPng()}; $('#mJson').onclick=exportJson;
   $('#mNew').onclick=()=>{closeModal();openStart()};
   $('#mClear').onclick=e=>{ if(e.target.dataset.sure){ S.items=[];syncAll();select(null);runChecks();renderCatalogCount();save();closeModal();toast('Room cleared') } else { e.target.dataset.sure=1; e.target.textContent='Tap again to clear everything'; e.target.classList.add('red') } };
-  $('#mLoad').onchange=async e=>{ const f=e.target.files[0]; if(!f)return; try{ const j=JSON.parse(await f.text()); if(!j.items||!SPACES[j.space])throw 0; S.space=j.space; const idm={}; S.items=j.items.filter(i=>DEF[i.type]).map(i=>({...(i.on?{_on:i.on,lvl:+i.shelf||0,ox:+i.ox||0}:{}),_id:i.id,uid:(idm[i.id]=S.uid++),type:i.type,x:+i.x,z:+i.z,rot:(+i.rot||0)*Math.PI/180,...(i.len?{len:+i.len}:{}),...(i.folded?{folded:true}:{}),...(i.grp?{grp:i.grp,gi:+i.gi}:{})})); S.items.forEach(i=>{ if(i._on!==undefined&&idm[i._on])i.on=idm[i._on]; delete i._on; delete i._id }); S.groups=j.groups||{}; S.inner=j.inner||[]; S.room=j.room||null; S.fix=j.fixtures||null; S.boardSet=!!j.fixtures; S.zones=j.zones||null; S.notes=j.notes||[]; S.under=null; S.team=j.team||S.team; buildRoom(); syncAll(); fitView(); runChecks(); renderNotes(); renderCatalogCount(); save(); closeModal(); toast('Layout loaded') }catch(err){ toast('That file is not a Space Design Kit layout.') } };
+  $('#mLoad').onchange=async e=>{ const f=e.target.files[0]; if(!f)return; try{ const j=JSON.parse(await f.text()); if(!j.items||!SPACES[j.space])throw 0; S.space=j.space; const idm={}; S.items=j.items.filter(i=>DEF[i.type]).map(i=>({...(i.on?{_on:i.on,lvl:+i.shelf||0,ox:+i.ox||0}:{}),_id:i.id,uid:(idm[i.id]=S.uid++),type:i.type,x:+i.x,z:+i.z,rot:(+i.rot||0)*Math.PI/180,...(i.len?{len:+i.len}:{}),...(i.folded?{folded:true}:{}),...(i.grp?{grp:i.grp,gi:+i.gi}:{})})); S.items.forEach(i=>{ if(i._on!==undefined&&idm[i._on])i.on=idm[i._on]; delete i._on; delete i._id }); S.groups=j.groups||{}; S.inner=j.inner||[]; S.room=j.room||null; S.fix=j.fixtures||null; S.boardSet=!!j.fixtures; S.zones=j.zones||null; S.notes=j.notes||[]; S.under=null; S.team=j.team||S.team; if(j.projectId)S.pid=j.projectId; buildRoom(); syncAll(); fitView(); runChecks(); renderNotes(); renderCatalogCount(); save(); closeModal(); toast('Layout loaded') }catch(err){ toast('That file is not a Space Design Kit layout.') } };
 };
 
 /* ================= START SCREEN ================= */
@@ -2032,7 +2276,7 @@ function openStart(){
     </div><div class="r"></div></div>`;
     root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;draw_()});
     root.querySelectorAll('[data-space]').forEach(b=>b.onclick=()=>{space=b.dataset.space;draw_()});
-    $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode,space); S.team=team; closeStart(); boot(); onEnterStep()};
+    $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode,space); S.team=team; closeStart(); boot(); onEnterStep(); syncSheet()};
     $('#stCont')?.addEventListener('click',()=>{S=saved;closeStart();boot()});
   };
   draw_(); attract=true; orbit.autoRotate=true; orbit.autoRotateSpeed=.8;
@@ -2040,10 +2284,10 @@ function openStart(){
 let attract=false;
 function closeStart(){ startOpen=false; $('#startRoot').innerHTML=''; attract=false; orbit.autoRotate=false; lastT=performance.now() }
 function boot(){
-  UNDO=[]; lastLay=null;
+  UNDO=[]; lastLay=null; if(!S.pid)S.pid=newPid(); if(S.extra==null)S.extra=0; if(S.promptAt==null)S.promptAt=0; S.keep=S.keep||{}; S.avoidWhy=S.avoidWhy||{}; if(S.mode==='free'&&MODES.free.limits.r===3)for(const k of ['r','b','g'])if(S.hand[k].length>3){ S.deck[k].push(...S.hand[k].slice(3)); S.hand[k]=S.hand[k].slice(0,3) }
   if(S.groups)for(const G of Object.values(S.groups))G.piece=FORM_PIECE(G.kind); S.items=(S.items||[]).filter(i=>DEF[i.type]); for(const id of Object.keys(S.groups||{})) if(!S.items.some(i=>i.grp===id)) delete S.groups[id]; for(const id of Object.keys(S.groups||{})) buildGroupData(id);
   $('#spaceLbl').textContent=SPACES[S.space].name; selected=null; selFix=null; selWall=null; buildRoom(); syncAll(); renderSelTool(); resize(); fitView(false);
-  renderCatalog(); renderHands(); renderNotes(); renderSteps(); renderGuide(); renderSnap(); renderWalls(); renderLock(); renderUndo(); runChecks(); buildZones(); hideWalk(); showWalk=false; $('#vWalk').classList.remove('on');
+  if(innerWidth<=820)$('#mission').classList.add('min'); renderCatalog(); renderHands(); renderPlan(); renderMission(); renderNotes(); renderSteps(); renderGuide(); renderTimer(); renderSnap(); renderWalls(); renderLock(); renderUndo(); runChecks(); buildZones(); hideWalk(); showWalk=false; $('#vWalk').classList.remove('on');
   $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); showcase(step().id==='show'); save();
 }
 
