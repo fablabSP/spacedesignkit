@@ -28,6 +28,8 @@ textarea{resize:vertical;min-height:56px}
 .brand{display:flex;align-items:center;gap:10px;flex:none}
 .brand .mark{width:30px;height:30px;border-radius:8px;display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:4px;background:var(--panel-3)}
 .brand .mark i{border-radius:2px}
+.beta{display:inline-block;vertical-align:middle;font-family:var(--f-body,inherit);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:2px 6px;border-radius:5px;background:var(--gold);color:#1b1400;margin-left:4px;position:relative;top:-1px}
+.eyebrow .beta{font-size:11px}
 .brand b{font-family:var(--f-display);font-weight:800;font-size:17px;letter-spacing:-.01em;white-space:nowrap}
 .brand small{display:block;font-size:11px;color:var(--mute);font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .steps{display:flex;gap:4px;min-width:0;overflow-x:auto;scrollbar-width:none;flex:1}
@@ -87,6 +89,13 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .it .chips em{font-style:normal;font-size:10px;font-weight:700;letter-spacing:.02em;color:#c7d2e6;background:var(--panel-3);padding:1px 6px;border-radius:4px}
 .cat{display:grid;justify-items:center;gap:3px;padding:7px 2px 6px;border-radius:10px;font-size:11px;font-weight:700;color:var(--mute);background:var(--panel-2);border:1px solid transparent}
 .cat .ic{width:18px;height:18px}
+.cat:disabled{opacity:.3;cursor:not-allowed}
+.lockpane{display:grid;justify-items:center;text-align:center;gap:8px;padding:36px 18px;color:var(--mute)}
+.lockpane .ic{width:34px;height:34px;color:var(--gold)}
+.lockpane b{color:var(--txt);font-size:15px}
+.lockpane p{margin:0;font-size:13px;line-height:1.5}
+.cat:disabled:hover{color:var(--mute);border-color:transparent}
+.dk.hero.dim{opacity:.45}
 .cat:hover{color:var(--txt);border-color:var(--line-2)}
 .cat.on{background:var(--txt);color:var(--bg)}
 .items{padding:8px;display:grid;gap:4px}
@@ -319,6 +328,33 @@ html,body{overscroll-behavior:none}
 .mode small{color:var(--mute);font-size:12.5px;line-height:1.35}
 .mode.on{border-color:var(--gold);background:var(--panel-3)}
 .spaces{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.space span{display:block;line-height:1.25;font-size:11.5px;font-weight:700;color:var(--mute);padding:6px 2px 2px;text-align:center}
+.space.on span{color:var(--txt)}
+.spfeat{display:grid;grid-template-columns:minmax(0,170px) 1fr;gap:20px;align-items:center;margin-top:14px;padding:16px;border-radius:16px;background:rgba(26,43,79,.75);border:1px solid var(--line-2)}
+.spfeat img{width:100%;border-radius:12px;box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.spfeat .k{font-size:11.5px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.spfeat h2{font-family:var(--f-display);font-weight:800;font-size:clamp(26px,3vw,36px);line-height:1.05;margin:4px 0 8px;letter-spacing:-.02em}
+.spfeat p{font-size:18px;line-height:1.45;margin:0 0 12px;color:#e6ebf5}
+.spfeat .facts{display:flex;flex-wrap:wrap;gap:8px}
+.spfeat .facts span{display:grid;padding:8px 12px;border-radius:10px;background:var(--panel-2);border:1px solid var(--line);font-size:12px;color:var(--mute)}
+.spfeat .facts b{font-size:17px;color:var(--txt);font-family:var(--f-mono)}
+.start .r .spfeat.big{display:grid;grid-template-columns:1fr;justify-items:center;text-align:center;gap:18px;width:min(480px,100%);padding:28px;background:rgba(19,33,63,.88);backdrop-filter:blur(8px)}
+.start .r .spfeat.big img{width:min(260px,70%)}
+.start .r .spfeat.big h2{font-size:clamp(32px,3.4vw,46px)}
+.start .r .spfeat.big p{font-size:20px}
+.start .r .spfeat.big .facts{justify-content:center}
+.start .r .spfeat.big .facts b{font-size:20px}
+@media (min-width:821px){.start .l .spfeat{display:none}.start .r{align-items:center;justify-content:center}}
+.stfs{position:fixed;top:16px;right:16px;z-index:41}
+.stfs .ic{width:18px;height:18px}
+@media (max-width:820px){.spfeat{grid-template-columns:110px 1fr;gap:14px}.spfeat p{font-size:16px}.space span{display:none}}
+.tour{position:fixed;inset:0;z-index:95}
+.tring{position:fixed;border-radius:14px;box-shadow:0 0 0 9999px rgba(5,10,24,.66);border:2px solid var(--gold);pointer-events:none;transition:all .25s}
+.tbub{position:fixed;width:min(340px,calc(100vw - 16px));background:var(--panel);border:1px solid var(--gold);border-radius:14px;padding:14px 16px;box-shadow:0 20px 50px rgba(0,0,0,.55)}
+.tbub .tk{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.tbub b{display:block;font-family:var(--f-display);font-size:19px;margin:4px 0 6px}
+.tbub p{margin:0;font-size:14px;line-height:1.5;color:#d3dbea}
+.tbub .tact{display:flex;align-items:center;gap:6px;margin-top:12px}.tbub .tact span{flex:1}
 .space{border-radius:10px;overflow:hidden;border:3px solid transparent;line-height:0;position:relative;transition:transform .15s}
 .space img{width:100%;height:auto}
 .space:hover{transform:translateY(-3px)}
@@ -423,7 +459,7 @@ html,body{overscroll-behavior:none}
   <header class="top">
     <div class="brand">
       <div class="mark"><i style="background:var(--red)"></i><i style="background:var(--blue)"></i><i style="background:var(--green)"></i><i style="background:var(--gold)"></i></div>
-      <div><b>Space Design Kit</b><small id="spaceLbl">SP FabLab</small></div>
+      <div><b>Space Design Kit <span class="beta">Beta</span></b><small id="spaceLbl">SP FabLab</small></div>
     </div>
     <nav class="steps" id="steps" aria-label="Game steps"></nav>
     <div class="timer" id="timer"><span class="t num" id="tval">10:00</span>
@@ -432,6 +468,7 @@ html,body{overscroll-behavior:none}
       <button id="tNext" title="Next step" aria-label="Next step"><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="budget" id="budget"><div class="row"><span>Spent / budget</span><b id="bval">$0</b></div><div class="bar"><i id="bbar" style="width:0"></i></div></div>
+    <button class="iconbtn" id="tourBtn" title="How to play" aria-label="How to play"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg></button>
     <button class="iconbtn" id="fsBtn" title="Full screen" aria-label="Full screen" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path id="fsIc" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button class="iconbtn" id="menuBtn" title="Menu" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </header>
@@ -664,9 +701,9 @@ const RULES = {
 const ZONE = {chat:'discussion',make:'making',digital:'digital',quiet:'quiet'};
 
 const MODES = {
- quick:{name:'Quick round',time:'10 min',desc:'One challenge, one twist, one fast build. Made for booths and open houses.',limits:{r:1,b:3,g:1},
+ quick:{name:'Quick round',time:'5 + 10 min',desc:'Up to 5 minutes to set up the room, then a 10-minute round: challenge, ideas, furniture, prompt, rate. Made for booths and open houses.',limits:{r:1,b:3,g:1},
   steps:[
-   {id:'intro',name:'Hook',dur:60},{id:'deal',name:'Deal',dur:60},{id:'build',name:'Build',dur:240,twist:120},{id:'pitch',name:'Pitch',dur:120},{id:'score',name:'Score',dur:120}]},
+   {id:'hook',name:'Hook',dur:300,max:1},{id:'challenge',name:'Challenge',dur:60},{id:'ideas',name:'Ideas',dur:120},{id:'build',name:'Furniture',dur:240},{id:'prompt',name:'Prompt',dur:90},{id:'score',name:'Rate',dur:90}]},
  workshop:{name:'Full workshop',time:'2 hours',desc:'The 7-step SDKit process for a table of 4, from constraints to action plan.',limits:{r:3,b:3,g:3},
   steps:[
    {id:'orient',name:'Orientation',dur:600},{id:'aware',name:'Awareness',dur:1200},{id:'inspire',name:'Inspiration',dur:900},{id:'explore',name:'Exploration',dur:1800,nudge:[480,960,1440]},{id:'feas',name:'Feasibility',dur:900},{id:'show',name:'Showcase',dur:1200},{id:'act',name:'Action',dur:600}]},
@@ -1112,6 +1149,7 @@ const orbit = new OrbitControls(camera,canvas);
 orbit.enableDamping=true; orbit.dampingFactor=.08; orbit.maxPolarAngle=Math.PI*.47; orbit.minDistance=3; orbit.maxDistance=50; orbit.screenSpacePanning=false;
 
 window.addEventListener('keydown',e=>{
+  if(TOURI>=0){ if(e.key==='Escape'){endTour();e.preventDefault()} if(e.key==='ArrowRight'||e.key==='Enter'){TOURI++;renderTour(1);e.preventDefault()} if(e.key==='ArrowLeft'&&TOURI>0){TOURI--;renderTour(-1);e.preventDefault()} return }
   if(e.key==='Escape'&&pickEl){ closePick(); e.preventDefault(); return }
   if(e.key==='Escape'&&$('#mdl')){ const c=$('#mdl [data-close]'); if(c)c.click(); else closeModal(); e.preventDefault(); return }
   if(e.target.closest('input,textarea,select'))return;
@@ -1149,6 +1187,7 @@ function buildZones(prev){
   }
 }
 function addItem(type,at){
+  if(furnLocked()&&!catOpen(DEF[type]?.cat)){ toast(lockMsg()); return }
   const def=DEF[type]; const it={uid:S.uid++,type,x:0,z:0,rot:0}; if(type==='pwall')it.len=2;
   if(at){ const dm=dims(it); it.rot=def.cat==='seat'&&def.id!=='steps'?Math.PI:0; const ex=dm.w/2, ez=dm.d/2; it.x=SNAP?+(sn(at.x-ex,SNAP)+ex).toFixed(3):+at.x.toFixed(2); it.z=SNAP?+(sn(at.z-ez,SNAP)+ez).toFixed(3):+at.z.toFixed(2);
     if(def.wall) wallSnap(it,at.x,at.z,SNAP||0,99) }
@@ -1213,6 +1252,7 @@ function buildGroup(id){ const G=S.groups[id]; S.items.filter(i=>i.grp===id).for
 function buildGroupData(id){ const G=S.groups[id], L=formLayout(G.kind,G.chairs,G.piece,G.chair); const its=S.items.filter(i=>i.grp===id); if(its.length===L.length&&its.every(i=>L[i.gi]&&L[i.gi].type===i.type))return; S.items=S.items.filter(i=>i.grp!==id); L.forEach((l,gi)=>{ const it={uid:S.uid++,type:l.type,grp:id,gi,...grpXform(G,l)}; if(l.folded)it.folded=true; S.items.push(it) }) }
 function applyGroup(id){ const G=S.groups[id], L=formLayout(G.kind,G.chairs,G.piece,G.chair); for(const it of S.items.filter(i=>i.grp===id)){ const l=L[it.gi]; if(!l)continue; Object.assign(it,grpXform(G,l)); const g=objs.get(it.uid); if(g){g.position.set(it.x,0,it.z);g.rotation.y=it.rot} } markOverlaps() }
 function placeFormation(kind,at){
+  if(furnLocked()){ toast(lockMsg()); return }
   S.groups=S.groups||{}; const id='g'+(S.uid++); const G={kind,chairs:true,x:CX(),z:CZ(),rot:0,piece:FORM_PIECE(kind)}; S.groups[id]=G;
   const L=formLayout(kind,true,G.piece,G.chair); const ok=()=>L.every(l=>{const t={type:l.type,folded:l.folded,...grpXform(G,l)}; return inRoom(t)&&(DEF[t.type].noblock||!S.items.some(o=>o.grp!==id&&!DEF[o.type].noblock&&obbOverlap(t,o,.02)))});
   if(at){G.x=at.x;G.z=at.z}
@@ -1355,10 +1395,18 @@ const itemRow=i=>`<button class="it" data-add="${i.id}"><span class="fp">${fpSvg
 let curSearch='';
 const KW={x1c:'3d printer bambu',a1:'3d printer bambu',a2l:'3d printer bambu',h2c:'3d printer bambu',printer:'3d printer',laser:'cutter',vinyl:'cutter',screen:'tv monitor display',tvwall:'tv monitor display screen',vc:'video camera hybrid zoom teams screen',wboard:'whiteboard board',teacher:'desk podium',screenp:'partition divider',pwall:'partition divider wall',rug:'carpet',cfan:'fan',wfan:'fan',cassette:'aircon air-con ac',fcu:'aircon air-con ac',rack:'shelf shelving',shelf:'shelving',cart:'trolley',kchair:'seat',chair:'seat',stool:'seat',tchair:'seat'};
 const formRow=k=>`<button class="it" data-form="${k}"><span class="fp">${formIcon(k)}</span><span class="tx"><b>${esc(FORMS[k])}</b><small>${FORM_NOTE[k]||'Tables + chairs as one group'}</small><span class="chips"><em>Group</em></span></span><span class="p"></span></button>`;
+const HOOK_CATS=['ceil','room'];
+const hookLock=()=>!!S&&S.mode==='quick'&&step()?.id==='hook';
+const cardLock=()=>!!S&&S.mode==='quick'&&['challenge','ideas'].includes(step()?.id);
+const furnLocked=()=>hookLock()||cardLock();
+const lockMsg=()=>hookLock()?'Design the room first. Furniture opens in step 4.':'Draw your cards first. Furniture opens in step 4.';
+const catOpen=k=>!cardLock()&&(!hookLock()||HOOK_CATS.includes(k));
 function renderCatalog(){
-  $('#cats').innerHTML=CATS.map(([k,n])=>`<button class="cat ${k===curCat&&!curSearch?'on':''}" data-cat="${k}" title="${esc(n)}"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${CATICON[k]}</svg><span>${CATSHORT[k]}</span></button>`).join('');
+  const HL=furnLocked(), CL=cardLock(); if(hookLock()&&!HOOK_CATS.includes(curCat))curCat='room'; if(HL&&curSearch){ curSearch=''; $('#fSearch').value='' } $('#fSearch').disabled=HL; $('#fSearch').placeholder=HL?'Opens in step 4':'Search furniture'; $('#left').classList.toggle('hooklock',HL);
+  $('#cats').innerHTML=CATS.map(([k,n])=>`<button class="cat ${k===curCat&&!curSearch&&!CL?'on':''}" data-cat="${k}" title="${catOpen(k)?esc(n):'Opens in step 4 · Furniture'}" ${catOpen(k)?'':'disabled aria-disabled="true"'}><svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${CATICON[k]}</svg><span>${CATSHORT[k]}</span></button>`).join('');
   if(curSearch){ const q=curSearch.toLowerCase(), its=ITEMS.filter(i=>i.cat!=='room'&&(i.name.toLowerCase().includes(q)||(KW[i.id]||'').includes(q)||CATSHORT[i.cat].toLowerCase().includes(q)||(CATS.find(c=>c[0]===i.cat)[1]).toLowerCase().includes(q))), fm=Object.keys(FORMS).filter(k=>(FORMS[k]+' '+(FORM_NOTE[k]||'')+' '+FORM_PIECE(k).replace('kfan','fan tables').replace('ltable','long tables').replace('stable','small tables')).toLowerCase().includes(q));
     $('#items').innerHTML=(its.length||fm.length)?`<div class="lbl sub">${its.length+fm.length} match${its.length+fm.length>1?'es':''} for “${esc(curSearch)}”</div>`+fm.map(formRow).join('')+its.map(itemRow).join(''):`<div class="note-s">Nothing matches “${esc(curSearch)}”. Try chair, table, printer or storage.</div>`; renderCatalogCount(); return }
+  if(CL){ $('#items').innerHTML=`<div class="lockpane"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><b>Furniture opens in step 4</b><p>First draw your cards: the <span style="color:#ff8a8f">red challenge</span> and the <span style="color:#9ab6ff">blue ideas</span>. Then you can build.</p></div>`; renderCatalogCount(); return }
   if(curCat==='room'){ $('#items').innerHTML=`<div id="roomPanel"></div>`+ITEMS.filter(i=>i.cat==='room').map(itemRow).join(''); renderRoomPanel() }
   else if(curCat==='table'){ $('#items').innerHTML=`<div class="forms">${[['kfan','Formations · fan tables'],['ltable','Layouts · long tables'],['stable','Layouts · small tables']].map(([pc,title])=>`<div class="lbl sub">${title}</div>${Object.keys(FORMS).filter(k=>FORM_PIECE(k)===pc).map(formRow).join('')}`).join('')}</div><div class="lbl sub">Single tables</div>`+ITEMS.filter(i=>i.cat===curCat).map(itemRow).join('') }
   else $('#items').innerHTML=ITEMS.filter(i=>i.cat===curCat).map(itemRow).join('')+(curCat==='ceil'?`<div class="note-s" style="padding-top:6px">Ceiling items hang from the ${roomH().toFixed(1)} m ceiling. Wall units snap to the nearest wall. Ceiling items can only be selected while this tab is open, so they never get in the way of the furniture below.</div>`:'');
@@ -1508,7 +1556,7 @@ $('#items').addEventListener('click',e=>{
   buildRoom(); runChecks(); renderRoomPanel(); save(); fitView(topView);
 });
 function renderCatalogCount(){ $('#itemCount').textContent=`${S?S.items.length:0} placed` }
-$('#cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(b){curCat=b.dataset.cat;curSearch='';$('#fSearch').value='';renderCatalog();$('#left .scroll').scrollTop=0}});
+$('#cats').addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(b&&!catOpen(b.dataset.cat)){toast(lockMsg());return} if(b){curCat=b.dataset.cat;curSearch='';$('#fSearch').value='';renderCatalog();$('#left .scroll').scrollTop=0}});
 $('#fSearch').addEventListener('input',e=>{curSearch=e.target.value.trim();renderCatalog()});
 $('#items').addEventListener('input',e=>{ if(!S.under)return; if(e.target.id==='uOp'){S.under.op=+e.target.value;buildRoom();save()} if(e.target.id==='uOn'){S.under.on=e.target.checked;buildRoom();save()} });
 
@@ -1747,7 +1795,7 @@ function toggleFS(){ const d=document, el=d.documentElement;
   if(!req||d.fullscreenEnabled===false||d.webkitFullscreenEnabled===false){ toast('Full screen is blocked in this view. Open the game in its own browser tab, then try again.'); return }
   try{ const p=req.call(el,{navigationUI:'hide'}); setTimeout(renderFS,400); p?.then?.(renderFS); p?.catch?.(()=>toast('Full screen is blocked in this view. Open the game in its own browser tab, then try again.')) }catch(e){ toast('Full screen is not available on this device.') } }
 function renderFS(){ const on=!!fsEl(), b=$('#fsBtn'); b.title=on?'Exit full screen':'Full screen'; b.setAttribute('aria-label',b.title); b.setAttribute('aria-pressed',on); $('#fsIc').setAttribute('d',on?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5') }
-$('#fsBtn').onclick=toggleFS; document.addEventListener('fullscreenchange',renderFS); document.addEventListener('webkitfullscreenchange',renderFS); addEventListener('resize',renderFS);
+$('#fsBtn').onclick=toggleFS; $('#tourBtn').onclick=()=>startTour(); document.addEventListener('fullscreenchange',renderFS); document.addEventListener('webkitfullscreenchange',renderFS); addEventListener('resize',renderFS);
 $('#vUndo').onclick=()=>undo(); $('#vInspire').onclick=()=>inspireDialog(); $('#vClear').onclick=()=>resetDialog(); $('#vLock').onclick=()=>toggleLock();
 function renderWalls(){ dkLabel('vWalls',WALLMODE==='full'?'Walls: full':'Walls: low'); $('#vWalls').classList.toggle('on',WALLMODE==='full') }
 $('#vWalls').onclick=()=>{ WALLMODE=WALLMODE==='full'?'low':'full'; try{localStorage.setItem('sdkit3d-walls',WALLMODE)}catch(e){} buildRoom(); renderWalls(); toast(WALLMODE==='full'?`Full-height walls (${roomH().toFixed(1)} m). Walls facing you fade out.`:'Low walls: easier to see the whole room') };
@@ -1891,7 +1939,7 @@ function inspireBuild(n,seed,chairT,tries=8){
   selected=null; selFix=null; selWall=null; selZone=null; drag=null; syncAll(); syncMounted(); renderNotes(); runChecks(); renderCatalog(); renderCatalogCount(); renderSelTool(); lastPush=0; save();
   return {seats:best.seats,target:T} }
 let INSP_LAST=null;
-function inspireDialog(n){ if(DRAW){toast('Finish or cancel the drawing first');return}
+function inspireDialog(n){ if(DRAW){toast('Finish or cancel the drawing first');return} if(furnLocked()){ toast(lockMsg().replace('Furniture opens','Inspire me! opens')); return }
   const list=SPACES[S.space].insp; if(n==null){ const pool=list.filter(k=>k!==INSP_LAST); n=pool[Math.floor(Math.random()*pool.length)] } INSP_LAST=n;
   const has=S.items.some(i=>!DEF[i.type]?.ceil), [title,desc]=INSP[n];
   const m=modal(`<div class="hd"><div class="kick">Inspire me · ${esc(SPACES[S.space].name)}</div><h2>${esc(title)}</h2><p class="lead" style="margin:6px 0 0">${esc(desc)}</p></div>
@@ -1938,7 +1986,9 @@ function cardInfo(k,n){
 }
 /* ===== cards: draw the whole hand at once, one redraw per deck ===== */
 const DECKN={r:'Scenario',b:'Inspiration',g:'Prompt'}, DECKC={r:'var(--red)',b:'#7ea2ff',g:'var(--green)'};
-function draw(k){ const lim=MODES[S.mode].limits[k], need=Math.min(lim-S.hand[k].length,S.deck[k].length);
+const DECK_STEP={r:'challenge',b:'ideas',g:'prompt'};
+function draw(k){ if(S.mode==='quick'&&!S.hand[k].length){ const at=steps().findIndex(x=>x.id===DECK_STEP[k]); if(at>S.step){ toast(`${DECKN[k]} cards come in step ${at+1} · ${steps()[at].name}.`); return } }
+  const lim=MODES[S.mode].limits[k], need=Math.min(lim-S.hand[k].length,S.deck[k].length);
   if(need<=0){ if(S.hand[k].length) handDialog(k,false); return }
   const got=[]; for(let i=0;i<need;i++){ const n=S.deck[k].shift(); S.hand[k].push(n); got.push(n) }
   renderHands(); renderMission(); runChecks(); save(); handDialog(k,true,got) }
@@ -2006,9 +2056,9 @@ const AVOID_WHY={cost:['Too costly','Keep an eye on the budget bar at the top. M
 const addLabel=([t,id])=>t==='form'?`${FORMS[id]} (${FORM_PIECE(id)==='kfan'?'fan tables':FORM_PIECE(id)==='ltable'?'long tables':'small tables'})`:DEF[id].name;
 function baaButtons(n){ return `<div class="baa" data-baa="${n}">${['Borrow','Adapt','Avoid'].map(t=>`<button data-t="${t}" class="${S.tags[n]===t?'on':''}">${t}</button>`).join('')}</div>` }
 function nextHTML(n){ const t=S.tags[n], K=INSP_KEY[n]||{el:[INSP[n][1]],add:[]}, title=INSP[n][0];
-  const chips=K.add.map(a=>`<button class="btn sm" data-qa="${a[0]}:${a[1]}">+ ${esc(addLabel(a))}</button>`).join('');
+  const FL=furnLocked(), chips=K.add.map(a=>`<button class="btn sm" data-qa="${a[0]}:${a[1]}" ${FL?'disabled':''}>+ ${esc(addLabel(a))}</button>`).join('')+(FL?'<span class="tip" style="margin:4px 0 0;flex-basis:100%">You can add these in step 4 · Furniture.</span>':'');
   if(t==='Borrow') return `<div class="nx borrow"><div class="nh"><span>Borrow</span> Use ${esc(title)} as it is</div>
-    <ol><li><b>Add the key pieces</b> to your room:<div class="qa">${chips}</div></li><li><b>Arrange them like the card</b>: ${K.el.map(esc).join(', ')}. Or let the game lay it out for you: <button class="btn sm primary" data-build="${n}">Build this idea for me</button></li><li><b>Check your red card still passes</b> in Design checks on the right.</li></ol>
+    <ol><li><b>Add the key pieces</b> to your room:<div class="qa">${chips}</div></li><li><b>Arrange them like the card</b>: ${K.el.map(esc).join(', ')}. Or let the game lay it out for you${FL?' in step 4':''}: <button class="btn sm primary" data-build="${n}" ${FL?'disabled':''}>Build this idea for me</button></li><li><b>Check your red card still passes</b> in Design checks on the right.</li></ol>
     <p class="tip">Tip: borrowing works best when the idea already suits your room size and class size.</p></div>`;
   if(t==='Adapt'){ const kp=S.keep[n]||[]; return `<div class="nx adapt"><div class="nh"><span>Adapt</span> Keep the idea, change how it's done</div>
     <ol><li><b>Pick what you'll keep</b>:<div class="kp">${K.el.map((e,i)=>`<label class="ck"><input type="checkbox" data-keep="${n}:${i}" ${kp.includes(i)?'checked':''}> ${esc(e)}</label>`).join('')}</div></li>
@@ -2070,19 +2120,26 @@ let timesUpPending=false, MODAL_CLOSE_HOOK=null;
 function setPaused(v){ S.paused=!!v; $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); $('#timer').classList.toggle('paused',S.paused) }
 const stepLeft=()=>step().dur+(S.extra||0)-S.stepElapsed;
 function extendStep(){ S.extra=(S.extra||0)+300; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); renderTimer(); save(); toast(`+5 minutes added to ${step().name}.`) }
-function renderTimer(){ if(!S||S.mode==='free')return; const left=stepLeft(); $('#tval').textContent=fmt(Math.max(0,left)); $('#timer').classList.toggle('over',left<=0); $('#tExt').hidden=!S.upShown }
-function timesUpDialog(){ const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300);
+function renderTimer(){ if(!S||S.mode==='free')return; const left=stepLeft(); $('#tval').textContent=fmt(Math.max(0,left)); $('#timer').classList.toggle('over',left<=0); $('#tExt').hidden=!S.upShown||!!step().max }
+function timesUpDialog(){ const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300), miss=cardsMissing(S.step,S.step+1);
   const m=modal(`<div class="hd"><div class="kick">Step ${S.step+1} · ${esc(st.name)}</div><h2>Time's up!</h2><p class="lead" style="margin:6px 0 0">${esc(st.name)} has used its ${Math.round(st.dur/60)} minutes${ext?` and ${ext*5} extra minute${ext*5>1?'s':''}`:''}. The timer is paused.</p></div>
-   <div class="bd"><p style="margin:0">Need a little longer? Add 5 minutes. You can add more time as many times as you need.</p></div>
-   <div class="ft"><button class="btn" id="tuExt">+5 minutes</button><button class="btn primary" id="tuNext">${nx?`Move on to ${esc(nx.name)}`:'Finish the game'}</button></div>`);
-  m.querySelector('#tuExt').onclick=()=>{ closeModal(); extendStep() };
-  m.querySelector('#tuNext').onclick=()=>{ closeModal(); if(nx) goStep(S.step+1); else finish() } }
+   <div class="bd"><p style="margin:0">${miss?'Draw your cards before you move on.':st.max?`Room setup has a ${Math.round(st.dur/60)}-minute limit. Time to start the round.`:'Need a little longer? Add 5 minutes. You can add more time as many times as you need.'}</p></div>
+   <div class="ft">${st.max?'':'<button class="btn" id="tuExt">+5 minutes</button>'}<button class="btn primary" id="tuNext">${miss?`Draw ${miss.need} card${miss.need>1?'s':''}`:nx?`Move on to ${esc(nx.name)}`:'Finish the game'}</button></div>`);
+  m.querySelector('#tuExt')?.addEventListener('click',()=>{ closeModal(); extendStep() });
+  m.querySelector('#tuNext').onclick=()=>{ closeModal(); if(miss){ draw(miss.k); return } if(nx) goStep(S.step+1); else finish() } }
 // scoring dialogs hold the clock until the team closes them
 function holdTimer(){ if(!S||S.mode==='free'||MODAL_CLOSE_HOOK)return; const was=S.paused; setPaused(true); $('#timer').classList.add('held');
   MODAL_CLOSE_HOOK=()=>{ $('#timer').classList.remove('held'); if(!was&&!S.upShown)setPaused(false) }; toast('Timer paused while you score.') }
 
 /* ===== moving between steps always asks first, and never while the room shape is being drawn ===== */
+const NEED={challenge:'r',ideas:'b',prompt:'g',aware:'r',inspire:'b',explore:'g'};
+function cardsMissing(from,to){ for(let j=from;j<to;j++){ const k=NEED[steps()[j]?.id]; if(!k)continue; const want=Math.min(MODES[S.mode].limits[k],S.hand[k].length+S.deck[k].length); if(S.hand[k].length<want)return {k,j,need:want-S.hand[k].length} } return null }
+function needCardsDialog(miss){ const st=steps()[miss.j], here=miss.j===S.step, deck={r:'red Scenario',b:'blue Inspiration',g:'green Prompt'}[miss.k];
+  const m=modal(`<div class="hd"><div class="kick">Step ${miss.j+1} · ${esc(st.name)}</div><h2>Draw your cards first</h2><p class="lead" style="margin:6px 0 0">${here?`You can't move on until you draw your ${deck} card${miss.need>1?'s':''}.`:`${esc(st.name)} needs its ${deck} card${miss.need>1?'s':''} before you can skip ahead.`}</p></div>
+    <div class="ft"><button class="btn ghost" data-close>Not now</button><button class="btn primary" id="ncGo">${here?`Draw ${miss.need} card${miss.need>1?'s':''}`:`Go to ${esc(st.name)}`}</button></div>`);
+  m.querySelector('#ncGo').onclick=()=>{ closeModal(); if(here)draw(miss.k); else goStep(miss.j) } }
 function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return;
+  if(i>S.step){ const miss=cardsMissing(S.step,Math.min(i,steps().length)); if(miss){ needCardsDialog(miss); return } }
   if(DRAW){ toast('Finish editing the room first: press Done or Cancel on the drawing bar.'); return }
   if(i>=steps().length){ const m=modal(`<div class="hd"><div class="kick">Last step</div><h2>Finish the game?</h2><p class="lead" style="margin:6px 0 0">You'll see the summary of your design. Check your team is done first.</p></div><div class="ft"><button class="btn ghost" data-close>Not yet</button><button class="btn primary" id="asGo">Finish</button></div>`); m.querySelector('#asGo').onclick=()=>{closeModal();finish()}; return }
   const cur=step(), to=steps()[i], left=stepLeft(), back=i<S.step;
@@ -2103,6 +2160,41 @@ function sheetPayload(){ const c=lastCheck.ctx||{}, L=lastCheck.list||[], sc=sco
     layout:{room:S.room,inner:S.inner||[],fixtures:S.fix,zones:S.zones,groups:S.groups||{},items:S.items.map(i=>({type:i.type,x:i.x,z:i.z,rot:i.rot,...(i.grp?{grp:i.grp,gi:i.gi}:{}),...(i.folded?{folded:1}:{}),...(i.on?{on:i.on,lvl:i.lvl,ox:i.ox}:{})}))} } }
 function syncSheet(now){ if(!SHEETS_URL||!S)return; clearTimeout(sheetT); sheetT=setTimeout(()=>{ try{ fetch(SHEETS_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(sheetPayload())}).catch(()=>{}) }catch(e){} },now?0:1500) }
 
+/* ===== guided tour: tooltips that point at each part of the screen ===== */
+const TOUR=[
+ {sel:'#steps',t:'Follow the steps',x:'The game runs in steps along the top. The timer shows the time left for this step, and you are always asked before moving on.'},
+ {sel:'#guide',t:'What to do now',x:'This box tells you what to do in each step. Its buttons do the step for you.'},
+ {sel:'#left',alt:'#mLeft',t:'Furniture and room',x:'Tap anything to add it, or drag it into the room. Drag it back here to remove it. The Room tab sets the walls, doors and windows.'},
+ {sel:'#c',t:'Your room',x:'Drag furniture to move it. Tap a piece to rotate, duplicate or delete it. Drag the empty floor to turn the view, and pinch or scroll to zoom.',mid:1},
+ {sel:'#dock',t:'Tools',x:'Inspire me! builds a starting layout from an idea card. Undo goes back up to 3 steps. Top view and Walkways help you check the paths.'},
+ {sel:'#right .sec',alt:'#mRight',t:'Your cards',x:'Red is the challenge, blue is ideas, green is prompts. Draw deals the whole hand at once, and you can redraw one card.'},
+ {sel:'#checks',alt:'#mRight',t:'Design checks',x:'These turn green as your design meets the challenge: seats, budget, walkways and more.'},
+ {sel:'#budget',t:'Budget',x:'Every piece has a sample price. Keep the bar inside your budget.'},
+ {sel:'#tourBtn',t:'Need this again?',x:'Tap ? any time to replay this guide. The button next to it makes the game full screen.'}];
+let TOURI=-1, tourEl=null, tourWas=false;
+const tourVis=el=>{ if(!el)return false; const r=el.getBoundingClientRect(); return r.width>4&&r.height>4&&r.bottom>0&&r.right>0&&r.top<innerHeight&&r.left<innerWidth };
+function startTour(){ if(!S)return; closeModal(); closePick?.(); TOURI=0; tourWas=S.paused; if(S.mode!=='free')setPaused(true); renderTour() }
+function endTour(){ TOURI=-1; tourEl?.remove(); tourEl=null; try{localStorage.setItem('sdkit3d-tour','1')}catch(e){} if(S&&S.mode!=='free'&&!tourWas&&!S.upShown)setPaused(false) }
+function renderTour(dir=1){ if(TOURI<0)return; if(TOURI>=TOUR.length)return endTour(); const st=TOUR[TOURI];
+  let el=document.querySelector(st.sel); if(!tourVis(el)) el=st.alt?document.querySelector(st.alt):null;
+  if(!tourVis(el)){ TOURI+=dir; if(TOURI<0)TOURI=0; return renderTour(dir) }
+  if(!tourEl){ tourEl=document.createElement('div'); tourEl.className='tour'; document.body.appendChild(tourEl);
+    tourEl.addEventListener('click',e=>{ const a=e.target.closest('[data-tr]')?.dataset.tr; if(a==='next'){ TOURI++; renderTour(1) } if(a==='back'&&TOURI>0){ TOURI--; renderTour(-1) } if(a==='skip')endTour() }) }
+  const r=el.getBoundingClientRect(), p=6, last=TOURI===TOUR.length-1;
+  const ring=st.mid?{l:r.left+r.width*.25,t:r.top+r.height*.25,w:r.width*.5,h:r.height*.5}:{l:r.left-p,t:r.top-p,w:r.width+p*2,h:r.height+p*2};
+  tourEl.innerHTML=`<div class="tring" style="left:${ring.l}px;top:${ring.t}px;width:${ring.w}px;height:${ring.h}px"></div>
+    <div class="tbub" role="dialog" aria-live="polite"><div class="tk">How to play · ${TOURI+1} of ${TOUR.length}</div><b>${esc(st.t)}</b><p>${esc(st.x)}</p>
+    <div class="tact"><button class="btn sm ghost" data-tr="skip">Skip guide</button><span></span>${TOURI?'<button class="btn sm" data-tr="back">Back</button>':''}<button class="btn sm primary" data-tr="next">${last?'Start playing':'Next'}</button></div></div>`;
+  const b=tourEl.querySelector('.tbub'), bw=b.offsetWidth, bh=b.offsetHeight, gap=14; let x,y;
+  if(ring.t+ring.h+gap+bh<innerHeight-8){ y=ring.t+ring.h+gap; x=ring.l+ring.w/2-bw/2 }
+  else if(ring.t-gap-bh>8){ y=ring.t-gap-bh; x=ring.l+ring.w/2-bw/2 }
+  else if(ring.l+ring.w+gap+bw<innerWidth-8){ x=ring.l+ring.w+gap; y=ring.t+ring.h/2-bh/2 }
+  else if(ring.l-gap-bw>8){ x=ring.l-gap-bw; y=ring.t+ring.h/2-bh/2 }
+  else { x=innerWidth/2-bw/2; y=innerHeight-bh-16 }
+  b.style.left=Math.max(8,Math.min(innerWidth-bw-8,x))+'px'; b.style.top=Math.max(8,Math.min(innerHeight-bh-8,y))+'px';
+  tourEl.querySelector('[data-tr=next]').focus({preventScroll:true}) }
+addEventListener('resize',()=>{ if(TOURI>=0)renderTour() });
+
 /* ================= GAME FLOW ================= */
 const steps=()=>MODES[S.mode].steps; const step=()=>steps()[S.step];
 function renderSteps(){
@@ -2110,12 +2202,15 @@ function renderSteps(){
   $('#timer').hidden = S.mode==='free';
 }
 $('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b)askStep(+b.dataset.step)});
-function goStep(i){ if(i<0||i>=steps().length)return; S.step=i; S.stepElapsed=0; S.extra=0; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); onEnterStep(); renderSteps(); renderGuide(); renderTimer(); save(); syncSheet() }
+function goStep(i){ if(i<0||i>=steps().length)return; S.step=i; S.stepElapsed=0; S.extra=0; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); onEnterStep(); renderSteps(); renderGuide(); renderTimer(); renderCatalog(); $('#vInspire').classList.toggle('dim',furnLocked()); save(); syncSheet() }
 $('#tNext').onclick=()=>askStep(S.step+1); $('#tExt').onclick=()=>extendStep();
 $('#tPause').onclick=()=>{ if(S.upShown){ timesUpDialog(); return } setPaused(!S.paused); save() };
 function onEnterStep(){
   const id=step().id;
-  if(id==='deal'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
+  if(id==='hook'){ curCat='room'; renderCatalog() }
+  if(id==='build'&&curCat==='room'){ curCat='seat'; renderCatalog() }
+  if(id==='challenge'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
+  if(id==='prompt'&&S.hand.g.length===0) setTimeout(()=>{ draw('g'); toast('Your prompt card is pinned on the room view.') },300);
   if(id==='aware'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
   if(id==='feas') feasDialog();
   if(id==='score') quickScoreDialog();
@@ -2140,11 +2235,12 @@ function tick(now){
 function renderGuide(){
   const g=$('#guide'); const id=step().id; const sp=SPACES[S.space]; let h='';
   const K=(k,t)=>`<div class="k">${k}</div><h2>${t}</h2>`;
-  if(id==='intro') h=K('Step 1 · Hook',`Design a ${esc(sp.name)}`)+`<p>${esc(sp.blurb)}</p><p>You'll get a <b style="color:#ff8a8f">red problem card</b>, then build a layout with real-size furniture. Halfway, a <b style="color:#7fd89a">green twist card</b> pushes your idea further.</p><div class="acts"><button class="btn primary" data-go="next">Deal my challenge</button></div>`;
-  if(id==='deal') h=K('Step 2 · Deal','Read your challenge')+`<p>Your red card is the problem to solve. The right panel shows what the game will check.</p><p>Peek at the 5 blue idea cards for this space. Tag the ones you like <b>Borrow</b>, <b>Adapt</b> or <b>Avoid</b> to see what to do next.</p><div class="acts"><button class="btn blue" data-go="peek">Peek at ideas</button><button class="btn primary" data-go="next">Start building</button></div>`;
-  if(id==='build') h=K('Step 3 · Build','Solve it with furniture')+`<ul><li>Tap furniture on the left to add it, then drag it into place.</li><li>Select an item to rotate, copy or delete it.</li><li>Turn on <b>Walkways</b> to see clear paths.</li></ul><p>A twist card arrives at the halfway mark.</p><div class="acts"><button class="btn primary" data-go="next">Done, let's pitch</button></div>`;
-  if(id==='pitch') h=K('Step 4 · Pitch','20 seconds to pitch')+`<label class="lbl" for="pA" style="display:block;margin-top:6px">Our challenge was…</label><input id="pA" value="${esc(S.pitch.a)}" placeholder="${esc(S.hand.r[0]?SCEN[S.hand.r[0]-1][0]:'')}"><label class="lbl" for="pB" style="display:block;margin-top:10px">Our key move was…</label><input id="pB" value="${esc(S.pitch.b)}" placeholder="e.g. Mobile tables around a rug zone"><div class="acts"><button class="btn primary" data-go="next">Score our design</button></div>`;
-  if(id==='score') h=K('Step 5 · Reality check','Is it feasible?')+`<p>Answer 3 quick questions, then see your result.</p><div class="acts"><button class="btn primary" data-go="score">Open score</button></div>`;
+  if(id==='hook') h=K('Step 1 · Hook','Design your room first')+`<p>Set up your ${esc(sp.name)} before anything else. You have up to 5 minutes; the 10-minute round starts after this.</p><ul><li>Set the <b>width and depth</b>, or draw your own floor shape, in the <b>Room</b> tab.</li><li>Move the <b>doors, windows, power points</b> and <b>teaching wall</b> to where they really are.</li><li>Happy with it? <b>Lock room</b> so the walls can't move by accident.</li></ul><div class="acts"><button class="btn" data-go="roomtab">Open room tools</button><button class="btn primary" data-go="next">Next: Challenge</button></div>`;
+  if(id==='challenge') h=K('Step 2 · Challenge','Take your challenge card')+`<p>Your <b style="color:#ff8a8f">red card</b> is the problem your design must solve. The checks on the right show what the game will test.</p><div class="acts"><button class="btn red" data-go="drawR">${S.hand.r.length?'See the challenge':'Take a challenge'}</button><button class="btn primary" data-go="next">Next: Ideas</button></div>`;
+  if(id==='ideas') h=K('Step 3 · Get ideas','Borrow, adapt or avoid')+`<ul><li>Draw <b style="color:#9ab6ff">3 blue idea cards</b>, or see all 5 for this space.</li><li>Tag each one <b>Borrow</b>, <b>Adapt</b> or <b>Avoid</b>. Each tag tells you what to do next.</li><li>You must draw your idea cards before moving on. Furniture opens in the next step.</li></ul><div class="acts"><button class="btn blue" data-go="drawB">${S.hand.b.length?'See your ideas':'Draw ideas'}</button><button class="btn" data-go="peek">See all 5</button><button class="btn primary" data-go="next">Next: Furniture</button></div>`;
+  if(id==='build') h=K('Step 4 · Furniture','Add the furniture')+`<ul><li>Tap furniture on the left to add it, then drag it into place.</li><li>Tap a piece to rotate, duplicate or delete it.</li><li>Follow <b>Our idea plan</b> on the right, and turn on <b>Walkways</b> to check the paths.</li><li>Short on time? <b>Inspire me!</b> builds a starting layout from one of your idea cards.</li></ul><div class="acts"><button class="btn" data-go="inspireMe">Inspire me!</button><button class="btn primary" data-go="next">Next: Prompt</button></div>`;
+  if(id==='prompt') h=K('Step 5 · Prompt','Test it with a prompt card')+`<p>Your <b style="color:#7fd89a">green prompt</b> is pinned on the room view. Change at least one thing in your layout that answers it.</p><div class="acts"><button class="btn green" data-go="drawG">${S.hand.g.length?'See the prompt':'Draw a prompt'}</button><button class="btn primary" data-go="next">Next: Rate</button></div>`;
+  if(id==='score') h=K('Step 6 · Rate','Rate your design')+`<p>Answer 3 quick yes or no questions, then see your result.</p><label class="lbl" for="pB" style="display:block;margin-top:6px">Our idea in one line (optional)</label><input id="pB" value="${esc(S.pitch.b)}" placeholder="e.g. Fold-away tables so the room switches modes fast"><div class="acts"><button class="btn primary" data-go="score">Rate it</button></div>`;
   if(id==='orient') h=K('Step 1 · Orientation · 10 min',`Your space: ${esc(sp.name)}`)+`<p>${esc(sp.blurb)} Every decision follows the 3-Point Approach.</p><div class="pp3"><div style="background:var(--red-s)"><b style="color:#ff8a8f">Prepare</b>Light, sound, air, walls</div><div style="background:var(--blue-s)"><b style="color:#9ab6ff">Position</b>How seats &amp; zones are arranged</div><div style="background:var(--green-s)"><b style="color:#7fd89a">Provide</b>Furniture &amp; tech, in budget</div></div><div class="acts"><button class="btn" data-go="roles">Set team roles</button><button class="btn primary" data-go="next">Start Awareness</button></div>`;
   if(id==='aware') h=K('Step 2 · Awareness · Prepare · 20 min','Face 3 real constraints')+`<ul><li>Draw your <b>3 red Scenario</b> cards. They come all at once, and you can redraw one.</li><li>Discuss how each one affects this room.</li><li>Use <b>+ Zone</b> to colour in noise zones, quiet corners, paths and hazards on the floor.</li></ul><div class="acts"><button class="btn red" data-go="drawR">${S.hand.r.length?'See Scenarios':'Draw Scenarios'}</button><button class="btn primary" data-go="next">Next: Inspiration</button></div>`;
   if(id==='inspire') h=K('Step 3 · Inspiration · Position · 15 min','Borrow, adapt or avoid')+`<ul><li>Draw your <b>3 blue Inspiration</b> cards (one redraw allowed).</li><li>Tag each one <b>Borrow</b>, <b>Adapt</b> or <b>Avoid</b>. Each tag shows you what to do next.</li><li>Your choices build <b>Our idea plan</b> on the right.</li></ul><div class="acts"><button class="btn blue" data-go="drawB">${S.hand.b.length?'See Inspiration':'Draw Inspiration'}</button><button class="btn primary" data-go="next">Next: Build</button></div>`;
@@ -2158,7 +2254,7 @@ function renderGuide(){
 }
 $('#guide').addEventListener('input',e=>{if(e.target.id==='pA')S.pitch.a=e.target.value;if(e.target.id==='pB')S.pitch.b=e.target.value;save()});
 $('#guide').addEventListener('click',e=>{const a=e.target.closest('[data-go]')?.dataset.go;if(!a)return;
-  if(a==='next')$('#tNext').click(); if(a==='peek')gallery(); if(a==='drawR')draw('r'); if(a==='drawB')draw('b'); if(a==='drawG')draw('g'); if(a==='inspireMe')inspireDialog();
+  if(a==='next')$('#tNext').click(); if(a==='roomtab'){ curCat='room'; renderCatalog(); if(innerWidth<=820)$('#left').classList.add('open') } if(a==='peek')gallery(); if(a==='drawR')draw('r'); if(a==='drawB')draw('b'); if(a==='drawG')draw('g'); if(a==='inspireMe')inspireDialog();
   if(a==='score')quickScoreDialog(); if(a==='feas')feasDialog(); if(a==='plan')planDialog(); if(a==='roles')rolesDialog(); if(a==='finish')finish();
   if(a==='min')$('#guide').classList.toggle('collapsed');
 });
@@ -2185,18 +2281,20 @@ function feasDialog(){
   const render=()=>{ let last=''; return FEAS.map((f,i)=>{const grp=f[0]!==last?`<div class="fgroup">${f[0]==='User'?'User · 3 points':f[0]==='Value'?'Value proposition · 3 points':'Resources & support · 4 points'}</div>`:''; last=f[0];
     return grp+`<div class="fq"><span class="no">${i+1}</span><div class="q"><b>${f[1]}</b><small>${esc(f[2])}</small>${f[3]?checkHint(f[3]):''}<input id="why${i}" value="${esc(S.why[i])}" placeholder="Why / why not?"></div><div class="yn"><button class="y ${S.feas[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.feas[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`}).join('') };
   const m=modal(`<div class="hd"><div class="kick">Feasibility Strengthening Framework</div><h2>Score your design <span class="num" id="fs" style="color:var(--gold)"></span></h2><p class="lead" style="margin:6px 0 0">1 point per Yes. 8 or more is a strong, feasible design. The timer is paused until you close this.</p></div>
-   <div class="bd"><div class="feas" id="fl">${render()}</div></div><div class="ft"><button class="btn" data-close>Back to building</button><button class="btn primary" id="fDone">See result</button></div>`); holdTimer();
+   <div class="bd"><div class="feas" id="fl">${render()}</div></div><div class="ft"><button class="btn" id="fAll" style="margin-right:auto">${S.feas.every(x=>x===1)?'Clear all':'Yes to all'}</button><button class="btn" data-close>Back to building</button><button class="btn primary" id="fDone">See result</button></div>`); holdTimer();
   const upd=()=>{$('#fs').textContent=`${S.feas.filter(x=>x===1).length}/10`};upd();
   m.querySelector('#fl').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const i=+b.dataset.i,v=+b.dataset.v;S.feas[i]=S.feas[i]===v?null:v;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.feas[i]));upd();save()});
   m.querySelector('#fl').addEventListener('input',e=>{const k=e.target.id.match(/^why(\d+)$/);if(k){S.why[+k[1]]=e.target.value;save()}});
+  m.querySelector('#fAll').onclick=e=>{ const all=S.feas.every(x=>x===1); S.feas=S.feas.map(()=>all?null:1); m.querySelectorAll('#fl [data-i]').forEach(b=>b.classList.toggle('on',S.feas[+b.dataset.i]===+b.dataset.v)); e.target.textContent=all?'Yes to all':'Clear all'; upd(); save() };
   m.querySelector('#fDone').onclick=()=>results();
 }
 function quickScoreDialog(){
   runChecks();
   const Q=['Works for students and teachers?','Affordable to build?','Would school leaders back it?'];
   const m=modal(`<div class="hd"><div class="kick">Reality check</div><h2>Thumbs up or down?</h2></div><div class="bd"><div class="thumbs" id="th">${Q.map((q,i)=>`<div class="row"><span>${q}</span><div class="yn"><button class="y ${S.thumbs[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.thumbs[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`).join('')}</div></div>
-   <div class="ft"><button class="btn" data-close>Back</button><button class="btn primary" id="qDone">See result</button></div>`); holdTimer();
+   <div class="ft"><button class="btn" id="qAll" style="margin-right:auto">${S.thumbs.every(x=>x===1)?'Clear all':'Yes to all'}</button><button class="btn" data-close>Back</button><button class="btn primary" id="qDone">See result</button></div>`); holdTimer();
   m.querySelector('#th').addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(!b)return;const i=+b.dataset.i,v=+b.dataset.v;S.thumbs[i]=S.thumbs[i]===v?null:v;b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===S.thumbs[i]));save()});
+  m.querySelector('#qAll').onclick=e=>{ const all=S.thumbs.every(x=>x===1); S.thumbs=S.thumbs.map(()=>all?null:1); m.querySelectorAll('#th [data-i]').forEach(b=>b.classList.toggle('on',S.thumbs[+b.dataset.i]===+b.dataset.v)); e.target.textContent=all?'Yes to all':'Clear all'; save() };
   m.querySelector('#qDone').onclick=()=>results();
 }
 function planDialog(){
@@ -2272,13 +2370,13 @@ async function exportPng(){
 /* menu */
 $('#menuBtn').onclick=()=>{
   const m=modal(`<div class="hd"><div class="kick">Menu · Project <span class="num" style="letter-spacing:.04em">${esc(S.pid||'')}</span></div><h2>${esc(MODES[S.mode].name)} · ${esc(SPACES[S.space].name)}</h2></div><div class="bd" style="display:grid;gap:10px">
-   <button class="btn" id="mScore">Score &amp; results</button><button class="btn" id="mRoles">Team name &amp; roles</button><button class="btn" id="mPng">Save summary picture (.png)</button><button class="btn" id="mJson">Save layout (.json)</button>
+   <button class="btn" id="mTour">How to play (guided tour)</button><button class="btn" id="mScore">Score &amp; results</button><button class="btn" id="mRoles">Team name &amp; roles</button><button class="btn" id="mPng">Save summary picture (.png)</button><button class="btn" id="mJson">Save layout (.json)</button>
    <label class="btn" for="mLoad" style="cursor:pointer">Load a saved layout (.json)<input type="file" id="mLoad" accept=".json,application/json" hidden></label>
    <button class="btn" id="mClear">Clear all furniture</button><button class="btn primary" id="mNew">New game</button>
    <p style="color:var(--mute);font-size:12.5px;margin:4px 0 0">Drag furniture to move it. Drag it back onto the furniture panel to remove it. Q/E rotate 15°, arrows nudge, Delete removes, Ctrl+D duplicates. Ctrl+Z undoes (up to 3 steps). Drag a wall to resize the room. Right-drag or two fingers to pan.</p></div>
    <div class="ft"><button class="btn ghost" data-close>Close</button></div>`);
   $('#mScore').onclick=()=>{S.mode==='quick'?quickScoreDialog():feasDialog()}; $('#mRoles').onclick=rolesDialog; $('#mPng').onclick=()=>{closeModal();exportPng()}; $('#mJson').onclick=exportJson;
-  $('#mNew').onclick=()=>{closeModal();openStart()};
+  $('#mNew').onclick=()=>{closeModal();openStart()}; $('#mTour').onclick=()=>startTour();
   $('#mClear').onclick=e=>{ if(e.target.dataset.sure){ S.items=[];syncAll();select(null);runChecks();renderCatalogCount();save();closeModal();toast('Room cleared') } else { e.target.dataset.sure=1; e.target.textContent='Tap again to clear everything'; e.target.classList.add('red') } };
   $('#mLoad').onchange=async e=>{ const f=e.target.files[0]; if(!f)return; try{ const j=JSON.parse(await f.text()); if(!j.items||!SPACES[j.space])throw 0; S.space=j.space; const idm={}; S.items=j.items.filter(i=>DEF[i.type]).map(i=>({...(i.on?{_on:i.on,lvl:+i.shelf||0,ox:+i.ox||0}:{}),_id:i.id,uid:(idm[i.id]=S.uid++),type:i.type,x:+i.x,z:+i.z,rot:(+i.rot||0)*Math.PI/180,...(i.len?{len:+i.len}:{}),...(i.folded?{folded:true}:{}),...(i.grp?{grp:i.grp,gi:+i.gi}:{})})); S.items.forEach(i=>{ if(i._on!==undefined&&idm[i._on])i.on=idm[i._on]; delete i._on; delete i._id }); S.groups=j.groups||{}; S.inner=j.inner||[]; S.room=j.room||null; S.fix=j.fixtures||null; S.boardSet=!!j.fixtures; S.zones=j.zones||null; S.notes=j.notes||[]; S.under=null; S.team=j.team||S.team; if(j.projectId)S.pid=j.projectId; buildRoom(); syncAll(); fitView(); runChecks(); renderNotes(); renderCatalogCount(); save(); closeModal(); toast('Layout loaded') }catch(err){ toast('That file is not a Space Design Kit layout.') } };
 };
@@ -2290,19 +2388,20 @@ function openStart(){
   const root=$('#startRoot');
   const draw_=()=>{ const sp=SPACES[space];
     root.innerHTML=`<div class="start"><div class="l">
-      <div><div class="eyebrow">SP FabLab · Space Design Kit</div><h1>Design a learning space <em>you could really build.</em></h1></div>
+      <div><div class="eyebrow">SP FabLab · Space Design Kit <span class="beta">Beta</span></div><h1>Design a learning space <em>you could really build.</em></h1></div>
       <p class="lead">Draw a real classroom problem, get inspired, then plan the room at real size. The game checks walkways, seats and budget as you build.</p>
       <div class="legend"><span style="background:var(--red-s);color:#ff8a8f">Red · Scenario: the problem</span><span style="background:var(--blue-s);color:#9ab6ff">Blue · Inspiration: ideas</span><span style="background:var(--green-s);color:#7fd89a">Green · Prompt: the stretch</span></div>
       <div><div class="lbl">1 · How long do you have?</div><div class="modes">${Object.entries(MODES).map(([k,m])=>`<button class="mode ${k===mode?'on':''}" data-mode="${k}"><span class="t">${m.time}</span><b>${m.name}</b><small>${m.desc}</small></button>`).join('')}</div></div>
-      <div><div class="lbl">2 · Pick a space</div><div class="spaces">${Object.entries(SPACES).map(([k,s])=>`<button class="space ${k===space?'on':''}" data-space="${k}" aria-label="${esc(s.name)}"><img src="cards/${s.back}.jpg" alt=""></button>`).join('')}</div>
-        <div class="spdesc" style="margin-top:10px"><b>${esc(sp.name)}</b> · ${sp.w} × ${sp.d} m room · ${sp.cls} students · ${money(sp.budget)} budget. ${esc(sp.blurb)}</div></div>
+      <div><div class="lbl">2 · Pick a space</div><div class="spaces">${Object.entries(SPACES).map(([k,s])=>`<button class="space ${k===space?'on':''}" data-space="${k}" aria-label="${esc(s.name)}" aria-pressed="${k===space}"><img src="cards/${s.back}.jpg" alt=""><span>${esc(s.name)}</span></button>`).join('')}</div>
+        <div class="spfeat"><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div>
       <div class="startrow"><div><label class="lbl" for="stTeam" style="display:block">Team name (optional)</label><input id="stTeam" placeholder="e.g. Table 3" value="${esc(S?.team||'')}"></div>
         <button class="btn primary" id="stGo" style="padding:14px 26px;font-size:16px">Start ${esc(MODES[mode].name.toLowerCase())}</button>
         ${saved&&saved.items?.length?`<button class="btn" id="stCont" style="padding:14px 18px">Continue last game</button>`:''}</div>
-    </div><div class="r"></div></div>`;
+    </div><div class="r"><div class="spfeat big"><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div><button class="btn stfs" id="stFs"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${fsEl()?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'}"/></svg><span>${fsEl()?'Exit full screen':'Full screen'}</span></button></div>`;
+    $('#stFs').onclick=()=>{ toggleFS(); setTimeout(draw_,450) };
     root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;draw_()});
     root.querySelectorAll('[data-space]').forEach(b=>b.onclick=()=>{space=b.dataset.space;draw_()});
-    $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode,space); S.team=team; closeStart(); boot(); onEnterStep(); syncSheet()};
+    $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode,space); S.team=team; closeStart(); boot(); onEnterStep(); syncSheet(); let seen=false; try{seen=!!localStorage.getItem('sdkit3d-tour')}catch(e){} if(!seen)setTimeout(()=>{ if(!$('#mdl'))startTour() },900)};
     $('#stCont')?.addEventListener('click',()=>{S=saved;closeStart();boot()});
   };
   draw_(); attract=true; orbit.autoRotate=true; orbit.autoRotateSpeed=.8;
@@ -2310,10 +2409,10 @@ function openStart(){
 let attract=false;
 function closeStart(){ startOpen=false; $('#startRoot').innerHTML=''; attract=false; orbit.autoRotate=false; lastT=performance.now() }
 function boot(){
-  UNDO=[]; lastLay=null; if(!S.pid)S.pid=newPid(); if(S.extra==null)S.extra=0; if(S.promptAt==null)S.promptAt=0; S.keep=S.keep||{}; S.avoidWhy=S.avoidWhy||{}; if(S.mode==='free'&&MODES.free.limits.r===3)for(const k of ['r','b','g'])if(S.hand[k].length>3){ S.deck[k].push(...S.hand[k].slice(3)); S.hand[k]=S.hand[k].slice(0,3) }
+  UNDO=[]; lastLay=null; if(S.step>=steps().length)S.step=steps().length-1; if(!S.pid)S.pid=newPid(); if(S.extra==null)S.extra=0; if(S.promptAt==null)S.promptAt=0; S.keep=S.keep||{}; S.avoidWhy=S.avoidWhy||{}; if(S.mode==='free'&&MODES.free.limits.r===3)for(const k of ['r','b','g'])if(S.hand[k].length>3){ S.deck[k].push(...S.hand[k].slice(3)); S.hand[k]=S.hand[k].slice(0,3) }
   if(S.groups)for(const G of Object.values(S.groups))G.piece=FORM_PIECE(G.kind); S.items=(S.items||[]).filter(i=>DEF[i.type]); for(const id of Object.keys(S.groups||{})) if(!S.items.some(i=>i.grp===id)) delete S.groups[id]; for(const id of Object.keys(S.groups||{})) buildGroupData(id);
   $('#spaceLbl').textContent=SPACES[S.space].name; selected=null; selFix=null; selWall=null; buildRoom(); syncAll(); renderSelTool(); resize(); fitView(false);
-  if(innerWidth<=820)$('#mission').classList.add('min'); renderCatalog(); renderHands(); renderPlan(); renderMission(); renderNotes(); renderSteps(); renderGuide(); renderTimer(); renderSnap(); renderWalls(); renderLock(); renderUndo(); runChecks(); buildZones(); hideWalk(); showWalk=false; $('#vWalk').classList.remove('on');
+  if(innerWidth<=820)$('#mission').classList.add('min'); renderCatalog(); $('#vInspire').classList.toggle('dim',furnLocked()); renderHands(); renderPlan(); renderMission(); renderNotes(); renderSteps(); renderGuide(); renderTimer(); renderSnap(); renderWalls(); renderLock(); renderUndo(); runChecks(); buildZones(); hideWalk(); showWalk=false; $('#vWalk').classList.remove('on');
   $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); showcase(step().id==='show'); save();
 }
 
