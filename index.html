@@ -178,6 +178,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .colurl{display:flex;gap:8px;align-items:center}.colurl code{flex:1;min-width:0;padding:6px 8px;border-radius:8px;background:var(--panel-2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .colpeople{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}.colpeople li{display:flex;align-items:center;gap:8px;font-size:14px}.colpeople i{width:12px;height:12px;border-radius:50%}.colpeople small{color:var(--mute)}.colpeople small.h{color:var(--gold);font-weight:700}
 @media (max-width:820px){.colpick,.colgrid{grid-template-columns:1fr}.colchip .dots{display:none}}
+.guide .gnote{margin:10px 0 0;padding:8px 10px;border-radius:9px;background:rgba(95,208,196,.12);border:1px solid rgba(95,208,196,.45);font-size:12.5px;color:var(--txt)}
 .penbar{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:14px;background:rgba(19,33,63,.97);border:1px solid var(--line-2);box-shadow:0 10px 26px rgba(0,0,0,.45);z-index:9;white-space:nowrap;max-width:calc(100% - 24px);overflow-x:auto}
 .penbar>b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-right:2px}
 .penbar .pc{width:26px;height:26px;border-radius:50%;background:var(--pc);border:2px solid rgba(255,255,255,.25);padding:0;min-width:0}
@@ -2455,7 +2456,7 @@ function inspireBuild(n,seed,chairT,tries=8){
   selected=null; selFix=null; selWall=null; selZone=null; drag=null; syncAll(); syncMounted(); renderNotes(); runChecks(); renderCatalog(); renderCatalogCount(); renderSelTool(); lastPush=0; save();
   return {seats:best.seats,target:T} }
 let INSP_LAST=null;
-function inspireDialog(n){ if(DRAW){toast('Finish or cancel the drawing first');return} if(S.lockFurn&&S.autoFurn){ S.lockFurn=false; S.autoFurn=false; renderLock() } if(furnLocked()){ toast(lockMsg().replace('Furniture opens','Inspire me! opens').replace('The room and furniture open','Inspire me! opens')); return } if(S.lockFurn){ toast('Furniture is locked. Unlock it in the toolbar first.'); return }
+function inspireDialog(n){ if(hostOnly())return; if(DRAW){toast('Finish or cancel the drawing first');return} if(S.lockFurn&&S.autoFurn){ S.lockFurn=false; S.autoFurn=false; renderLock() } if(furnLocked()){ toast(lockMsg().replace('Furniture opens','Inspire me! opens').replace('The room and furniture open','Inspire me! opens')); return } if(S.lockFurn){ toast('Furniture is locked. Unlock it in the toolbar first.'); return }
   const list=SPACES[S.space].insp; if(n==null){ const pool=list.filter(k=>k!==INSP_LAST); n=pool[Math.floor(Math.random()*pool.length)] } INSP_LAST=n;
   const has=S.items.some(i=>!DEF[i.type]?.ceil), [title,desc]=INSP[n];
   const m=modal(`<div class="hd"><div class="kick">Inspire me · ${esc(SPACES[S.space].name)}</div><h2>${esc(title)}</h2><p class="lead" style="margin:6px 0 0">${esc(desc)}</p></div>
@@ -2507,10 +2508,11 @@ function draw(k){ if(S.mode==='free'&&!S.hand[k].length&&FREE_SEQ.indexOf(k)>(S.
   if(S.mode==='quick'&&!S.hand[k].length){ const at=steps().findIndex(x=>x.id===DECK_STEP[k]); if(at>S.step){ toast(`${DECKN[k]} cards come in step ${at+1} · ${steps()[at].name}.`); return } }
   const lim=MODES[S.mode].limits[k], need=Math.min(lim-S.hand[k].length,S.deck[k].length);
   if(need<=0){ if(S.hand[k].length) handDialog(k,false); return }
+  if(colGuest()){ if(S.hand[k].length)handDialog(k,false); toast(HOSTMSG); return }
   const got=[]; for(let i=0;i<need;i++){ const n=S.deck[k].shift(); S.hand[k].push(n); got.push(n) }
   renderHands(); renderMission(); runChecks(); renderCatalog(); save(); handDialog(k,true,got) }
 const freeR=k=>k==='r'&&S.mode==='free';
-function redrawCard(k,n){ if(k==='r'&&S.rSet&&S.mode!=='free')return null; if(!(S.redraw[k]>0||freeR(k))||!S.deck[k].length)return null; const i=S.hand[k].indexOf(n); if(i<0)return null;
+function redrawCard(k,n){ if(hostOnly())return null; if(k==='r'&&S.rSet&&S.mode!=='free')return null; if(!(S.redraw[k]>0||freeR(k))||!S.deck[k].length)return null; const i=S.hand[k].indexOf(n); if(i<0)return null;
   const nn=S.deck[k].shift(); S.deck[k].push(n); S.hand[k][i]=nn; if(!freeR(k))S.redraw[k]--; if(k==='b'){ delete S.tags[n]; delete S.keep[n]; delete S.avoidWhy[n] }
   renderHands(); renderMission(); renderPlan(); runChecks(); save(); return nn }
 function cardTile(k,n,fresh,canR,i){ const ci=cardInfo(k,n);
@@ -2528,10 +2530,10 @@ const PROMPT_HELP=`<div class="baahelp g"><div class="bh"><b>Why Prompt cards?</
 const PROMPT_DO=['Make it switch from group work to solo work in under 2 minutes. Try tables on castors or folding tables, with room to pull apart.','Keep walkways at least 1.2 m wide so the teacher can reach every table. Turn on Walkways to check.','Make sure no seat faces away from the whiteboard or display, and nobody sits too far back to see.','Group students in 4 to 6 around shared tables, so they face each other.','Give students their own storage and tool spots they can reach without asking, like carts or open shelves.','Use mobile or folding pieces and keep a clear area, so the room can be reset in minutes.','Keep a 0.9 m route to every table and 1.5 m to turn. Try the Wheelchair test in the toolbar.','Put a display near group tables, and keep space for paper, whiteboards or pin-up walls too.','Mark a quiet zone and a collaboration zone with + Zone, and separate them with storage or acoustic screens, not walls.','Plan a quick-lesson area and a project area where work can stay out between sessions.','Arrange seats in a circle, U-shape or clusters instead of rows facing the front.','Choose light, mobile furniture and leave open floor so students can rearrange it themselves.','Keep 1 m clear around machines, store tools near where they are used, and keep exits clear.','Add a display shelf, pin-up wall or mobile whiteboard near the entrance to show work.','Turn seats away from busy doors and walkways, and use screens to break up the room.','Put labelled storage at the walls, within reach and close to where things are used.','Set up 2 or 3 zones, each with its own tables, storage and display, so groups can work at the same time.','Create a shared middle space where different groups meet, with mixed seating and a display.','Leave open floor and clear paths so students can move between stations safely.','Make the first view count: put a showcase, colour or an exciting work zone where people look first.'];
 function furnishPulse(locked){ if(furnLocked())return; const g=document.querySelector('#cats .cgrp.fu'); if(g){ g.classList.remove('pulse'); void g.offsetWidth; g.classList.add('pulse'); setTimeout(()=>g.classList.remove('pulse'),4200) } toast((locked?'Scenario confirmed, changes are no longer available. ':'')+'Start furnishing: pick Seating, Tables or Making on the left.') }
 function handDialog(k,isNew,fresh=[],focus=null){
-  const set=k==='r'&&S.rSet&&S.mode!=='free', H=S.hand[k], canR=!set&&(S.redraw[k]>0||freeR(k))&&S.deck[k].length>0;
+  const set=k==='r'&&S.rSet&&S.mode!=='free', H=S.hand[k], canR=!set&&!colGuest()&&(S.redraw[k]>0||freeR(k))&&S.deck[k].length>0;
   const note=k==='g'?'Extra challenges on top of your Scenario. The one to follow now is pinned on the room view.':k==='b'?'Ideas from other spaces. Decide what to do with each one.':'Your Scenario is the problem your design must solve. The game checks it on the right.';
   const rnote=k!=='r'?(canR?'<b>Not happy with one? You can redraw one card.</b>':S.redraw[k]<1?'Redraw used.':''):S.mode==='free'?'<b>No time limit: you can change your Scenario any time.</b>':set?'<b>Your Scenario is set. Changes are no longer available.</b>':canR?'<b>Not happy with it? You can redraw once, before you start furnishing.</b>':'';
-  const confirmR=k==='r'&&!set&&S.mode!=='free', goF=k==='r'&&(isNew||confirmR)&&!furnLocked();
+  const confirmR=k==='r'&&!set&&S.mode!=='free'&&!colGuest(), goF=k==='r'&&(isNew||confirmR)&&!furnLocked();
   const m=modal(`<div class="hd"><div class="kick" style="color:${DECKC[k]}">${DECKN[k]} cards · ${H.length} in your hand</div><h2>${k==='r'?(H.length>1?'Your Scenarios':'Your Scenario'):isNew?'Your new hand':'Your cards'}</h2>
     <p class="lead" style="margin:6px 0 0">${note} ${rnote}</p></div>
     <div class="bd">${k==='b'?BAA_HELP:k==='g'?PROMPT_HELP:''}<div class="handrow">${H.map((n,i)=>cardTile(k,n,fresh.includes(n),canR,i)).join('')}</div><div id="baaNext"></div></div>
@@ -2610,14 +2612,14 @@ function nextHTML(n){ const t=S.tags[n], K=INSP_KEY[n]||{el:[INSP[n][1]],add:[]}
     <p class="what"><b>What happens when you pick a reason?</b> It is saved to <b>Our Inspiration plan</b> on the right and in your results, and a button appears to help you check it in the room.</p></div>` }
   return '' }
 function showNext(box,n,scroll){ if(!box)return; box.innerHTML=S.tags[n]?`<div class="nxwrap"><div class="lbl">What happens next · ${esc(INSP[n][0])}</div>${nextHTML(n)}</div>`:''; if(scroll&&S.tags[n])requestAnimationFrame(()=>box.scrollIntoView({behavior:'smooth',block:'nearest'})) }
-function wireBAA(m,boxFn){ m.addEventListener('click',e=>{
+function wireBAA(m,boxFn){ m.addEventListener('click',e=>{ if(colGuest()&&e.target.closest('[data-baa] [data-t],[data-why],[data-build],[data-qa]')){ e.stopImmediatePropagation(); toast(HOSTMSG); return }
   const b=e.target.closest('[data-baa] [data-t]'); if(b){ const n=+b.closest('[data-baa]').dataset.baa; S.tags[n]=S.tags[n]===b.dataset.t?undefined:b.dataset.t;
     b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x.dataset.t===S.tags[n])); showNext(boxFn(),n,true); renderHands(); renderPlan(); save(); return }
   const q=e.target.closest('[data-qa]'); if(q){ const [t,id]=q.dataset.qa.split(':'); if(t==='form') placeFormation(id); else addItem(id); toast(`${addLabel([t,id])} added to the room`); return }
   const bl=e.target.closest('[data-build]'); if(bl){ closeModal(); inspireDialog(+bl.dataset.build); return }
   const wa=e.target.closest('[data-wa]'); if(wa){ AVOID_ACT[wa.dataset.wa]?.[1](); return }
   const w=e.target.closest('[data-why]'); if(w){ const [n,k]=w.dataset.why.split(':'); const a=S.avoidWhy[n]=S.avoidWhy[n]||[]; const i=a.indexOf(k); if(i<0)a.push(k); else a.splice(i,1); showNext(boxFn(),+n); renderPlan(); save(); return } });
-  m.addEventListener('change',e=>{ const c=e.target.closest('[data-keep]'); if(!c)return; const [n,i]=c.dataset.keep.split(':').map(Number); const a=S.keep[n]=S.keep[n]||[]; const j=a.indexOf(i); if(c.checked&&j<0)a.push(i); if(!c.checked&&j>=0)a.splice(j,1); renderPlan(); save() }) }
+  m.addEventListener('change',e=>{ if(colGuest()&&e.target.closest('[data-keep]')){ e.target.checked=!e.target.checked; toast(HOSTMSG); return } const c=e.target.closest('[data-keep]'); if(!c)return; const [n,i]=c.dataset.keep.split(':').map(Number); const a=S.keep[n]=S.keep[n]||[]; const j=a.indexOf(i); if(c.checked&&j<0)a.push(i); if(!c.checked&&j>=0)a.splice(j,1); renderPlan(); save() }) }
 /* the team's idea plan, always visible under the inspiration cards */
 function renderPlan(){ const el=$('#plan'); if(!el)return; const T=Object.entries(S.tags||{}).filter(([,t])=>t);
   el.innerHTML=T.length?`<div class="lbl" style="margin:2px 0 6px">Our Inspiration plan</div>`+T.map(([n,t])=>{ n=+n; const K=INSP_KEY[n]||{el:[]};
@@ -2634,6 +2636,7 @@ function renderMission(){ const el=$('#mission'); if(!el||!S)return; const R=S.h
     ${G.length>1?`<div class="mact"><button class="btn sm" data-ms="prev" ${S.promptAt?'':'disabled'}>Back</button><button class="btn sm green" data-ms="next" ${S.promptAt<G.length-1?'':'disabled'}>Done, next prompt</button></div>`:''}`:''}</div>` }
 $('#mission').addEventListener('click',e=>{ const a=e.target.closest('[data-ms]')?.dataset.ms; if(!a)return;
   if(a==='min'){ $('#mission').classList.toggle('min'); renderMission(); return } if(a==='r')handDialog('r',false); if(a==='g')handDialog('g',false);
+  if((a==='next'||a==='prev')&&hostOnly())return;
   if(a==='next'&&S.promptAt<S.hand.g.length-1){ S.promptAt++; renderMission(); renderHands(); save(); toast('Next prompt: '+PROMPTS[S.hand.g[S.promptAt]-1]) }
   if(a==='prev'&&S.promptAt>0){ S.promptAt--; renderMission(); renderHands(); save() } });
 
@@ -2677,7 +2680,7 @@ function holdTimer(){ if(!S||S.mode==='free'||MODAL_CLOSE_HOOK)return; const was
 const NEED={challenge:'r',ideas:'b',prompt:'g',aware:'r',inspire:'b',explore:'g'};
 function cardsMissing(from,to){ for(let j=from;j<to;j++){ const k=NEED[steps()[j]?.id]; if(!k)continue; const want=Math.min(MODES[S.mode].limits[k],S.hand[k].length+S.deck[k].length); if(S.hand[k].length<want)return {k,j,need:want-S.hand[k].length} } return null }
 const FREE_SEQ=['r','b','g','score'], FREE_NAME={r:'Scenario',b:'Inspiration',g:'Prompt',score:'Score it'};
-function freeNext(){ const at=S.freeStep||0, k=FREE_SEQ[at], nx=FREE_SEQ[at+1]; if(!nx)return;
+function freeNext(){ if(hostOnly())return; const at=S.freeStep||0, k=FREE_SEQ[at], nx=FREE_SEQ[at+1]; if(!nx)return;
   if(k!=='score'){ const want=Math.min(MODES.free.limits[k],S.hand[k].length+S.deck[k].length); if(S.hand[k].length<want){ needCardsDialog({k,j:-1,need:want-S.hand[k].length,free:1}); return } }
   const m=modal(`<div class="hd"><div class="kick">Free build</div><h2>Move on to ${FREE_NAME[nx]}?</h2><p class="lead" style="margin:6px 0 0">Make sure your team has finished with the ${FREE_NAME[k]} cards first.</p></div>
    <div class="ft"><button class="btn ghost" data-close>Not yet</button><button class="btn primary" id="fnGo">Yes, move on</button></div>`);
@@ -2688,7 +2691,7 @@ function needCardsDialog(miss){ if(miss.free){ const deck={r:'red Scenario',b:'b
   const m=modal(`<div class="hd"><div class="kick">Step ${miss.j+1} · ${esc(st.name)}</div><h2>Draw your cards first</h2><p class="lead" style="margin:6px 0 0">${here?`You can't move on until you draw your ${deck} card${miss.need>1?'s':''}.`:`${esc(st.name)} needs its ${deck} card${miss.need>1?'s':''} before you can skip ahead.`}</p></div>
     <div class="ft"><button class="btn ghost" data-close>Not now</button><button class="btn primary" id="ncGo">${here?`Draw ${miss.need} card${miss.need>1?'s':''}`:`Go to ${esc(st.name)}`}</button></div>`);
   m.querySelector('#ncGo').onclick=()=>{ closeModal(); if(here)draw(miss.k); else goStep(miss.j) } }
-function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return; if(colGuestTimed()){ toast('The host moves the group between steps.'); return }
+function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return; if(hostOnly())return;
   if(i>S.step){ const miss=cardsMissing(S.step,Math.min(i,steps().length)); if(miss){ needCardsDialog(miss); return } }
   if(DRAW){ toast('Finish editing the room first: press Done or Cancel on the drawing bar.'); return }
   if(i>=steps().length){ const m=modal(`<div class="hd"><div class="kick">Last step</div><h2>Finish the game?</h2><p class="lead" style="margin:6px 0 0">You'll see the summary of your design. Check your team is done first.</p></div><div class="ft"><button class="btn ghost" data-close>Not yet</button><button class="btn primary" id="asGo">Finish</button></div>`); m.querySelector('#asGo').onclick=()=>{closeModal();finish()}; return }
@@ -2919,7 +2922,7 @@ function onEnterStep(){
   const id=step().id;
   if(id==='hook'){ curCat='room'; renderCatalog(); setTimeout(()=>{ if(!$('#mdl')&&!startOpen)roomToolsHighlight() },900) }
   if(id==='build'&&curCat==='room'){ curCat='seat'; renderCatalog() }
-  if(id==='challenge'&&S.hand.r.length===0&&!colGuestTimed()) setTimeout(()=>draw('r'),300);
+  if(id==='challenge'&&S.hand.r.length===0&&!colGuest()) setTimeout(()=>draw('r'),300);
   if(id==='prompt'&&S.hand.g.length===0) setTimeout(()=>{ draw('g'); toast('Your prompt card is pinned on the room view.') },300);
   if(id==='aware'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
   if(id==='feas') feasDialog();
@@ -2942,7 +2945,7 @@ function tick(now){
   if(timesUpPending&&S&&!$('#mdl')&&!startOpen){ timesUpPending=false; timesUpDialog() }
 }
 
-function renderGuide(){ queueMicrotask(()=>renderPenBtn());
+function renderGuide(){ queueMicrotask(()=>{ renderPenBtn(); const g=$('#guide'); if(g&&colGuest()&&!S.sandbox&&!g.querySelector('.gnote'))g.insertAdjacentHTML('beforeend',`<p class="gnote"><b>${esc(COL.meta?.hostName||'The host')}</b> runs the cards and steps. You can move furniture and change the room.</p>`) });
   const g=$('#guide'); const id=step().id; const sp=SPACES[S.space]; let h='';
   const K=(k,t)=>`<div class="k">${k}</div><h2>${t}</h2>`;
   if(id==='hook') h=K('Step 1 · Hook · up to 5 min','Design your room first')+`<ul><li><b>Size and shape</b></li><li><b>Doors, windows, power points, whiteboard</b></li><li><b>Lock the room</b> when it's done</li></ul><div class="acts"><button class="btn" data-go="roomtab">Open room tools</button><button class="btn primary" data-go="next">Next: Scenario</button></div>`;
@@ -2990,7 +2993,7 @@ function checkHint(key){
     clarity:[S.items.length>0&&allOK,`${S.items.length} items listed · ${req.filter(x=>x.ok).length}/${req.length} checks pass`]};
   const h=map[key]; if(!h)return ''; return `<span class="hint ${h[0]?'pass':'fail'}">Game check: ${esc(h[1])}</span>`;
 }
-function feasDialog(){
+function feasDialog(){ if(colGuest())return;
   runChecks();
   const render=()=>{ let last=''; return FEAS.map((f,i)=>{const grp=f[0]!==last?`<div class="fgroup">${f[0]==='User'?'User · 3 points':f[0]==='Value'?'Value proposition · 3 points':'Resources & support · 4 points'}</div>`:''; last=f[0];
     return grp+`<div class="fq"><span class="no">${i+1}</span><div class="q"><b>${f[1]}</b><small>${esc(f[2])}</small>${f[3]?checkHint(f[3]):''}<input id="why${i}" value="${esc(S.why[i])}" placeholder="Why / why not?"></div><div class="yn"><button class="y ${S.feas[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.feas[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`}).join('') };
@@ -3002,7 +3005,7 @@ function feasDialog(){
   m.querySelector('#fAll').onclick=e=>{ const all=S.feas.every(x=>x===1); S.feas=S.feas.map(()=>all?null:1); m.querySelectorAll('#fl [data-i]').forEach(b=>b.classList.toggle('on',S.feas[+b.dataset.i]===+b.dataset.v)); e.target.textContent=all?'Yes to all':'Clear all'; upd(); save() };
   m.querySelector('#fDone').onclick=()=>results();
 }
-function quickScoreDialog(){
+function quickScoreDialog(){ if(hostOnly())return;
   runChecks();
   const Q=['Works for students and teachers?','Affordable to build?','Would school leaders back it?'];
   const m=modal(`<div class="hd"><div class="kick">Reality check</div><h2>Thumbs up or down?</h2></div><div class="bd"><div class="thumbs" id="th">${Q.map((q,i)=>`<div class="row"><span>${q}</span><div class="yn"><button class="y ${S.thumbs[i]===1?'on':''}" data-i="${i}" data-v="1">Yes</button><button class="n ${S.thumbs[i]===0?'on':''}" data-i="${i}" data-v="0">No</button></div></div>`).join('')}</div></div>
@@ -3039,7 +3042,7 @@ function results(){
   setTimeout(renderPenBtn,100); $('#rBack').addEventListener('click',()=>{ if(S.mode!=='free'&&!S.clockOff){ S.clockOff=true; renderTimer(); save(); toast('Clock off. Keep improving as long as you like.') } });
   $('#rPng').onclick=exportPng; $('#rJson').onclick=exportJson; $('#rNew').onclick=()=>{closeModal();openStart()};
 }
-function finish(){ S.finished=true; save(); syncSheet(true); results() }
+function finish(){ if(hostOnly())return; S.finished=true; save(); syncSheet(true); results() }
 
 /* showcase */
 let showOn=false;
@@ -3370,6 +3373,9 @@ let colTT=0;
 function colTimerOut(now){ if(!COL||!COL.host||S.mode==='free'||now-colTT<1000)return; colTT=now; RT.set(`rooms/${COL.code}/timer`,{e:Math.round(S.stepElapsed),x:S.extra||0,p:!!S.paused,u:!!S.upShown,c:!!S.clockOff}) }
 function colTimerIn(v){ if(!COL||COL.host||!v)return; S.stepElapsed=v.e; S.extra=v.x; S.upShown=v.u; S.clockOff=v.c; if(!!S.paused!==!!v.p)setPaused(v.p); renderTimer() }
 const colGuestTimed=()=>!!COL&&!COL.host&&S.mode!=='free';
+const colGuest=()=>!!COL&&!COL.host;
+const HOSTMSG='The host runs the cards and the game steps. You can move furniture and change the room.';
+function hostOnly(){ if(!colGuest())return false; toast(HOSTMSG); return true }
 /* ---- presence: who is here, what they have selected / are dragging ---- */
 let colPT=0, colPS='';
 function colPresence(now){ if(!COL||now-colPT<300)return; colPT=now; const s=selected!=null?'i'+selected:selFix!=null?'f'+selFix:selWall!=null?'w'+selWall:'', d=drag&&drag.moved&&(drag.k==='item'||drag.k==='grp')?drag.uid:0;
@@ -3386,7 +3392,7 @@ function colHeldBy(uid){ if(!COL)return null; const it=itemBy(uid), set=new Set(
 async function colConnect(code,host){ const rt=RT; COL={code,host,cid:rt.uid+'_'+Math.random().toString(36).slice(2,7),name:colName()||'Teacher',color:COLC[Math.floor(Math.random()*COLC.length)],base:{},people:{},unsub:[]};
   const pref=`rooms/${code}`; await rt.set(`${pref}/people/${COL.cid}`,{n:COL.name,c:COL.color,f:S.floor||0,s:'',d:0,h:host,t:rt.now()}); rt.onDisc(`${pref}/people/${COL.cid}`);
   COL.unsub.push(rt.on(`${pref}/people`,v=>{ if(!COL)return; COL.people=v||{}; colRemote(); renderColChip() }));
-  COL.unsub.push(rt.on(`${pref}/meta`,v=>{ if(!COL)return; if(v==null){ const was=COL; colLeave(true); if(!was.host)toast('The host ended this session. Your copy of the plan is kept on this device.'); return } COL.meta=v; COL.host=v.host===rt.uid; renderColChip(); renderTimer() }));
+  COL.unsub.push(rt.on(`${pref}/meta`,v=>{ if(!COL)return; if(v==null){ const was=COL; colLeave(true); if(!was.host)toast('The host ended this session. Your copy of the plan is kept on this device.'); return } COL.meta=v; const wasH=COL.host; COL.host=v.host===rt.uid; renderColChip(); renderTimer(); if(wasH!==COL.host){ renderGuide(); if(COL.host)toast('You are now the host: you run the cards and the game steps.') } }));
   COL.unsub.push(rt.on(`${pref}/timer`,v=>colTimerIn(v)));
   COL.unsub.push(rt.on(`${pref}/plan`,v=>colIncoming(v)));
   renderColChip(); history.replaceState(null,'',location.pathname+'?room='+code) }
