@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"></head><body>
 <title>Space Design Kit 3D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -21,7 +22,10 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 input,textarea,select{font:inherit;color:var(--txt);background:var(--panel-2);border:1px solid var(--line-2);border-radius:8px;padding:8px 10px;width:100%}
 textarea{resize:vertical;min-height:56px}
 .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
-.app{display:grid;grid-template-rows:56px 1fr;height:100%}
+:root{--z:1;--zs:1}
+.app{display:grid;grid-template-rows:calc(56px*var(--z)) 1fr;height:100%}
+.top{zoom:var(--z)}.side,.guide,.mission,.views,.penrail,.sheet,.lgnd{zoom:var(--z)}
+.start{zoom:var(--zs)}
 
 /* top bar */
 .top{display:flex;align-items:center;gap:14px;padding-inline:max(14px,env(safe-area-inset-left,0px)) max(14px,env(safe-area-inset-right,0px));background:var(--panel);border-bottom:1px solid var(--line);min-width:0}
@@ -67,7 +71,7 @@ textarea{resize:vertical;min-height:56px}
 svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 /* main */
-.main{display:grid;grid-template-columns:260px 1fr 330px;min-height:0}
+.main{display:grid;grid-template-columns:calc(260px*var(--z)) 1fr calc(330px*var(--z));min-height:0}
 .side{background:var(--panel);min-height:0;display:flex;flex-direction:column}
 .side.left{border-right:1px solid var(--line)} .side.right{border-left:1px solid var(--line)}
 .sec{padding:14px 16px 12px;border-bottom:1px solid var(--line)}
@@ -113,7 +117,7 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .wchud .wpad{display:flex;align-items:center;gap:4px}.wchud .wpad>div{display:grid;gap:4px}
 .wchud .wpad button{width:40px;height:34px;border-radius:9px;background:var(--panel-2);border:1px solid var(--line-2);font-size:14px;touch-action:none;user-select:none}
 .wchud .wpad button:active{background:#5fd0c4;color:#062a26}
-.ilock{position:absolute;transform:translateX(-50%);display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 8px;border-radius:999px;background:var(--panel);border:1px solid #5fd0c4;color:#5fd0c4;font-size:12px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.35);z-index:6;cursor:pointer;white-space:nowrap}
+.ilock{position:absolute;transform:translateX(-50%) scale(var(--z));transform-origin:50% 0;display:inline-flex;align-items:center;gap:5px;padding:5px 10px 5px 8px;border-radius:999px;background:var(--panel);border:1px solid #5fd0c4;color:#5fd0c4;font-size:12px;font-weight:700;box-shadow:0 6px 16px rgba(0,0,0,.35);z-index:6;cursor:pointer;white-space:nowrap}
 .ilock svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .ilock.on{background:#5fd0c4;color:#062a26}
 .slock{width:20px;height:18px;display:grid;place-items:center;border-radius:6px;border:1px solid #5fd0c4;color:#5fd0c4;background:transparent;padding:0;cursor:pointer}
@@ -166,6 +170,14 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 @media (max-height:760px){.penrail{top:auto;bottom:100px}.penrail .pt{height:34px}.penrail .pt span{display:none}}
 .penrail .pt.save{color:#9ab6ff}
 .svname{margin-top:10px;font-size:13px;color:var(--mute)}.svname code{display:inline-block;margin-top:4px;padding:3px 8px;border-radius:6px;background:var(--panel-2);color:var(--txt);word-break:break-all}
+.colchip{display:flex;align-items:center;gap:8px;height:34px;padding:0 10px;border-radius:999px;background:rgba(95,208,196,.14);border:1px solid #5fd0c4;color:var(--txt);cursor:pointer}
+.colchip b{font-family:var(--f-mono);letter-spacing:.12em;color:#5fd0c4}.colchip .dots{display:flex}.colchip .dots i{width:22px;height:22px;border-radius:50%;margin-left:-6px;border:2px solid var(--panel);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:800;color:#0c1730}.colchip .dots i:first-child{margin-left:0}.colchip .dots i.more{background:var(--panel-3);color:var(--txt)}
+#colBtn.on{background:#5fd0c4;color:#062a26}
+.colpick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.colpick .cbox{padding:14px;border-radius:14px;background:var(--panel-2);border:1px solid var(--line-2)}.colpick h3{margin:0 0 4px;font-size:16px}.colpick p{margin:0 0 10px;color:var(--mute);font-size:13px}
+.colgrid{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}.colgrid .qr{width:200px;height:200px;border-radius:14px;background:#fff;display:grid;place-items:center;overflow:hidden}.colgrid .qr svg{width:100%;height:100%}.colgrid .qr .tip{color:#3b4660;padding:14px;text-align:center}
+.colurl{display:flex;gap:8px;align-items:center}.colurl code{flex:1;min-width:0;padding:6px 8px;border-radius:8px;background:var(--panel-2);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.colpeople{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}.colpeople li{display:flex;align-items:center;gap:8px;font-size:14px}.colpeople i{width:12px;height:12px;border-radius:50%}.colpeople small{color:var(--mute)}.colpeople small.h{color:var(--gold);font-weight:700}
+@media (max-width:820px){.colpick,.colgrid{grid-template-columns:1fr}.colchip .dots{display:none}}
 .penbar{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:14px;background:rgba(19,33,63,.97);border:1px solid var(--line-2);box-shadow:0 10px 26px rgba(0,0,0,.45);z-index:9;white-space:nowrap;max-width:calc(100% - 24px);overflow-x:auto}
 .penbar>b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-right:2px}
 .penbar .pc{width:26px;height:26px;border-radius:50%;background:var(--pc);border:2px solid rgba(255,255,255,.25);padding:0;min-width:0}
@@ -303,7 +315,7 @@ html,body{overscroll-behavior:none}
 
 .scale{position:absolute;left:14px;bottom:84px;font-size:11.5px;color:var(--mute);background:rgba(19,33,63,.85);padding:6px 10px;border-radius:8px;border:1px solid var(--line)}
 .scale b{color:var(--txt)}
-.seltool{position:absolute;display:flex;align-items:stretch;gap:6px;padding:6px;background:rgba(19,33,63,.97);border:1px solid var(--line-2);border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.4);transform:translate(-50%,-100%);white-space:nowrap}
+.seltool{position:absolute;display:flex;align-items:stretch;gap:6px;padding:6px;background:rgba(19,33,63,.97);border:1px solid var(--line-2);border-radius:14px;box-shadow:0 10px 24px rgba(0,0,0,.4);transform:translate(-50%,-100%) scale(var(--z));transform-origin:50% 100%;white-space:nowrap}
 .seltool .tt{--tc:var(--gold);display:flex;flex-direction:column;justify-content:center;padding:0 10px 0 9px;border-left:3px solid var(--tc);line-height:1.15}
 .seltool .tt b{font-size:12.5px;color:var(--txt)}.seltool .tt small{font-size:11px;color:var(--mute);font-weight:600}
 .seltool .tt input[type=text]{width:120px;height:24px;margin-bottom:2px}
@@ -428,7 +440,7 @@ html,body{overscroll-behavior:none}
 
 /* modal */
 .modal{position:fixed;inset:0;background:rgba(5,10,24,.72);backdrop-filter:blur(4px);display:grid;place-items:center;z-index:50;padding:20px max(16px,env(safe-area-inset-right,0px)) 20px max(16px,env(safe-area-inset-left,0px))}
-.sheet{background:var(--panel);border:1px solid var(--line-2);border-radius:18px;max-width:min(920px,100%);width:100%;max-height:calc(100vh - 40px);overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.sheet{background:var(--panel);border:1px solid var(--line-2);border-radius:18px;max-width:min(920px,calc(100% / var(--z)));width:100%;max-height:calc((100vh - 40px) / var(--z));overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .sheet .hd{padding:20px 24px 0}
 .sheet .bd{padding:16px 24px 22px}
 .sheet .ft{padding:14px 24px 20px;display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;border-top:1px solid var(--line)}
@@ -444,13 +456,19 @@ html,body{overscroll-behavior:none}
 .start h1 em{font-style:normal;color:var(--gold)}
 .start p.lead{font-size:17px;margin:0}
 .lbl{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
-.modes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.mode{text-align:left;padding:14px;border-radius:14px;background:var(--panel-2);border:2px solid var(--line);display:flex;flex-direction:column;gap:4px;min-width:0}
+.modes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.mode{--mc:var(--gold);text-align:left;padding:12px 13px 13px;border-radius:14px;background:linear-gradient(180deg,color-mix(in srgb,var(--mc) 10%,var(--panel-2)),var(--panel-2) 60%);border:2px solid color-mix(in srgb,var(--mc) 30%,var(--line));border-top:4px solid var(--mc);display:flex;flex-direction:column;gap:4px;min-width:0}
+.mode .mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.mode .mi{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:color-mix(in srgb,var(--mc) 18%,transparent);border:1px solid color-mix(in srgb,var(--mc) 55%,transparent)}
+.mode .mi svg{width:22px;height:22px;fill:none;stroke:var(--mc);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.mode .mtag{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 7px;border-radius:999px;color:var(--mc);border:1px solid color-mix(in srgb,var(--mc) 50%,transparent)}
+.mode.planner{position:relative;margin-left:8px}.mode.planner::before{content:'';position:absolute;left:-11px;top:8px;bottom:8px;border-left:2px dashed var(--line-2)}
 .mode b{font-family:var(--f-display);font-size:19px;font-weight:800}
-.mode .t{font-family:var(--f-mono);font-size:12px;color:var(--gold);font-weight:700}
-.mode small{color:var(--mute);font-size:12.5px;line-height:1.35}
-.mode.on{border-color:var(--gold);background:var(--panel-3)}
-.spaces{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.mode .t{font-family:var(--f-mono);font-size:12px;color:var(--mc);font-weight:700}
+.mode small{color:var(--mute);font-size:12px;line-height:1.35}
+.mode.on{border-color:var(--mc);background:linear-gradient(180deg,color-mix(in srgb,var(--mc) 22%,var(--panel-3)),var(--panel-3) 70%);box-shadow:0 0 0 3px color-mix(in srgb,var(--mc) 25%,transparent)}
+.spaces{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:start}
+.space{align-self:start;display:block}
 .space span{display:block;line-height:1.25;font-size:11.5px;font-weight:700;color:var(--mute);padding:6px 2px 2px;text-align:center}
 .space.on span{color:var(--txt)}
 .spfeat{display:grid;grid-template-columns:minmax(0,170px) 1fr;gap:20px;align-items:center;margin-top:14px;padding:16px;border-radius:16px;background:rgba(26,43,79,.75);border:1px solid var(--line-2)}
@@ -467,7 +485,7 @@ html,body{overscroll-behavior:none}
 .start .r .spfeat.big p{font-size:20px}
 .start .r .spfeat.big .facts{justify-content:center}
 .start .r .spfeat.big .facts b{font-size:20px}
-@media (min-width:821px){.start .l .spfeat{display:none}.start .r{align-items:center;justify-content:center}}
+@media (min-width:821px){.start .l .spfeat{display:none}.start .r{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:72px 32px 32px;align-self:start;position:sticky;top:0;height:calc(100vh / var(--zs));box-sizing:border-box}.start .r .spfeat.big{margin:0;align-self:center}}
 .stfs{position:fixed;top:16px;right:16px;z-index:41}
 .stfs .ic{width:18px;height:18px}
 @media (max-width:820px){.spfeat{grid-template-columns:110px 1fr;gap:14px}.spfeat p{font-size:16px}.space span{display:none}}
@@ -480,8 +498,8 @@ html,body{overscroll-behavior:none}
 .tbub .tact{display:flex;align-items:center;gap:6px;margin-top:12px}.tbub .tact span{flex:1}
 .space{border-radius:10px;overflow:hidden;border:3px solid transparent;line-height:0;position:relative;transition:transform .15s}
 .space img{width:100%;height:auto}
-.space:hover{transform:translateY(-3px)}
-.space.on{border-color:var(--gold);transform:translateY(-4px)}
+.space:hover{filter:brightness(1.08)}
+.space.on{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,183,0,.3)}
 .space.on:after{content:"✓";position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#1b1400;font-weight:800;font-size:13px;line-height:22px;text-align:center}
 .spdesc{font-size:13.5px;color:#d3dbea;min-height:20px}
 .spdesc b{color:var(--txt)}
@@ -568,7 +586,7 @@ html,body{overscroll-behavior:none}
 .showcard .mini{display:flex;gap:6px;flex-wrap:wrap}
 .showcard .mini img{width:64px;border-radius:6px}
 
-@media (max-width:1100px){.main{grid-template-columns:220px 1fr 290px}.budget{min-width:120px}.stp span{display:none}.stp{padding:5px}}
+@media (max-width:1100px){.main{grid-template-columns:calc(220px*var(--z)) 1fr calc(290px*var(--z))}.budget{min-width:120px}.stp span{display:none}.stp{padding:5px}}
 @media (max-width:820px){
   .app{grid-template-rows:auto 1fr auto}
   .top{flex-wrap:wrap;padding-block:8px;gap:8px}
@@ -592,7 +610,7 @@ html,body{overscroll-behavior:none}
 @media (max-width:520px){
   .brand>div:not(.mark){display:none}
   .start{grid-template-columns:1fr}.start .l{padding:28px 16px}.start .r{display:none}
-  .modes{grid-template-columns:1fr}.spaces{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .modes{grid-template-columns:1fr 1fr}.mode.planner{margin-left:0}.mode.planner::before{display:none}.spaces{grid-template-columns:repeat(3,minmax(0,1fr))}
   .flipwrap,.grid2,.pp3{grid-template-columns:1fr}.flip{max-width:240px;margin:0 auto}
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -612,6 +630,8 @@ html,body{overscroll-behavior:none}
       <button id="tNext" title="Next step" aria-label="Next step"><svg class="ic" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg></button>
     </div>
     <div class="budget" id="budget"><div class="row"><span>Spent / budget</span><b id="bval">$0</b></div><div class="bar"><i id="bbar" style="width:0"></i></div></div>
+    <button class="colchip" id="colChip" hidden title="Live session: tap for the code, QR and people"></button>
+    <button class="iconbtn" id="colBtn" title="Collaborate: work on one plan from several devices" aria-label="Collaborate"><svg class="ic" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3.5 19c.5-3.3 2.6-5.5 5.5-5.5s5 2.2 5.5 5.5M14.5 14.2c.8-.5 1.6-.7 2.5-.7 2.3 0 4 1.8 4.4 4.5"/></svg></button>
     <button class="iconbtn" id="tourBtn" title="How to play" aria-label="How to play"><svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 .5c0 1.7-2.5 2-2.5 3.5M12 17h.01"/></svg></button>
     <button class="iconbtn" id="fsBtn" title="Full screen" aria-label="Full screen" aria-pressed="false"><svg class="ic" viewBox="0 0 24 24"><path id="fsIc" d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
     <button class="iconbtn" id="menuBtn" title="Menu" aria-label="Menu"><svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -908,7 +928,7 @@ function autoLocks(){ if(!S||S.attract||DRAW)return; const sp=spaceTab(), key=cu
 function setSpaceLock(on,auto){ if(!!S.lockRoom===!!on)return; S.lockRoom=!!on; S.autoLock=!!(on&&auto); if(S.lockRoom&&(selFix!=null||selWall!=null||(selected!=null&&isCeilT(itemBy(selected)?.type))))select(null); renderCatalog(); renderRoomPanel(); renderLock(); save() }
 function toggleLock(){ S.autoLock=false; S.lockRoom=!S.lockRoom; if(S.lockRoom&&(selFix!=null||selWall!=null||(selected!=null&&isCeilT(itemBy(selected)?.type))))select(null); if(typeof renderCatalog==='function')renderCatalog(); renderRoomPanel(); renderLock(); save(); toast(S.lockRoom?'Space locked: the room (walls, doors, windows, power points, size) and the ceiling (fans, air-con) can no longer be changed.':'Space unlocked: room and ceiling can be changed again.') }
 function renderLock(){ const b=document.getElementById('vLock'); if(!b)return; dkLabel('vLock',S?.lockRoom?'Space locked':'Space'); b.classList.toggle('on',!!S?.lockRoom); const f=document.getElementById('vLockF'); if(f){ dkLabel('vLockF',S?.lockFurn?'Furniture locked':'Furniture'); f.classList.toggle('on',!!S?.lockFurn) } }
-function save(){if(S?.attract)return; trackUndo(); try{localStorage.setItem('sdkit3d',JSON.stringify(S))}catch(e){}}
+function save(){if(S?.attract)return; trackUndo(); try{localStorage.setItem('sdkit3d',JSON.stringify(S))}catch(e){} if(typeof COL!=='undefined'&&COL&&!COL.applying)colQueue()}
 function loadSaved(){try{const t=localStorage.getItem('sdkit3d');return t?JSON.parse(t):null}catch(e){return null}}
 
 /* ================= THREE SCENE ================= */
@@ -1265,6 +1285,13 @@ function fitView(top=false){
   else { const d=Math.max(hd*1.15/t, hw/(t*asp))*1.12; const v=new THREE.Vector3(-.14,.74,.66).normalize().multiplyScalar(d); camera.position.set(cx+v.x,v.y,cz+v.z); orbit.target.set(cx,0,cz+.2) }
   orbit.update();
 }
+/* scale the whole interface to the screen: designed at 1600 x 900, mobile (<= 820 px wide) keeps 1:1 and may scroll */
+function uiScale(){ const W=innerWidth, H=innerHeight, mob=W<=820; const z=mob?1:Math.max(.62,Math.min(1.7,Math.min(W/1600,H/900))); document.documentElement.style.setProperty('--z',z.toFixed(3)); fitStart(); return z }
+function fitStart(){ const st=document.querySelector('.start'); const R=document.documentElement; if(!st){ R.style.setProperty('--zs',getComputedStyle(R).getPropertyValue('--z')||1); return }
+  const mob=innerWidth<=820; let z=+getComputedStyle(R).getPropertyValue('--z')||1; R.style.setProperty('--zs',z); if(mob)return;
+  for(let k=0;k<3;k++){ const ov=st.scrollHeight/Math.max(1,st.clientHeight); if(ov<=1.005)break; z=Math.max(.5,z/ov*.995); R.style.setProperty('--zs',z.toFixed(3)) } }
+addEventListener('resize',()=>{ uiScale(); requestAnimationFrame(()=>{ resize(); if(S&&!startOpen)renderSelTool?.() }) });
+uiScale();
 function resize(){const r=canvas.parentElement.getBoundingClientRect(); renderer.setSize(r.width,r.height,false); camera.aspect=r.width/Math.max(1,r.height); camera.updateProjectionMatrix()}
 
 /* ================= INTERACTION ================= */
@@ -1305,6 +1332,7 @@ canvas.addEventListener('pointerdown',e=>{
   if(h.k==='item'&&S.lockFurn&&!isCeilT(itemBy(h.id)?.type)){ toast('Furniture is locked. Unlock it in the toolbar to move things.'); return }
   if(h.k==='zone'&&selZone!==h.id){ selectZone(h.id); return }
   const p=floorHit(); orbit.enabled=false; canvas.setPointerCapture(e.pointerId);
+  if(h.k==='item'){ const hb=colHeldBy(h.id); if(hb){ toast(`${hb.n} is moving this right now.`); return } }
   if(h.k==='item'&&isLockedIt(itemBy(h.id))){ select(h.id); orbit.enabled=true; toast('This is locked. Tap the lock under it to unlock.'); return }
   if(h.k==='item'){ select(h.id); const it=itemBy(h.id); const G=it.grp&&S.groups?.[it.grp]; drag=G?{k:'grp',uid:h.id,id:it.grp,ox:G.x-(p?.x||0),oz:G.z-(p?.z||0),moved:false}:{k:'item',uid:h.id,ox:it.x-(p?.x||0),oz:it.z-(p?.z||0),moved:false} }
   else if(h.k==='fix'){ selectFix(h.id); drag={k:'fix',uid:h.id,moved:false} }
@@ -2633,7 +2661,7 @@ let timesUpPending=false, MODAL_CLOSE_HOOK=null;
 function setPaused(v){ S.paused=!!v; $('#tPauseIc').setAttribute('d',S.paused?'M8 5l11 7-11 7z':'M9 5v14M15 5v14'); $('#timer').classList.toggle('paused',S.paused) }
 const stepLeft=()=>step().dur+(S.extra||0)-S.stepElapsed;
 function clockOff(on){ S.clockOff=!!on; if(on){ S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false) } else { const left=stepLeft(); if(left<300)S.extra=(S.extra||0)+(300-left); S.upShown=false; setPaused(false) } renderTimer(); renderCatalog(); save(); toast(on?'Clock off. Take your time to keep improving. Tap the clock to turn it back on.':'Clock back on with 5 minutes.') }
-function extendStep(){ S.extra=(S.extra||0)+300; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); renderTimer(); save(); toast(`+5 minutes added to ${step().name}.`) }
+function extendStep(){ if(colGuestTimed()){ toast('The host runs the timer.'); return } S.extra=(S.extra||0)+300; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); renderTimer(); save(); toast(`+5 minutes added to ${step().name}.`) }
 function renderTimer(){ if(!S||S.mode==='free')return; $('#timer').classList.toggle('off',!!S.clockOff); if(S.clockOff){ $('#tval').textContent='Clock off'; $('#tExt').hidden=true; $('#timer').classList.remove('over','up'); return } const left=stepLeft(); $('#tval').textContent=fmt(Math.max(0,left)); $('#timer').classList.toggle('over',left<=0); $('#tExt').hidden=!S.upShown||!!step().max }
 function timesUpDialog(){ const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300), miss=cardsMissing(S.step,S.step+1);
   const m=modal(`<div class="hd"><div class="kick">Step ${S.step+1} · ${esc(st.name)}</div><h2>Time's up!</h2><p class="lead" style="margin:6px 0 0">${esc(st.name)} has used its ${Math.round(st.dur/60)} minutes${ext?` and ${ext*5} extra minute${ext*5>1?'s':''}`:''}. The timer is paused.</p></div>
@@ -2660,7 +2688,7 @@ function needCardsDialog(miss){ if(miss.free){ const deck={r:'red Scenario',b:'b
   const m=modal(`<div class="hd"><div class="kick">Step ${miss.j+1} · ${esc(st.name)}</div><h2>Draw your cards first</h2><p class="lead" style="margin:6px 0 0">${here?`You can't move on until you draw your ${deck} card${miss.need>1?'s':''}.`:`${esc(st.name)} needs its ${deck} card${miss.need>1?'s':''} before you can skip ahead.`}</p></div>
     <div class="ft"><button class="btn ghost" data-close>Not now</button><button class="btn primary" id="ncGo">${here?`Draw ${miss.need} card${miss.need>1?'s':''}`:`Go to ${esc(st.name)}`}</button></div>`);
   m.querySelector('#ncGo').onclick=()=>{ closeModal(); if(here)draw(miss.k); else goStep(miss.j) } }
-function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return;
+function askStep(i){ if(!S||S.mode==='free')return; if(i===S.step)return; if(colGuestTimed()){ toast('The host moves the group between steps.'); return }
   if(i>S.step){ const miss=cardsMissing(S.step,Math.min(i,steps().length)); if(miss){ needCardsDialog(miss); return } }
   if(DRAW){ toast('Finish editing the room first: press Done or Cancel on the drawing bar.'); return }
   if(i>=steps().length){ const m=modal(`<div class="hd"><div class="kick">Last step</div><h2>Finish the game?</h2><p class="lead" style="margin:6px 0 0">You'll see the summary of your design. Check your team is done first.</p></div><div class="ft"><button class="btn ghost" data-close>Not yet</button><button class="btn primary" id="asGo">Finish</button></div>`); m.querySelector('#asGo').onclick=()=>{closeModal();finish()}; return }
@@ -2880,7 +2908,7 @@ $('#steps').addEventListener('click',e=>{ if(e.target.closest('[data-flp]')){ if
 function goStep(i){ if(i<0||i>=steps().length)return; setTimeout(()=>{ renderPenBtn(); if(penAllowed()&&!S.sandbox)toast('Review time: tap Pen in the toolbar to circle problems on the plan in different colours.') },600); S.step=i; S.stepElapsed=0; S.extra=0; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); onEnterStep(); renderSteps(); renderGuide(); renderTimer(); renderCatalog(); $('#vInspire').classList.toggle('dim',furnLocked()); save(); syncSheet() }
 $('#tNext').onclick=()=>askStep(S.step+1); $('#tExt').onclick=()=>extendStep();
 $('#tval').onclick=()=>{ if(S?.clockOff&&!S.finished)clockOff(false) };
-$('#tPause').onclick=()=>{ if(S.clockOff&&!S.finished){ clockOff(false); return } if(S.upShown){ timesUpDialog(); return } setPaused(!S.paused); save() };
+$('#tPause').onclick=()=>{ if(colGuestTimed()){ toast('The host runs the timer.'); return } if(S.clockOff&&!S.finished){ clockOff(false); return } if(S.upShown){ timesUpDialog(); return } setPaused(!S.paused); save() };
 function roomToolsHighlight(){ curCat='room'; curSearch=''; renderCatalog(); if(innerWidth<=820)$('#left').classList.add('open');
   const sc=$('#left .scroll'); if(sc)sc.scrollTop=0;
   setTimeout(()=>{ const secs=[...document.querySelectorAll('#roomPanel section')], sp=document.querySelector('#cats .cgrp.sp');
@@ -2891,7 +2919,7 @@ function onEnterStep(){
   const id=step().id;
   if(id==='hook'){ curCat='room'; renderCatalog(); setTimeout(()=>{ if(!$('#mdl')&&!startOpen)roomToolsHighlight() },900) }
   if(id==='build'&&curCat==='room'){ curCat='seat'; renderCatalog() }
-  if(id==='challenge'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
+  if(id==='challenge'&&S.hand.r.length===0&&!colGuestTimed()) setTimeout(()=>draw('r'),300);
   if(id==='prompt'&&S.hand.g.length===0) setTimeout(()=>{ draw('g'); toast('Your prompt card is pinned on the room view.') },300);
   if(id==='aware'&&S.hand.r.length===0) setTimeout(()=>draw('r'),300);
   if(id==='feas') feasDialog();
@@ -2903,7 +2931,7 @@ const fmt=s=>{s=Math.max(0,Math.round(s));return `${Math.floor(s/60)}:${String(s
 let lastT=performance.now(), lastSave=0;
 function tick(now){
   const dt=(now-lastT)/1000; lastT=now;
-  if(S&&S.mode!=='free'&&!S.paused&&!S.finished&&!S.clockOff&&!startOpen){
+  if(S&&S.mode!=='free'&&!S.paused&&!S.finished&&!S.clockOff&&!startOpen&&!colGuestTimed()){
     S.stepElapsed+=dt; const st=step(); const left=stepLeft();
     if(left<=0&&!S.upShown){ S.stepElapsed=st.dur+(S.extra||0); S.upShown=true; setPaused(true); $('#timer').classList.add('up'); timesUpPending=true; renderCatalog(); save() }
     renderTimer();
@@ -3033,6 +3061,7 @@ function showcase(on){
 let downloads=null;
 (async()=>{try{downloads=window.__mockDownloads||await window.claude?.use?.('downloads')}catch(e){downloads=null}})();
 async function saveFile(filename,data){
+  if(!downloads&&!window.claude){ try{ const b=data instanceof Blob?data:new Blob([data]), u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); toast('Saved to Downloads: '+filename) }catch(e){ toast('Could not save on this device.') } return }
   if(!downloads){ toast('Saving files is not available in this view.'); return }
   try{ await downloads.save({filename,data}); toast('Saved') }catch(e){ if(e?.code!=='declined') toast('Could not save: '+(e?.message||'unavailable')) }
 }
@@ -3069,6 +3098,11 @@ $('#menuBtn').onclick=()=>{
 };
 
 /* ================= START SCREEN ================= */
+const MODE_LOOK={quick:['#f5b700','Game','<circle cx="12" cy="13" r="7"/><path d="M12 13V9.5M9.5 3h5M12 3v3"/>'],
+ workshop:['#7ea2ff','Game','<circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><path d="M3.5 19c.4-3 2.2-5 4.5-5s4.1 2 4.5 5M11.5 19c.4-3 2.2-5 4.5-5s4.1 2 4.5 5"/>'],
+ free:['#3ccf74','Game','<rect x="3" y="6" width="10" height="14" rx="2" transform="rotate(-8 8 13)"/><rect x="10" y="4" width="10" height="14" rx="2" transform="rotate(8 15 11)"/>'],
+ sandbox:['#5fd0c4','Planner','<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9M14 14h4"/>']};
+
 let startOpen=false;
 function openStart(){
   startOpen=true; let mode=S?.sandbox?'sandbox':(S?.mode||'quick'), space=S?.space||'maker'; const saved=loadSaved();
@@ -3078,21 +3112,23 @@ function openStart(){
       <div><div class="eyebrow">SP FabLab · Space Design Kit <span class="beta">Beta</span></div><h1>Design a learning space <em>you could really build.</em></h1></div>
       <p class="lead">Draw a real classroom problem, get inspired, then plan the room at real size. The game checks walkways, seats and budget as you build.</p>
       <div class="legend"><span style="background:var(--red-s);color:#ff8a8f">Red · Scenario: the problem</span><span style="background:var(--blue-s);color:#9ab6ff">Blue · Inspiration: ideas</span><span style="background:var(--green-s);color:#7fd89a">Green · Prompt: the stretch</span></div>
-      <div><div class="lbl">1 · How long do you have?</div><div class="modes">${Object.entries(MODES).map(([k,m])=>`<button class="mode ${k===mode?'on':''}" data-mode="${k}"><span class="t">${m.time}</span><b>${m.name}</b><small>${m.desc}</small></button>`).join('')}</div></div>
+      <div><div class="lbl">1 · Choose how to play</div><div class="modes">${Object.entries(MODES).map(([k,m])=>{ const [c,tag,ic]=MODE_LOOK[k]||['#f5b700','Game','']; return `<button class="mode ${k===mode?'on':''} ${k==='sandbox'?'planner':''}" data-mode="${k}" style="--mc:${c}"><span class="mh"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></span><span class="mtag">${tag}</span></span><span class="t">${m.time}</span><b>${m.name}</b><small>${m.desc}</small></button>` }).join('')}</div></div>
       ${mode==='sandbox'?`<div class="sbnote"><div class="lbl">2 · Your plan</div><p>Sandbox starts with an empty 12 × 9 m room. Resize it up to <b>50 × 50 m</b>, reshape it, add rooms inside and a second floor. No space card needed.</p></div>`:''}
       <div ${mode==='sandbox'?'hidden':''}><div class="lbl">2 · Pick a space</div><div class="spaces">${Object.entries(SPACES).map(([k,s])=>`<button class="space ${k===space?'on':''}" data-space="${k}" aria-label="${esc(s.name)}" aria-pressed="${k===space}"><img src="cards/${s.back}.jpg" alt=""><span>${esc(s.name)}</span></button>`).join('')}</div>
         <div class="spfeat"><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div>
       <div class="startrow"><div><label class="lbl" for="stTeam" style="display:block">Team name (optional)</label><input id="stTeam" placeholder="e.g. Table 3" value="${esc(S?.team||'')}"></div>
         <button class="btn primary" id="stGo" style="padding:14px 26px;font-size:16px">Start ${esc(MODES[mode].name.toLowerCase())}</button>
-        ${saved&&saved.items?.length?`<button class="btn" id="stCont" style="padding:14px 18px">Continue last game</button>`:''}</div>
+        ${saved&&saved.items?.length?`<button class="btn" id="stCont" style="padding:14px 18px">Continue last game</button>`:''}<button class="btn" id="stJoin" style="padding:14px 18px">Join a session</button></div>
     </div><div class="r">${mode==='sandbox'?`<div class="spfeat big sbx"><div class="sbico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div><div class="k">Sandbox</div><h2>Plan any space</h2><p>An interior planning sandbox for educators. No cards, timer or score.</p><div class="facts"><span><b>50 × 50 m</b>max room</span><span><b>2</b>floors</span><span><b>Pen</b>any time</span></div></div></div>`:''}<div class="spfeat big" ${mode==='sandbox'?'hidden':''}><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div><button class="btn stfs" id="stFs"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${fsEl()?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'}"/></svg><span>${fsEl()?'Exit full screen':'Full screen'}</span></button></div>`;
+    root.querySelectorAll('img').forEach(i=>{ if(!i.complete)i.addEventListener('load',()=>fitStart(),{once:true}) }); requestAnimationFrame(fitStart); setTimeout(fitStart,500);
     $('#stFs').onclick=()=>{ toggleFS(); setTimeout(draw_,450) };
     root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;draw_()});
     root.querySelectorAll('[data-space]').forEach(b=>b.onclick=()=>{space=b.dataset.space;draw_()});
     $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode==='sandbox'?'free':mode,mode==='sandbox'?'maker':space); if(mode==='sandbox'){ S.sandbox=true; S.nFloors=1; S.floor=0; S.ghostOn=true } S.team=team; closeStart(); boot(); onEnterStep(); syncSheet(); let seen=false; try{seen=!!localStorage.getItem('sdkit3d-tour')}catch(e){} if(!seen)setTimeout(()=>{ if(!$('#mdl'))startTour() },900)};
     $('#stCont')?.addEventListener('click',()=>{S=saved;closeStart();boot()});
+    $('#stJoin')?.addEventListener('click',()=>colDialog());
   };
-  draw_(); attract=true; orbit.autoRotate=true; orbit.autoRotateSpeed=.8;
+  draw_(); requestAnimationFrame(fitStart); attract=true; orbit.autoRotate=true; orbit.autoRotateSpeed=.8;
 }
 let attract=false;
 function closeStart(){ startOpen=false; $('#startRoot').innerHTML=''; attract=false; orbit.autoRotate=false; lastT=performance.now() }
@@ -3269,6 +3305,139 @@ function sketchShot(){ renderer.render(scene,camera); const src=renderer.domElem
   x.fillStyle='#eef2fa'; x.font=`600 ${fs}px Figtree, sans-serif`; const t=[S.project||'',S.sandbox?'Sandbox'+(S.nFloors>1?' · '+floorName(S.floor):''):SPACES[S.space].name,new Date().toLocaleString()].filter(Boolean).join('  ·  '); x.fillText(t,foot*.4+fs*9.5,H+foot*.62);
   cv.toBlob(b=>{ if(b)saveOut('',b,'png','your sketch') },'image/png') }
 
+/* ================= COLLABORATION (Firebase Realtime Database) =================
+   Works on the hosted (GitHub Pages) version once firebase-config.js is filled in. Inside the Claude viewer it stays off.
+   Shared plan lives at rooms/{CODE}/plan as flat keys whose values are JSON strings:
+     game                    -> cards, step, mode, floors count, project name ...
+     f{floor}/room, f{floor}/ink, f{floor}/items/u{uid}, f{floor}/fix/u{uid}, f{floor}/inner/u{uid}, f{floor}/zones/u{uid}, f{floor}/groups/{id}
+   Each device merges 3 ways (last synced / its own edits / incoming), so two people editing different things never overwrite each other. */
+const FB_SDK='10.12.2';
+const GAME_KEYS=['mode','space','sandbox','nFloors','project','team','roles','hand','deck','redraw','tags','keep','avoidWhy','rSet','promptAt','freeStep','feas','why','pitch','plan','thumbs','finished','step','twistDone','nudged','notes','pid'];
+const COLC=['#ff5a5f','#4f8cff','#3ccf74','#f5b700','#b26bff','#ff8a3d','#2fd3c7','#ff6bb5'];
+let COL=null, RT=null, RT_TRY=null;
+async function rtInit(){ if(RT)return RT; if(RT_TRY)return RT_TRY;
+  RT_TRY=(async()=>{ if(window.__rtMock){ RT=await window.__rtMock(); return RT }
+    if(window.claude)return null;
+    let cfg=window.SDKIT_FIREBASE; if(!cfg){ try{ cfg=(await import('./firebase-config.js')).default }catch(e){ cfg=null } }
+    if(!cfg||!cfg.apiKey||!cfg.databaseURL)return null;
+    const b=`https://www.gstatic.com/firebasejs/${FB_SDK}/`;
+    const [A,U,D]=await Promise.all([import(b+'firebase-app.js'),import(b+'firebase-auth.js'),import(b+'firebase-database.js')]);
+    const app=A.initializeApp(cfg), auth=U.getAuth(app); await U.signInAnonymously(auth); const db=D.getDatabase(app), r=p=>D.ref(db,p);
+    RT={ uid:auth.currentUser.uid, get:async p=>(await D.get(r(p))).val(), set:(p,v)=>D.set(r(p),v), update:(p,v)=>D.update(r(p),v), remove:p=>D.remove(r(p)),
+      on:(p,cb)=>D.onValue(r(p),s=>cb(s.val())), txn:async(p,fn)=>(await D.runTransaction(r(p),fn)).snapshot.val(),
+      onDisc:p=>D.onDisconnect(r(p)).remove(), conn:cb=>D.onValue(r('.info/connected'),s=>cb(!!s.val())), now:()=>Date.now() }; return RT })().catch(e=>{ console.warn('Collaboration unavailable',e); RT_TRY=null; return null });
+  return RT_TRY }
+const colName=()=>{ try{ return localStorage.getItem('sdkit-name')||'' }catch(e){ return '' } };
+const colSetName=n=>{ try{ localStorage.setItem('sdkit-name',n) }catch(e){} };
+const newCode=()=>{ const A='ABCDEFGHJKLMNPQRSTUVWXYZ'; return [0,0,0,0].map(()=>A[Math.floor(Math.random()*A.length)]).join('') };
+/* ---- flatten the plan ---- */
+function colFloors(){ const nf=S.sandbox?(S.nFloors||1):1, out={}; for(let k=0;k<nf;k++){ const F=k===(S.floor||0)?S:(S.floorStore||{})[k]; if(F)out[k]=F } return out }
+function colFlat(){ const o={}, g={}; for(const k of GAME_KEYS) if(S[k]!==undefined)g[k]=S[k]; o.game=JSON.stringify(g); const J=v=>JSON.stringify(v);
+  for(const [k,F] of Object.entries(colFloors())){ const p='f'+k; o[p+'/room']=J(F.room||null); o[p+'/ink']=J(F.ink||[]);
+    for(const it of F.items||[])o[`${p}/items/u${it.uid}`]=J(it); for(const f of F.fix||[])o[`${p}/fix/u${f.uid}`]=J(f);
+    for(const r of F.inner||[])o[`${p}/inner/u${r.uid}`]=J(r); for(const z of F.zones||[])o[`${p}/zones/u${z.uid}`]=J(z);
+    for(const [id,G] of Object.entries(F.groups||{}))o[`${p}/groups/${id}`]=J(G) } return o }
+function flatOfVal(v,pre='',o={}){ if(v==null)return o; if(typeof v==='string'){ o[pre]=v; return o } for(const [k,c] of Object.entries(v))flatOfVal(c,pre?pre+'/'+k:k,o); return o }
+function floorFromFlat(F,k){ const p='f'+k+'/', o={room:null,ink:[],items:[],fix:[],inner:[],zones:[],groups:{}}; let any=false;
+  for(const [key,val] of Object.entries(F)){ if(!key.startsWith(p))continue; any=true; const rest=key.slice(p.length), v=JSON.parse(val);
+    if(rest==='room')o.room=v; else if(rest==='ink')o.ink=v||[]; else { const [col,id]=rest.split('/'); if(col==='groups')o.groups[id]=v; else if(o[col])o[col].push(v) } }
+  for(const c of ['items','fix','inner','zones'])o[c].sort((a,b)=>a.uid-b.uid); return any?o:null }
+/* ---- apply a merged flat plan to the game ---- */
+function colApply(M,L){ const changed=Object.keys({...M,...L}).filter(k=>M[k]!==L[k]); if(!changed.length)return; COL.applying=true;
+  try{ const cur=S.floor||0, onlyItems=changed.every(k=>k.startsWith(`f${cur}/items/`));
+    if(onlyItems){ for(const k of changed){ const uid=+k.split('/u')[1], i=S.items.findIndex(x=>x.uid===uid), g=objs.get(uid); if(g){ furn.remove(g); objs.delete(uid) }
+        if(M[k]==null){ if(i>=0)S.items.splice(i,1); if(selected===uid)selected=null } else { const it=JSON.parse(M[k]); if(i>=0)S.items[i]=it; else S.items.push(it); makeItem(it) } }
+      markOverlaps(); runChecks(); renderCatalogCount(); if(selected!=null&&!itemBy(selected))select(null); else renderSelTool() }
+    else { const g=JSON.parse(M.game||'{}'), oldStep=S.step; for(const k of GAME_KEYS) if(k in g)S[k]=g[k]; S.nFloors=S.sandbox?(S.nFloors||1):1;
+      if((S.floor||0)>=S.nFloors){ S.floor=0 } const keepCams=S.cams, keepB=S.boardSet; S.floorStore={};
+      for(let k=0;k<S.nFloors;k++){ const F=floorFromFlat(M,k); if(!F)continue; F.cams=k===(S.floor||0)?keepCams:[]; F.boardSet=keepB;
+        if(k===(S.floor||0))loadFloor(F); else { S.floorStore[k]=F; F.cost=withFloor(F,floorCost) } }
+      B=S.room; _EC={key:null}; if(selected!=null&&!itemBy(selected))selected=null; if(selFix!=null&&!S.fix.some(f=>f.uid===selFix))selFix=null; if(selWall!=null&&!wallLen(selWall))selWall=null;
+      buildRoom(); syncAll(); buildInk(); buildGhost(); markOverlaps(); renderNotes(); runChecks(); renderCatalog(); renderHands(); renderPlan(); renderMission(); renderSteps(); renderGuide(); renderTimer(); renderSelTool();
+      if(S.step!==oldStep){ S.stepElapsed=0; S.extra=0; S.upShown=false; toast(`Moved to ${step().name}`) } }
+    lastLay=layOf(); try{ localStorage.setItem('sdkit3d',JSON.stringify(S)) }catch(e){} } finally { COL.applying=false } colRemote() }
+function colIdle(){ return !drag&&!(DRAW&&!DRAW.edit)&&!PW&&!(PEN&&PEN.cur)&&!startOpen }
+function colIncoming(val){ if(!COL)return; if(val==null)return; COL.pendR=flatOfVal(val); if(colIdle())colMerge() }
+function colMerge(){ const R=COL.pendR; if(!R)return; COL.pendR=null; const L=colFlat(), P=COL.base, M={};
+  for(const k of new Set([...Object.keys(L),...Object.keys(R),...Object.keys(P)])){ const v=L[k]!==P[k]?L[k]:R[k]; if(v!=null)M[k]=v }
+  COL.base=R; colApply(M,L); colPushNow() }
+function colQueue(){ if(!COL||COL.applying||COL.t)return; COL.t=setTimeout(()=>{ COL.t=null; colPushNow() },140) }
+function colPushNow(){ if(!COL||!RT)return; const L=colFlat(), P=COL.base, up={}; let n=0;
+  for(const k of new Set([...Object.keys(L),...Object.keys(P)])) if(L[k]!==P[k]){ up[k]=L[k]??null; n++ }
+  if(!n)return; COL.base=L; RT.update(`rooms/${COL.code}/plan`,up).catch(e=>toast('Could not sync: '+(e?.message||'offline'))) }
+/* ---- timer: the host runs it, everyone else follows ---- */
+let colTT=0;
+function colTimerOut(now){ if(!COL||!COL.host||S.mode==='free'||now-colTT<1000)return; colTT=now; RT.set(`rooms/${COL.code}/timer`,{e:Math.round(S.stepElapsed),x:S.extra||0,p:!!S.paused,u:!!S.upShown,c:!!S.clockOff}) }
+function colTimerIn(v){ if(!COL||COL.host||!v)return; S.stepElapsed=v.e; S.extra=v.x; S.upShown=v.u; S.clockOff=v.c; if(!!S.paused!==!!v.p)setPaused(v.p); renderTimer() }
+const colGuestTimed=()=>!!COL&&!COL.host&&S.mode!=='free';
+/* ---- presence: who is here, what they have selected / are dragging ---- */
+let colPT=0, colPS='';
+function colPresence(now){ if(!COL||now-colPT<300)return; colPT=now; const s=selected!=null?'i'+selected:selFix!=null?'f'+selFix:selWall!=null?'w'+selWall:'', d=drag&&drag.moved&&(drag.k==='item'||drag.k==='grp')?drag.uid:0;
+  const p={n:COL.name,c:COL.color,f:S.floor||0,s,d,h:!!COL.host}, j=JSON.stringify(p); if(j!==colPS){ colPS=j; RT.set(`rooms/${COL.code}/people/${COL.cid}`,{...p,t:RT.now()}) }
+  if(drag&&drag.moved)colQueue(); if(COL.pendR&&colIdle())colMerge() }
+const remG=new THREE.Group(); scene.add(remG); const remS={};
+function colRemote(){ const seen=new Set(); if(COL) for(const [id,p] of Object.entries(COL.people||{})){ if(id===COL.cid||p.f!==(S.floor||0)||!p.s?.startsWith('i'))continue; const uid=+p.s.slice(1), g=objs.get(uid); if(!g)continue;
+    const it=itemBy(uid), set=it?lockSet(it):[]; let top=0; const bx=new THREE.Box3(); for(const m of set){ const gg=objs.get(m.uid); if(gg)bx.expandByObject(gg) } if(bx.isEmpty())continue; const c=new THREE.Vector3(); bx.getCenter(c); top=bx.max.y;
+    const key=id+p.n+p.c; let sp=remS[id]; if(!sp||sp.userData.key!==key){ if(sp)remG.remove(sp); sp=label((p.d?'✋ ':'')+p.n,p.c); sp.userData.key=key; sp.userData.outline=1; remS[id]=sp; remG.add(sp) }
+    sp.position.set(c.x,top+.45,c.z); sp.visible=true; seen.add(id) }
+  for(const [id,sp] of Object.entries(remS)) if(!seen.has(id)){ remG.remove(sp); delete remS[id] } }
+function colHeldBy(uid){ if(!COL)return null; const it=itemBy(uid), set=new Set(it?lockSet(it).map(x=>x.uid):[uid]); for(const [id,p] of Object.entries(COL.people||{})){ if(id!==COL.cid&&p.d&&set.has(p.d))return p } return null }
+/* ---- start / join / leave ---- */
+async function colConnect(code,host){ const rt=RT; COL={code,host,cid:rt.uid+'_'+Math.random().toString(36).slice(2,7),name:colName()||'Teacher',color:COLC[Math.floor(Math.random()*COLC.length)],base:{},people:{},unsub:[]};
+  const pref=`rooms/${code}`; await rt.set(`${pref}/people/${COL.cid}`,{n:COL.name,c:COL.color,f:S.floor||0,s:'',d:0,h:host,t:rt.now()}); rt.onDisc(`${pref}/people/${COL.cid}`);
+  COL.unsub.push(rt.on(`${pref}/people`,v=>{ if(!COL)return; COL.people=v||{}; colRemote(); renderColChip() }));
+  COL.unsub.push(rt.on(`${pref}/meta`,v=>{ if(!COL)return; if(v==null){ const was=COL; colLeave(true); if(!was.host)toast('The host ended this session. Your copy of the plan is kept on this device.'); return } COL.meta=v; COL.host=v.host===rt.uid; renderColChip(); renderTimer() }));
+  COL.unsub.push(rt.on(`${pref}/timer`,v=>colTimerIn(v)));
+  COL.unsub.push(rt.on(`${pref}/plan`,v=>colIncoming(v)));
+  renderColChip(); history.replaceState(null,'',location.pathname+'?room='+code) }
+async function colHost(){ const rt=await rtInit(); if(!rt)return colUnavailable(); let code; for(let i=0;i<8;i++){ code=newCode(); if(!(await rt.get(`rooms/${code}/meta`)))break }
+  const L=colFlat(); await rt.update(`rooms/${code}/plan`,L); await rt.set(`rooms/${code}/meta`,{host:rt.uid,hostName:colName()||'Teacher',created:rt.now(),title:S.project||(S.sandbox?'Sandbox plan':SPACES[S.space].name)});
+  await rt.set(`rooms/${code}/uidNext`,Math.ceil((S.uid+1)/100000)*100000+100000); await colConnect(code,true); COL.base=L; save(); colDialog() }
+async function colJoin(code){ code=String(code||'').toUpperCase().replace(/[^A-Z]/g,''); if(code.length!==4){ toast('Room codes are 4 letters.'); return false }
+  const rt=await rtInit(); if(!rt){ colUnavailable(); return false } const meta=await rt.get(`rooms/${code}/meta`); if(!meta){ toast(`No session called ${code}. Check the code with the host.`); return false }
+  const plan=await rt.get(`rooms/${code}/plan`); const R=flatOfVal(plan), g=JSON.parse(R.game||'{}');
+  const blk=await rt.txn(`rooms/${code}/uidNext`,c=>(c||200000)+100000);
+  if(COL)colLeave(true); S=fresh(g.mode||'free',SPACES[g.space]?g.space:'maker'); S.floor=0; S.uid=(blk||300000)-100000;
+  for(const k of GAME_KEYS) if(k in g)S[k]=g[k]; const F0=floorFromFlat(R,0); if(F0)loadFloor({...F0,cams:[],boardSet:true}); S.floorStore={}; for(let k=1;k<(S.nFloors||1);k++){ const F=floorFromFlat(R,k); if(F){ F.cams=[]; S.floorStore[k]=F } }
+  if(startOpen)closeStart(); boot(); for(const F of Object.values(S.floorStore))F.cost=withFloor(F,floorCost); runChecks();
+  COL=null; await colConnect(code,meta.host===rt.uid); COL.base=R; toast(`Joined ${meta.title||'the session'} (${code}). Changes sync to everyone.`); return true }
+function colLeave(silent){ if(!COL)return; const c=COL; COL=null; for(const u of c.unsub)try{u()}catch(e){} RT?.remove(`rooms/${c.code}/people/${c.cid}`).catch(()=>{}); for(const id of Object.keys(remS)){ remG.remove(remS[id]); delete remS[id] }
+  history.replaceState(null,'',location.pathname); renderColChip(); renderTimer(); if(!silent)toast('You left the session. Your copy of the plan stays on this device.') }
+async function colEnd(){ if(!COL)return; const code=COL.code; colLeave(true); await RT.remove(`rooms/${code}`).catch(()=>{}); toast('Session ended for everyone.') }
+/* ---- UI ---- */
+function colUnavailable(){ modal(`<div class="hd"><div class="kick">Collaborate</div><h2>Collaboration needs the hosted version</h2><p class="lead" style="margin:6px 0 0">Working together on several devices runs on the Space Design Kit website (GitHub Pages) once its Firebase database is set up. ${window.claude?'It is turned off inside this viewer.':'This copy has no Firebase settings yet: fill in <b>firebase-config.js</b> (see the README).'}</p></div><div class="bd"><ol style="margin:0;padding-left:18px;line-height:1.7"><li>Open the hosted Space Design Kit link.</li><li>Tap <b>Collaborate</b> (top right) and <b>Start a session</b>.</li><li>Others join with the 4-letter code or the QR code.</li></ol></div><div class="ft"><button class="btn primary" data-close>OK</button></div>`) }
+function renderColChip(){ const c=$('#colChip'); if(!c)return; if(!COL){ c.hidden=true; $('#colBtn')?.classList.remove('on'); return } const P=Object.entries(COL.people||{});
+  c.hidden=false; $('#colBtn')?.classList.add('on'); c.innerHTML=`<b>${COL.code}</b><span class="dots">${P.slice(0,6).map(([id,p])=>`<i style="background:${p.c}" title="${esc(p.n)}${id===COL.cid?' (you)':''}${p.h?' · host':''}">${esc((p.n||'?')[0].toUpperCase())}</i>`).join('')}${P.length>6?`<i class="more">+${P.length-6}</i>`:''}</span>` }
+async function qrSvg(text){ try{ if(!window.qrcode)await new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js'; s.onload=res; s.onerror=rej; document.head.appendChild(s) });
+  const q=window.qrcode(0,'M'); q.addData(text); q.make(); return q.createSvgTag({cellSize:5,margin:2,scalable:true}) }catch(e){ return '' } }
+async function colDialog(prefill){ const rt=await rtInit();
+  if(!rt){ colUnavailable(); return }
+  if(COL){ const link=location.origin+location.pathname+'?room='+COL.code, P=Object.entries(COL.people||{}), hostHere=P.some(([,p])=>p.h);
+    const m=modal(`<div class="hd"><div class="kick">Collaborate · live session</div><h2>Room <span class="num" style="color:var(--gold);letter-spacing:.12em">${COL.code}</span></h2><p class="lead" style="margin:6px 0 0">Everyone on this code edits the same plan. ${S.mode!=='free'?'The host runs the timer and steps.':''}</p></div>
+      <div class="bd"><div class="colgrid"><div class="qr" id="colQr"><span class="tip">Loading QR…</span></div><div><div class="lbl">Join link</div><div class="colurl"><code>${esc(link)}</code><button class="btn sm" id="colCopy">Copy</button></div>
+        <div class="lbl" style="margin-top:14px">People here (${P.length})</div><ul class="colpeople">${P.map(([id,p])=>`<li><i style="background:${p.c}"></i>${esc(p.n)}${id===COL.cid?' <small>(you)</small>':''}${p.h?' <small class="h">host</small>':''}</li>`).join('')}</ul>
+        <label class="lbl" for="colNm" style="display:block;margin-top:12px">Your name</label><input id="colNm" maxlength="24" value="${esc(COL.name)}"></div></div></div>
+      <div class="ft">${COL.host?'<button class="btn ghost" id="colEnd" style="color:#ff8a8f">End session for everyone</button>':(!hostHere?'<button class="btn ghost" id="colTake">Become the host</button>':'')}<button class="btn ghost" id="colLeave">Leave</button><button class="btn primary" data-close>Done</button></div>`,{wide:true});
+    qrSvg(link).then(svg=>{ const q=m.querySelector('#colQr'); if(q)q.innerHTML=svg||'<span class="tip">Share the code or link instead.</span>' });
+    m.querySelector('#colCopy').onclick=async()=>{ try{ await navigator.clipboard.writeText(link); toast('Link copied') }catch(e){ toast(link) } };
+    m.querySelector('#colNm').addEventListener('change',e=>{ COL.name=e.target.value.trim()||'Teacher'; colSetName(COL.name); colPS='' });
+    m.querySelector('#colLeave').onclick=()=>{ closeModal(); colLeave() };
+    m.querySelector('#colEnd')?.addEventListener('click',()=>{ closeModal(); colEnd() });
+    m.querySelector('#colTake')?.addEventListener('click',async()=>{ await RT.update(`rooms/${COL.code}/meta`,{host:RT.uid,hostName:COL.name}); closeModal(); toast('You are now the host.') });
+    return }
+  const m=modal(`<div class="hd"><div class="kick">Collaborate</div><h2>Work on one plan together</h2><p class="lead" style="margin:6px 0 0">Laptops, iPads and phones can all join. Changes show on every device within a second.</p></div>
+    <div class="bd"><label class="lbl" for="colNm" style="display:block">Your name</label><input id="colNm" maxlength="24" placeholder="e.g. Ms Tan" value="${esc(colName())}">
+      <div class="colpick"><div class="cbox"><h3>Start a session</h3><p>Share the plan on this device with others. You become the host${S&&S.mode!=='free'?' and run the timer':''}.</p><button class="btn primary" id="colStart" ${startOpen?'disabled title="Start a game or the Sandbox first"':''}>Start a session</button>${startOpen?'<p class="tip" style="margin:6px 0 0">Start a game or the Sandbox first, then tap Collaborate.</p>':''}</div>
+      <div class="cbox"><h3>Join a session</h3><p>Type the 4-letter code from the host.</p><div style="display:flex;gap:8px"><input id="colCode" maxlength="4" placeholder="ABCD" value="${esc(prefill||'')}" style="text-transform:uppercase;letter-spacing:.2em;font-weight:800;width:110px"><button class="btn primary" id="colJoinB">Join</button></div></div></div></div>
+    <div class="ft"><button class="btn ghost" data-close>Cancel</button></div>`,{wide:true});
+  const nm=()=>{ const v=m.querySelector('#colNm').value.trim(); if(!v){ toast('Add your name so others know who is editing.'); m.querySelector('#colNm').focus(); return null } colSetName(v); return v };
+  m.querySelector('#colStart').onclick=async e=>{ if(!nm())return; e.target.disabled=true; e.target.textContent='Starting…'; closeModal(); await colHost() };
+  m.querySelector('#colJoinB').onclick=async e=>{ if(!nm())return; e.target.disabled=true; e.target.textContent='Joining…'; if(await colJoin(m.querySelector('#colCode').value))closeModal(); else { e.target.disabled=false; e.target.textContent='Join' } };
+  m.querySelector('#colCode').addEventListener('keydown',e=>{ if(e.key==='Enter')m.querySelector('#colJoinB').click() }) }
+$('#colBtn').onclick=()=>colDialog(); $('#colChip').onclick=()=>colDialog();
+(()=>{ const q=new URLSearchParams(location.search).get('room'); if(q)setTimeout(()=>colDialog(q),1200) })();
+addEventListener('beforeunload',()=>{ if(COL)RT?.remove(`rooms/${COL.code}/people/${COL.cid}`) });
+
 /* ===== three-finger tap = undo (touch screens) ===== */
 let tri=false;
 window.addEventListener('touchstart',e=>{ if(e.touches.length>=3&&!tri&&S&&!startOpen&&!$('#mdl')){ tri=true; e.preventDefault(); drag=null; orbit.enabled=!PEN;
@@ -3332,7 +3501,7 @@ let _hovT=0;
 function hoverCursor(e){ if(e.pointerType!=='mouse'||drag||placingNote||placingCam)return; const now=performance.now(); if(now-_hovT<70)return; _hovT=now; setNdc(e); const h=pick(); let mv=false;
   if(h){ if(h.k==='item'){ const it=itemBy(h.id); mv=!!it&&!isLockedIt(it)&&!(isCeilT(it.type)?S.lockRoom:S.lockFurn) } else if(h.k==='zone'||h.k==='zh')mv=true; else mv=!S.lockRoom }
   canvas.style.cursor=mv?(h.k==='zh'?'nwse-resize':'move'):'' }
-function loop(now){ requestAnimationFrame(loop); tick(now); wcTick(now); updateMoveG(); if(!REDUCED)for(const g of furn.children){ const sp=g.userData.spin; if(sp){ if(g.userData.spinAxis==='z')sp.rotation.z+=.18; else sp.rotation.y+=.12 } } orbit.update(); updateHud(); if(!RENDERING)renderer.render(scene,camera) }
+function loop(now){ requestAnimationFrame(loop); tick(now); wcTick(now); if(COL){ colTimerOut(now); colPresence(now); if(now%300<20)colRemote() } updateMoveG(); if(!REDUCED)for(const g of furn.children){ const sp=g.userData.spin; if(sp){ if(g.userData.spinAxis==='z')sp.rotation.z+=.18; else sp.rotation.y+=.12 } } orbit.update(); updateHud(); if(!RENDERING)renderer.render(scene,camera) }
 new ResizeObserver(resize).observe($('#stage'));
 
 function start(data){
@@ -3341,7 +3510,7 @@ function start(data){
   else { S=fresh('quick','maker'); S.items=sampleLayout(); S.uid=100; S.attract=true; boot(); openStart(); }
   requestAnimationFrame(loop);
 }
-window.__sd={inspire(n,seed,ch){const t=performance.now();const r=inspireBuild(n,seed,ch||'kchair');r.ms=Math.round(performance.now()-t);return r},bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},cam(px,py,pz,tx,ty,tz){camera.position.set(px,py,pz);orbit.target.set(tx,ty,tz);orbit.update()},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},dg(){return drawG.children.map(c=>c.type+':'+JSON.stringify(c.userData)).join(' ')},pickAt(cx,cy){setNdc({clientX:cx,clientY:cy});return JSON.stringify(pick())},hitAt(cx,cy){setNdc({clientX:cx,clientY:cy});return [floorHit(),ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData)).filter(x=>x!=='{}')]},hitDraw(x,z){tmpV.set(x,0,z).project(camera);ndc.set(tmpV.x,tmpV.y);ray.setFromCamera(ndc,camera);return ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData))},go(i){goStep(i)},drawK(k){S.mode==='free'&&(S.freeStep=9);draw(k)},get PW(){return PW},get S(){return S},get DRAW(){return DRAW},get drag(){return drag},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
+window.__sd={inspire(n,seed,ch){const t=performance.now();const r=inspireBuild(n,seed,ch||'kchair');r.ms=Math.round(performance.now()-t);return r},bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},cam(px,py,pz,tx,ty,tz){camera.position.set(px,py,pz);orbit.target.set(tx,ty,tz);orbit.update()},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},dg(){return drawG.children.map(c=>c.type+':'+JSON.stringify(c.userData)).join(' ')},pickAt(cx,cy){setNdc({clientX:cx,clientY:cy});return JSON.stringify(pick())},hitAt(cx,cy){setNdc({clientX:cx,clientY:cy});return [floorHit(),ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData)).filter(x=>x!=='{}')]},hitDraw(x,z){tmpV.set(x,0,z).project(camera);ndc.set(tmpV.x,tmpV.y);ray.setFromCamera(ndc,camera);return ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData))},go(i){goStep(i)},drawK(k){S.mode==='free'&&(S.freeStep=9);draw(k)},get PW(){return PW},sel(u){select(u)},get COL(){return COL},get S(){return S},get DRAW(){return DRAW},get drag(){return drag},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
 try{ window.claude?.hot?.snapshot?.(()=>({state:S})) }catch(e){}
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 </script>
