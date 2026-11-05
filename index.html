@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"></head><body>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"></head><body>
 <title>Space Design Kit 3D</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
@@ -179,6 +179,12 @@ svg.ic{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;strok
 .colpeople{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}.colpeople li{display:flex;align-items:center;gap:8px;font-size:14px}.colpeople i{width:12px;height:12px;border-radius:50%}.colpeople small{color:var(--mute)}.colpeople small.h{color:var(--gold);font-weight:700}
 @media (max-width:820px){.colpick,.colgrid{grid-template-columns:1fr}.colchip .dots{display:none}}
 .guide .gnote{margin:10px 0 0;padding:8px 10px;border-radius:9px;background:rgba(95,208,196,.12);border:1px solid rgba(95,208,196,.45);font-size:12.5px;color:var(--txt)}
+.beta.demo{background:#5fd0c4;color:#062a26;margin-left:6px}
+.mode.off,.space.off{opacity:.38;filter:grayscale(.85);cursor:not-allowed;pointer-events:auto;position:relative}.mode.off:hover,.space.off:hover{filter:grayscale(.85)}
+.mode .fullv{position:absolute;right:10px;bottom:10px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:999px;background:var(--panel-3);color:var(--txt)}
+.democta{padding:10px 14px;border-radius:12px;background:rgba(95,208,196,.12);border:1px solid rgba(95,208,196,.5);font-size:14px;line-height:1.5;color:var(--txt)}.democta.big{font-size:16px;padding:14px 16px}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
+.mlink{color:#5fd0c4;font-weight:700;text-decoration:underline;text-underline-offset:2px}.mlink:hover{color:#8ff0e5}
 .penbar{position:absolute;top:12px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:14px;background:rgba(19,33,63,.97);border:1px solid var(--line-2);box-shadow:0 10px 26px rgba(0,0,0,.45);z-index:9;white-space:nowrap;max-width:calc(100% - 24px);overflow-x:auto}
 .penbar>b{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-right:2px}
 .penbar .pc{width:26px;height:26px;border-radius:50%;background:var(--pc);border:2px solid rgba(255,255,255,.25);padding:0;min-width:0}
@@ -622,7 +628,7 @@ html,body{overscroll-behavior:none}
   <header class="top">
     <div class="brand">
       <div class="mark"><i style="background:var(--red)"></i><i style="background:var(--blue)"></i><i style="background:var(--green)"></i><i style="background:var(--gold)"></i></div>
-      <div><b>Space Design Kit <span class="beta">Beta</span></b><small id="spaceLbl">SP FabLab</small></div>
+      <div><b>Space Design Kit <span class="beta">Beta</span><span class="beta demo" id="demoTag" hidden>Demo</span></b><small id="spaceLbl">SP FabLab</small></div>
     </div>
     <nav class="steps" id="steps" aria-label="Game steps"></nav>
     <div class="timer" id="timer"><span class="t num" id="tval">10:00</span>
@@ -689,6 +695,10 @@ html,body{overscroll-behavior:none}
 </script>
 <script type="module">
 import * as THREE from 'three';
+/* DEMO build switch: true = public online demo (Quick round + Makerspace only, no co-op, contact prompts) */
+const DEMO=false;
+const CONTACT='spfablab@sp.edu.sg', MAILTO=`mailto:${CONTACT}?subject=${encodeURIComponent('Enquiry on Space Design Kit')}`;
+const mailA=(t)=>`<a class="mlink" href="${MAILTO}" target="_blank" rel="noopener">${t||CONTACT}</a>`;
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 /* ================= DATA ================= */
@@ -1439,6 +1449,7 @@ window.addEventListener('keydown',e=>{
   if(DRAW){ const k=e.key.toLowerCase(); if(k==='escape'){endDraw(DRAW.edit);return} if(DRAW.edit){ if(k==='enter')endDraw(true); return }
     if(k==='backspace'||k==='delete'){e.preventDefault();drawUndo()} if(k==='enter')closeDraw(); if(k==='a'){DRAW.arc=!DRAW.arc} if(k==='f'){DRAW.flip=!DRAW.flip} if(DRAW){drawPreview();renderDrawBar()} return }
   if(selFix!=null&&(e.key==='Delete'||e.key==='Backspace')){e.preventDefault();removeFix(selFix);return}
+  if(selFix!=null&&e.key.toLowerCase()==='d'&&(e.ctrlKey||e.metaKey)){e.preventDefault();dupFix();return}
   if(selWall!=null&&wInner(selWall)&&!S.lockRoom&&!e.ctrlKey&&!e.metaKey&&['q','e'].includes(e.key.toLowerCase())){ const r=innerOf(selWall); if(r){ e.preventDefault(); turnInner(r,e.key.toLowerCase()==='q'?-Math.PI/12:Math.PI/12); return } }
   if(selZone!=null&&(e.key==='Delete'||e.key==='Backspace')){e.preventDefault();removeZone(selZone);return}
   if(e.key==='Escape'){select(null);return}
@@ -1569,6 +1580,14 @@ function addFix(kind){ if(S.lockRoom){toast('The room is locked. Unlock it to ch
   for(let t=w/2+.3;t<=L-w/2-.3;t+=.25){ const gap=Math.min(...S.fix.filter(f=>f.wall===wall).map(f=>Math.abs(f.t-t)-(f.w+w)/2),99); if(gap>bestGap){bestGap=gap;best=t} }
   const f={uid:S.uid++,kind,wall,t:+sn(best,SNAP||.05).toFixed(2),w}; clampFix(f); S.fix.push(f); selectFix(f.uid); runChecks(); save(); toast(`${FIXK[kind].name} added. Drag it along any wall.`);
 }
+/* duplicate a door / window / power point / whiteboard: same type and size, placed in the nearest free gap on the same wall (or another wall if this one is full) */
+function dupFix(){ if(S.lockRoom){ toast(ceilLockMsg); return } const f=S.fix.find(x=>x.uid===selFix); if(!f)return; const w=f.w||.2, gap=f.kind==='socket'?.3:.2;
+  const fits=(wall,t)=>{ const L=wallLen(wall); if(t-w/2<.05||t+w/2>L-.05)return false; return !S.fix.some(o=>o.wall===wall&&o.uid!==undefined&&Math.abs(o.t-t)<(o.w||.2)/2+w/2+gap*.5) };
+  let spot=null; const step=w+gap; for(let k=1;k<200&&!spot;k++){ for(const sgn of[1,-1]){ const t=+(f.t+sgn*k*step*.5).toFixed(2); if(Math.abs(t-f.t)>=step-1e-6&&fits(f.wall,t)){ spot={wall:f.wall,t}; break } } }
+  if(!spot) for(const wall of wallIds()){ const L=wallLen(wall); for(let t=w/2+.3;t<=L-w/2-.3&&!spot;t+=.25) if(fits(wall,t))spot={wall,t:+t.toFixed(2)}; if(spot)break }
+  if(!spot){ toast('There is no free space on the walls for another one.'); return }
+  const n={...f,uid:S.uid++,wall:spot.wall,t:spot.t}; clampFix(n); S.fix.push(n); selectFix(n.uid); runChecks(); renderRoomPanel(); save();
+  toast(`${f.kind==='socket'?(f.twin?'Twin power point':'Power point'):f.lv?'Louvre window':FIXK[f.kind].name} duplicated${spot.wall===f.wall?' next to it':' on another wall (this one is full)'}. Drag it along the wall to place it.`) }
 function removeFix(uid){ S.fix=S.fix.filter(f=>f.uid!==uid); if(selFix===uid)selFix=null; buildRoom(); renderSelTool(); runChecks(); save() }
 
 /* geometry helpers */
@@ -2190,7 +2209,7 @@ function renderSelTool(){
       (f.kind!=='socket'?SG('size','Width',`<button data-a="fw-" title="Narrower">−</button><span class="sv num">${f.w.toFixed(1)} m</span><button data-a="fw+" title="Wider">+</button>`):'')+
       (f.kind==='socket'?SG('shape','Type',`<button data-a="ftwin" title="Switch between a single and a twin socket">${f.twin?'Make single':'Make twin'}</button>`):'')+
       (f.kind==='window'?SG('shape','Type',`<button data-a="flv" title="Switch window type">${f.lv?'Make plain glass':'Make louvre'}</button>`)+(f.lv?SG('turn','Open',`<label class="rot" title="How far the blades are open"><input type="range" id="lvAng" min="0" max="90" step="5" value="${f.ang??45}" aria-label="Louvre blade angle"><span id="lvV" class="num">${f.ang??45}°</span></label>`):''):'')+
-      DEL('fdel'); }
+      SG('edit','',`<button data-a="fdup" title="Duplicate (Ctrl+D): adds another one next to it">Duplicate</button>`)+DEL('fdel'); }
   else if(selZone!=null){ const z=S.zones.find(x=>x.uid===selZone); if(!z)return; const [,col]=NOTE_KINDS[z.kind];
     html=`<span class="sw" style="background:${col}"></span>`+SG('shape','Zone',`<button class="pick" data-pick="zKind" aria-haspopup="listbox">${esc(NOTE_KINDS[z.kind][0])}<i>▾</i></button>`)+SG('edit','Label',`<input type="text" id="zTxt" maxlength="32" value="${esc(z.text)}" placeholder="Optional">`)+`<span class="sv num">${(z.x1-z.x0).toFixed(1)} × ${(z.z1-z.z0).toFixed(1)} m</span>`+DEL('zdel'); }
   else if(selWall!=null&&wInner(selWall)){ const r=innerOf(selWall); if(!r)return;
@@ -2228,7 +2247,7 @@ function renderSelTool(){
       if(a==='gch'){ G.chairs=!G.chairs; buildGroup(gid); select(S.items.find(i=>i.grp===gid).uid); runChecks(); renderCatalogCount(); save() }
       if(a==='gfold'){ const its=S.items.filter(i=>i.grp===gid&&DEF[i.type].fold); const f=!its.every(i=>i.folded); its.forEach(i=>{i.folded=f;remakeItem(i)}); runChecks(); save(); renderSelTool(); toast(f?'All tables folded':'All unfolded') }
       if(a==='gdup')placeFormation(G.kind); if(a==='gun')ungroup(gid); if(a==='gdel')removeGroup(gid) }
-    if(a==='fdel')removeFix(selFix); if(a==='zdel')removeZone(selZone);
+    if(a==='fdup')dupFix(); if(a==='fdel')removeFix(selFix); if(a==='zdel')removeZone(selZone);
     if(a==='ftwin'){ const f=S.fix.find(x=>x.uid===selFix); if(f){ f.twin=f.twin?0:1; f.w=f.twin?.4:.2; clampFix(f); buildRoom(); runChecks(); renderSelTool(); renderRoomPanel(); save(); toast(f.twin?'Twin power point: 2 sockets.':'Single power point: 1 socket.') } }
     if(a==='flv'){ const f=S.fix.find(x=>x.uid===selFix); if(f){ f.lv=f.lv?0:1; if(f.ang==null)f.ang=45; buildRoom(); renderSelTool(); renderRoomPanel(); save(); toast(f.lv?'Louvre window: drag the Open slider to tilt the blades.':'Plain glass window') } }
     if(a&&a[0]==='i'&&selWall&&wInner(selWall)){ const r=innerOf(selWall); if(!r)return; if(S.lockRoom){toast('The room is locked.');return}
@@ -2666,9 +2685,13 @@ const stepLeft=()=>step().dur+(S.extra||0)-S.stepElapsed;
 function clockOff(on){ S.clockOff=!!on; if(on){ S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false) } else { const left=stepLeft(); if(left<300)S.extra=(S.extra||0)+(300-left); S.upShown=false; setPaused(false) } renderTimer(); renderCatalog(); save(); toast(on?'Clock off. Take your time to keep improving. Tap the clock to turn it back on.':'Clock back on with 5 minutes.') }
 function extendStep(){ if(colGuestTimed()){ toast('The host runs the timer.'); return } S.extra=(S.extra||0)+300; S.upShown=false; timesUpPending=false; $('#timer').classList.remove('up'); setPaused(false); renderTimer(); save(); toast(`+5 minutes added to ${step().name}.`) }
 function renderTimer(){ if(!S||S.mode==='free')return; $('#timer').classList.toggle('off',!!S.clockOff); if(S.clockOff){ $('#tval').textContent='Clock off'; $('#tExt').hidden=true; $('#timer').classList.remove('over','up'); return } const left=stepLeft(); $('#tval').textContent=fmt(Math.max(0,left)); $('#timer').classList.toggle('over',left<=0); $('#tExt').hidden=!S.upShown||!!step().max }
-function timesUpDialog(){ const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300), miss=cardsMissing(S.step,S.step+1);
+function demoContact(after){ const m=modal(`<div class="hd"><div class="kick">Space Design Kit · Demo</div><h2>Time's up! Enjoyed designing your space?</h2><p class="lead" style="margin:6px 0 0">This demo shows a short Quick round. The full Space Design Kit adds the 2-hour workshop, five learning spaces, the Sandbox planner with two floors, and multi-device co-op for teams.</p></div>
+   <div class="bd"><div class="democta big">Interested in running it at your school or for your team? Reach out to <b>SP FabLab</b> at ${mailA()}.</div></div>
+   <div class="ft"><button class="btn ghost" data-close>${after?'Keep exploring':'Close'}</button><a class="btn primary" href="${MAILTO}" target="_blank" rel="noopener">Email SP FabLab</a>${after?'<button class="btn" id="dcGo">See my result</button>':''}</div>`);
+  m.querySelector('#dcGo')?.addEventListener('click',()=>{ closeModal(); after() }) }
+function timesUpDialog(){ if(DEMO&&!steps()[S.step+1]){ demoContact(()=>finish()); return } const st=step(), nx=steps()[S.step+1], ext=Math.round((S.extra||0)/300), miss=cardsMissing(S.step,S.step+1);
   const m=modal(`<div class="hd"><div class="kick">Step ${S.step+1} · ${esc(st.name)}</div><h2>Time's up!</h2><p class="lead" style="margin:6px 0 0">${esc(st.name)} has used its ${Math.round(st.dur/60)} minutes${ext?` and ${ext*5} extra minute${ext*5>1?'s':''}`:''}. The timer is paused.</p></div>
-   <div class="bd"><p style="margin:0">${miss?'Draw your cards before you move on.':st.max?`Room setup has a ${Math.round(st.dur/60)}-minute limit. Time to start the round.`:'Need a little longer? Keep improving adds 5 minutes, and you can do it as many times as you need.'}</p></div>
+   <div class="bd">${DEMO?`<p class="tip" style="margin:0 0 8px">Demo version · interested in the full kit? ${mailA()}</p>`:''}<p style="margin:0">${miss?'Draw your cards before you move on.':st.max?`Room setup has a ${Math.round(st.dur/60)}-minute limit. Time to start the round.`:'Need a little longer? Keep improving adds 5 minutes, and you can do it as many times as you need.'}</p></div>
    <div class="ft">${st.max?'':'<button class="btn" id="tuExt" title="Add 5 more minutes to this step">Keep improving · +5 min</button>'}<button class="btn primary" id="tuNext">${miss?`Draw ${miss.need} card${miss.need>1?'s':''}`:nx?`Move on to ${esc(nx.name)}`:'Finish the game'}</button></div>`);
   m.querySelector('#tuExt')?.addEventListener('click',()=>{ closeModal(); extendStep() });
   m.querySelector('#tuNext').onclick=()=>{ closeModal(); if(miss){ draw(miss.k); return } if(nx) goStep(S.step+1); else finish() } }
@@ -3031,7 +3054,7 @@ function ringSvg(v,max,col){const r=58,c=2*Math.PI*r,p=v/max;return `<svg class=
 function results(){
   runChecks(); const sc=scoreNow(); const {list,ctx}=lastCheck; const req=list.filter(x=>x.req); const passed=req.filter(x=>x.ok).length;
   const sp=SPACES[S.space];
-  modal(`<div class="hd"><div class="kick">${esc(sp.name)}${S.team?' · '+esc(S.team):''}</div><h2>Your design result</h2></div>
+  modal(`<div class="hd"><div class="kick">${esc(sp.name)}${S.team?' · '+esc(S.team):''}${DEMO?' · Demo':''}</div><h2>Your design result</h2>${DEMO?`<div class="democta" style="margin-top:10px">Like what you see? Bring the full Space Design Kit to your school or team: ${mailA()}</div>`:''}</div>
    <div class="bd"><div class="scorebig">${ringSvg(sc.val,sc.max,sc.band[1].replace('var(--ok)','#3ccf74').replace('var(--warn)','#f5b700').replace('var(--bad)','#ff5a5f'))}
      <div style="flex:1;min-width:220px"><span class="band-pill" style="background:${sc.band[1]};color:#0c1730">${sc.band[0]}</span>
      <p class="lead" style="margin:10px 0 0">${S.mode==='quick'?'Your quick reality check':'Feasibility score'}, plus <b>${passed} of ${req.length}</b> design checks passed in the model.</p>
@@ -3088,11 +3111,11 @@ async function exportPng(){
 
 /* menu */
 $('#menuBtn').onclick=()=>{
-  const m=modal(`<div class="hd"><div class="kick">Menu · Project <span class="num" style="letter-spacing:.04em">${esc(S.pid||'')}</span></div><h2>${esc(MODES[S.mode].name)} · ${esc(SPACES[S.space].name)}</h2></div><div class="bd" style="display:grid;gap:10px">
+  const m=modal(`<div class="hd"><div class="kick">Menu · ${DEMO?'Demo version':'Project <span class="num" style="letter-spacing:.04em">'+esc(S.pid||'')+'</span>'}</div><h2>${esc(MODES[S.mode].name)} · ${esc(SPACES[S.space].name)}${DEMO?' <span class="beta demo">Demo</span>':''}</h2></div><div class="bd" style="display:grid;gap:10px">${DEMO?`<div class="democta">You are playing the <b>demo</b> (Quick round · Makerspace). For the full kit, contact ${mailA()}.</div>`:''}
    <button class="btn" id="mTour">How to play (guided tour)</button><button class="btn" id="mScore">Score &amp; results</button><button class="btn" id="mRoles">Team name &amp; roles</button><button class="btn" id="mRender">Realistic render of the room</button><button class="btn" id="mPng">Save summary picture (.png)</button><button class="btn" id="mJson">Save layout (.json)</button>
    <label class="btn" for="mLoad" style="cursor:pointer">Load a saved layout (.json)<input type="file" id="mLoad" accept=".json,application/json" hidden></label>
    <button class="btn" id="mClear">Clear all furniture</button><button class="btn primary" id="mNew">New game</button>
-   <p style="color:var(--mute);font-size:12.5px;margin:4px 0 0">Drag furniture to move it. Drag it back onto the furniture panel to remove it. Q/E rotate 15°, arrows nudge, Delete removes, Ctrl+D duplicates. Ctrl+Z undoes (up to 3 steps). Drag a wall to resize the room. Right-drag or two fingers to pan.</p></div>
+   <p style="color:var(--mute);font-size:12.5px;margin:4px 0 0">Drag furniture to move it. Drag it back onto the furniture panel to remove it. Q/E rotate 15°, arrows nudge, Delete removes, Ctrl+D duplicates. Ctrl+Z or a 3-finger tap undoes (up to 10 steps). Drag a wall to resize the room. Right-drag or two fingers to pan.</p></div>
    <div class="ft"><button class="btn ghost" data-close>Close</button></div>`);
   $('#mScore').onclick=()=>{S.mode==='quick'?quickScoreDialog():feasDialog()}; $('#mRoles').onclick=rolesDialog; $('#mPng').onclick=()=>{closeModal();exportPng()}; $('#mJson').onclick=exportJson;
   $('#mNew').onclick=()=>{closeModal();openStart()}; $('#mTour').onclick=()=>startTour(); $('#mRender').onclick=()=>renderDialog();
@@ -3108,25 +3131,26 @@ const MODE_LOOK={quick:['#f5b700','Game','<circle cx="12" cy="13" r="7"/><path d
 
 let startOpen=false;
 function openStart(){
-  startOpen=true; let mode=S?.sandbox?'sandbox':(S?.mode||'quick'), space=S?.space||'maker'; const saved=loadSaved();
+  startOpen=true; let mode=S?.sandbox?'sandbox':(S?.mode||'quick'), space=S?.space||'maker'; if(DEMO){ mode='quick'; space='maker' } const saved=loadSaved();
   const root=$('#startRoot');
   const draw_=()=>{ const sp=SPACES[space];
     root.innerHTML=`<div class="start"><div class="l">
-      <div><div class="eyebrow">SP FabLab · Space Design Kit <span class="beta">Beta</span></div><h1>Design a learning space <em>you could really build.</em></h1></div>
+      <div><div class="eyebrow">SP FabLab · Space Design Kit <span class="beta">Beta</span>${DEMO?' <span class="beta demo">Demo</span>':''}</div><h1>Design a learning space <em>you could really build.</em></h1></div>
       <p class="lead">Draw a real classroom problem, get inspired, then plan the room at real size. The game checks walkways, seats and budget as you build.</p>
       <div class="legend"><span style="background:var(--red-s);color:#ff8a8f">Red · Scenario: the problem</span><span style="background:var(--blue-s);color:#9ab6ff">Blue · Inspiration: ideas</span><span style="background:var(--green-s);color:#7fd89a">Green · Prompt: the stretch</span></div>
-      <div><div class="lbl">1 · Choose how to play</div><div class="modes">${Object.entries(MODES).map(([k,m])=>{ const [c,tag,ic]=MODE_LOOK[k]||['#f5b700','Game','']; return `<button class="mode ${k===mode?'on':''} ${k==='sandbox'?'planner':''}" data-mode="${k}" style="--mc:${c}"><span class="mh"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></span><span class="mtag">${tag}</span></span><span class="t">${m.time}</span><b>${m.name}</b><small>${m.desc}</small></button>` }).join('')}</div></div>
+      <div><div class="lbl">1 · Choose how to play</div><div class="modes">${Object.entries(MODES).map(([k,m])=>{ const [c,tag,ic]=MODE_LOOK[k]||['#f5b700','Game','']; const off=DEMO&&k!=='quick'; return `<button class="mode ${k===mode?'on':''} ${k==='sandbox'?'planner':''} ${off?'off':''}" data-mode="${k}" style="--mc:${c}" ${off?'disabled aria-disabled="true" title="Available in the full Space Design Kit"':''}>${off?'<span class="fullv">Full version</span>':''}<span class="mh"><span class="mi"><svg viewBox="0 0 24 24" aria-hidden="true">${ic}</svg></span><span class="mtag">${tag}</span></span><span class="t">${m.time}</span><b>${m.name}</b><small>${m.desc}</small></button>` }).join('')}</div></div>
       ${mode==='sandbox'?`<div class="sbnote"><div class="lbl">2 · Your plan</div><p>Sandbox starts with an empty 12 × 9 m room. Resize it up to <b>50 × 50 m</b>, reshape it, add rooms inside and a second floor. No space card needed.</p></div>`:''}
-      <div ${mode==='sandbox'?'hidden':''}><div class="lbl">2 · Pick a space</div><div class="spaces">${Object.entries(SPACES).map(([k,s])=>`<button class="space ${k===space?'on':''}" data-space="${k}" aria-label="${esc(s.name)}" aria-pressed="${k===space}"><img src="cards/${s.back}.jpg" alt=""><span>${esc(s.name)}</span></button>`).join('')}</div>
+      <div ${mode==='sandbox'?'hidden':''}><div class="lbl">2 · Pick a space</div><div class="spaces">${Object.entries(SPACES).map(([k,s])=>`<button class="space ${k===space?'on':''} ${DEMO&&k!=='maker'?'off':''}" data-space="${k}" ${DEMO&&k!=='maker'?'disabled aria-disabled="true" title="Available in the full Space Design Kit"':''} aria-label="${esc(s.name)}" aria-pressed="${k===space}"><img src="cards/${s.back}.jpg" alt=""><span>${esc(s.name)}</span></button>`).join('')}</div>
         <div class="spfeat"><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div>
       <div class="startrow"><div><label class="lbl" for="stTeam" style="display:block">Team name (optional)</label><input id="stTeam" placeholder="e.g. Table 3" value="${esc(S?.team||'')}"></div>
         <button class="btn primary" id="stGo" style="padding:14px 26px;font-size:16px">Start ${esc(MODES[mode].name.toLowerCase())}</button>
-        ${saved&&saved.items?.length?`<button class="btn" id="stCont" style="padding:14px 18px">Continue last game</button>`:''}<button class="btn" id="stJoin" style="padding:14px 18px">Join a session</button></div>
+        ${saved&&saved.items?.length&&(!DEMO||(saved.mode==='quick'&&saved.space==='maker'&&!saved.sandbox))?`<button class="btn" id="stCont" style="padding:14px 18px">Continue last game</button>`:''}${DEMO?'':'<button class="btn" id="stJoin" style="padding:14px 18px">Join a session</button>'}</div>
+      ${DEMO?`<div class="democta"><b>This is a demo.</b> It shows the Quick round in the Makerspace. For the full kit (workshop mode, 5 spaces, Sandbox planner, multi-device co-op) contact SP FabLab at ${mailA()}.</div>`:''}
     </div><div class="r">${mode==='sandbox'?`<div class="spfeat big sbx"><div class="sbico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div><div><div class="k">Sandbox</div><h2>Plan any space</h2><p>An interior planning sandbox for educators. No cards, timer or score.</p><div class="facts"><span><b>50 × 50 m</b>max room</span><span><b>2</b>floors</span><span><b>Pen</b>any time</span></div></div></div>`:''}<div class="spfeat big" ${mode==='sandbox'?'hidden':''}><img src="cards/${sp.back}.jpg" alt="${esc(sp.name)} card"><div><div class="k">Your space</div><h2>${esc(sp.name)}</h2><p>${esc(sp.blurb)}</p><div class="facts"><span><b>${sp.w} × ${sp.d} m</b>room</span><span><b>${sp.cls}</b>students</span><span><b>${money(sp.budget)}</b>budget</span></div></div></div></div><button class="btn stfs" id="stFs"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${fsEl()?'M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5':'M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5'}"/></svg><span>${fsEl()?'Exit full screen':'Full screen'}</span></button></div>`;
     root.querySelectorAll('img').forEach(i=>{ if(!i.complete)i.addEventListener('load',()=>fitStart(),{once:true}) }); requestAnimationFrame(fitStart); setTimeout(fitStart,500);
     $('#stFs').onclick=()=>{ toggleFS(); setTimeout(draw_,450) };
-    root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{mode=b.dataset.mode;draw_()});
-    root.querySelectorAll('[data-space]').forEach(b=>b.onclick=()=>{space=b.dataset.space;draw_()});
+    root.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{ if(b.disabled)return; mode=b.dataset.mode;draw_()});
+    root.querySelectorAll('[data-space]').forEach(b=>b.onclick=()=>{ if(b.disabled)return; space=b.dataset.space;draw_()});
     $('#stGo').onclick=()=>{const team=$('#stTeam').value.trim(); S=fresh(mode==='sandbox'?'free':mode,mode==='sandbox'?'maker':space); if(mode==='sandbox'){ S.sandbox=true; S.nFloors=1; S.floor=0; S.ghostOn=true } S.team=team; closeStart(); boot(); onEnterStep(); syncSheet(); let seen=false; try{seen=!!localStorage.getItem('sdkit3d-tour')}catch(e){} if(!seen)setTimeout(()=>{ if(!$('#mdl'))startTour() },900)};
     $('#stCont')?.addEventListener('click',()=>{S=saved;closeStart();boot()});
     $('#stJoin')?.addEventListener('click',()=>colDialog());
@@ -3318,7 +3342,7 @@ const FB_SDK='10.12.2';
 const GAME_KEYS=['mode','space','sandbox','nFloors','project','team','roles','hand','deck','redraw','tags','keep','avoidWhy','rSet','promptAt','freeStep','feas','why','pitch','plan','thumbs','finished','step','twistDone','nudged','notes','pid'];
 const COLC=['#ff5a5f','#4f8cff','#3ccf74','#f5b700','#b26bff','#ff8a3d','#2fd3c7','#ff6bb5'];
 let COL=null, RT=null, RT_TRY=null;
-async function rtInit(){ if(RT)return RT; if(RT_TRY)return RT_TRY;
+async function rtInit(){ if(DEMO)return null; if(RT)return RT; if(RT_TRY)return RT_TRY;
   RT_TRY=(async()=>{ if(window.__rtMock){ RT=await window.__rtMock(); return RT }
     if(window.claude)return null;
     let cfg=window.SDKIT_FIREBASE; if(!cfg){ try{ cfg=(await import('./firebase-config.js')).default }catch(e){ cfg=null } }
@@ -3440,8 +3464,8 @@ async function colDialog(prefill){ const rt=await rtInit();
   m.querySelector('#colStart').onclick=async e=>{ if(!nm())return; e.target.disabled=true; e.target.textContent='Starting…'; closeModal(); await colHost() };
   m.querySelector('#colJoinB').onclick=async e=>{ if(!nm())return; e.target.disabled=true; e.target.textContent='Joining…'; if(await colJoin(m.querySelector('#colCode').value))closeModal(); else { e.target.disabled=false; e.target.textContent='Join' } };
   m.querySelector('#colCode').addEventListener('keydown',e=>{ if(e.key==='Enter')m.querySelector('#colJoinB').click() }) }
-$('#colBtn').onclick=()=>colDialog(); $('#colChip').onclick=()=>colDialog();
-(()=>{ const q=new URLSearchParams(location.search).get('room'); if(q)setTimeout(()=>colDialog(q),1200) })();
+$('#colBtn').onclick=()=>colDialog(); $('#colChip').onclick=()=>colDialog(); if(DEMO){ $('#colBtn').remove(); $('#demoTag').hidden=false; document.title='Space Design Kit · Demo' }
+(()=>{ const q=new URLSearchParams(location.search).get('room'); if(q&&!DEMO)setTimeout(()=>colDialog(q),1200) })();
 addEventListener('beforeunload',()=>{ if(COL)RT?.remove(`rooms/${COL.code}/people/${COL.cid}`) });
 
 /* ===== three-finger tap = undo (touch screens) ===== */
@@ -3516,7 +3540,7 @@ function start(data){
   else { S=fresh('quick','maker'); S.items=sampleLayout(); S.uid=100; S.attract=true; boot(); openStart(); }
   requestAnimationFrame(loop);
 }
-window.__sd={inspire(n,seed,ch){const t=performance.now();const r=inspireBuild(n,seed,ch||'kchair');r.ms=Math.round(performance.now()-t);return r},bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},cam(px,py,pz,tx,ty,tz){camera.position.set(px,py,pz);orbit.target.set(tx,ty,tz);orbit.update()},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},dg(){return drawG.children.map(c=>c.type+':'+JSON.stringify(c.userData)).join(' ')},pickAt(cx,cy){setNdc({clientX:cx,clientY:cy});return JSON.stringify(pick())},hitAt(cx,cy){setNdc({clientX:cx,clientY:cy});return [floorHit(),ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData)).filter(x=>x!=='{}')]},hitDraw(x,z){tmpV.set(x,0,z).project(camera);ndc.set(tmpV.x,tmpV.y);ray.setFromCamera(ndc,camera);return ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData))},go(i){goStep(i)},drawK(k){S.mode==='free'&&(S.freeStep=9);draw(k)},get PW(){return PW},sel(u){select(u)},get COL(){return COL},get S(){return S},get DRAW(){return DRAW},get drag(){return drag},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
+window.__sd={inspire(n,seed,ch){const t=performance.now();const r=inspireBuild(n,seed,ch||'kchair');r.ms=Math.round(performance.now()-t);return r},bad(){return [...objs].filter(([u,g])=>g.userData.bad).map(([u])=>{const i=S.items.find(t=>t.uid===u);return [i.type,i.grp,i.gi,i.x,i.z,i.rot]})},cam(px,py,pz,tx,ty,tz){camera.position.set(px,py,pz);orbit.target.set(tx,ty,tz);orbit.update()},look(x,z,d){camera.position.set(x-d*.35,d*.75,z+d*.85);orbit.target.set(x,.4,z);orbit.update()},dg(){return drawG.children.map(c=>c.type+':'+JSON.stringify(c.userData)).join(' ')},pickAt(cx,cy){setNdc({clientX:cx,clientY:cy});return JSON.stringify(pick())},hitAt(cx,cy){setNdc({clientX:cx,clientY:cy});return [floorHit(),ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData)).filter(x=>x!=='{}')]},hitDraw(x,z){tmpV.set(x,0,z).project(camera);ndc.set(tmpV.x,tmpV.y);ray.setFromCamera(ndc,camera);return ray.intersectObjects(drawG.children,false).map(h=>JSON.stringify(h.object.userData))},go(i){goStep(i)},drawK(k){S.mode==='free'&&(S.freeStep=9);draw(k)},get PW(){return PW},sel(u){select(u)},selF(u){selectFix(u)},get COL(){return COL},get S(){return S},get DRAW(){return DRAW},get drag(){return drag},get lastCheck(){return lastCheck},proj(x,y,z){tmpV.set(x,y,z).project(camera);const r=canvas.getBoundingClientRect();return[r.left+(tmpV.x+1)/2*r.width,r.top+(1-tmpV.y)/2*r.height]}};
 try{ window.claude?.hot?.snapshot?.(()=>({state:S})) }catch(e){}
 window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
 </script>
